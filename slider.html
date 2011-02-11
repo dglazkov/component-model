@@ -129,7 +129,7 @@ SliderThumb.prototype.handleMouseMoveEvent = function(evt)
     this.setPosition(new WebKitPoint(evt.clientX, evt.clientY));
 }
 
-SliderThumb.prototype.moveThumbTo = function(fraction)
+SliderThumb.prototype.moveTo = function(fraction)
 {
     var slider = this.element.parentElement;
     var thumb = this.element;
@@ -142,7 +142,7 @@ SliderThumb.prototype.moveThumbTo = function(fraction)
 
 SliderThumb.prototype.setPositionFromValue = function(value)
 {
-    this.moveThumbTo(fictional.proportionFromValue(value));
+    this.moveTo(fictional.proportionFromValue(value));
 }
 
 SliderThumb.prototype.setPosition = function(point)
@@ -170,7 +170,7 @@ SliderThumb.prototype.setPosition = function(point)
         return;
 
     var fraction = position / trackSize;
-    this.moveThumbTo(fraction);
+    this.moveTo(fraction);
     fictional.setSliderValueFromProportion(slider, fraction);
     fictional.dispatchChangeEvent(slider);
 }
