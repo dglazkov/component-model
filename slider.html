@@ -8,6 +8,7 @@ API Surface:
 
 [Supplemental]
 interface Element {
+    // return decorator object instance if revealDecorator is set to true.
     Object decorate(Function decorator);
     void undecorate(Function decorator);
     bool hasDecorator(Function decorator);
@@ -19,7 +20,7 @@ interface DecoratorContext : EventTarget {
     attribute bool revealDecorator;
     attribute bool applyAuthorSheets;
     attribute bool allowSelectorsThrough;
-    attribute String pseudo;
+    attribute Node shadow;
     attribute ForwardingRuleArray forwardingRules;
     attribute DOMElement element;
 }
@@ -27,14 +28,14 @@ interface DecoratorContext : EventTarget {
 interface ForwardingRule {
 }
 
-[Constructor(attributeName, handlerFunction)]
-interface AttributeForwardingRule : ForwardingRule {
+[Constructor(in String shadowPseudoId, in Element element)]
+interface PseudoElementForwardingRule : ForwardingRule {
     // "this" is DecoratorContext.
 }
 
-interface ShadowCreationEvent : Event {
-    attribute Node shadow;
-    attribute DecoratorContext context;
+[Constructor(attributeName, handlerFunction)]
+interface AttributeChangeForwardingRule : ForwardingRule {
+    // "this" is DecoratorContext.
 }
 
 // and some fictional APIs:
@@ -67,20 +68,16 @@ interface Fictional {
 
 function Slider(context)
 {
-    // FIXME: When is this fired?
-    context.addEventListener('createsubtree', this.createShadowSubtree.bind(this), false);
     context.element.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
     context.element.addEventListener('keydown', this.handleKeyDownEvent.bind(this), false);
     this.element = context.element;
-}
 
-Slider.prototype.createShadowSubtree = function(evt)
-{
-    var thumb = document.createElement('div');
-    evt.shadow = thumb;
-    evt.context.forwarding.add(new PseudoElementForwardingRule('-webkit-slider-thumb', thumb));
-    evt.context.forwarding.add(new AttributeChangeForwardingRule('value', thumb.setPositionFromValue.bind(thumb)));
-    this.thumb = thumb.decorate(SliderThumb);
+    var thumbElement = document.createElement('div');
+    this.thumb = thumbElement.decorate(SliderThumb);
+
+    context.shadow = thumbElement;
+    context.forwardingRules.add(new PseudoElementForwardingRule('-webkit-slider-thumb', thumbElement));
+    context.forwardingRules.add(new AttributeChangeForwardingRule('value', this.thumb.setPositionFromValue.bind(this.thumb)));
 }
 
 Slider.prototype.handleMouseDownEvent = function(evt)
