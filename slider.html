@@ -99,9 +99,9 @@ Slider.prototype.handleKeyDownEvent = function(evt)
 function SliderThumb(context)
 {
     context.revealDecorator = true;
-    context.element.addEventListener('mousedown', this.handleMouseDownEvent, false);
-    context.element.addEventListener('mouseup', this.handleMouseUpEvent, false);
-    context.element.addEventListener('mousemove', this.handleMouseMoveEvent, false);
+    context.element.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
+    context.element.addEventListener('mouseup', this.handleMouseUpEvent.bind(this), false);
+    context.element.addEventListener('mousemove', this.handleMouseMoveEvent.bind(this), false);
     this.element = context.element;
 }
 
