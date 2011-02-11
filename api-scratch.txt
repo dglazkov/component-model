@@ -1,0 +1,48 @@
+function Grabbers(context) {
+    context.addEventListener('createSubtree', function(evt)
+    {
+        this.shadowRoot
+    }, false);
+    context.addEventListener('removeSubtree', function(evt)
+    {
+        
+    }, false);
+}
+
+var Grabbers = {
+    applyAuthorSheets: true,
+    ...
+    onApply: function(context)
+    {
+        // create subtree.
+    }
+};
+
+// Also:
+mixin Grabbers {
+    
+}
+
+
+// explicit binding.
+var foo = document.getElementById("foo");
+var id = foo.addShadow(Grabbers);
+foo.removeShadow(id, Grabbers);
+
+
+interface ShadowContext {
+    bool applyAuthorSheets;
+    ...
+    shadowRoot
+}
+
+-----
+Instantiation: object's constructor is called.
+----
+Subtree Creation: context fires "createSubtree" event
+---
+Existence
+--
+Subtree Removal: context fires "removeSubtree" event
+---
+Finalization: nothing.

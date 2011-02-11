@@ -1,0 +1,210 @@
+<html>
+<head>
+<script>
+
+/*
+
+API Surface:
+
+[Supplemental]
+interface Element {
+    Object decorate(Function decorator);
+    void undecorate(Function decorator);
+    bool hasDecorator(Function decorator);
+}
+
+typedef sequence<ForwardingRule> ForwardingRuleArray;
+interface DecoratorContext : EventTarget {
+    // makes .decorate() return the actual decorator instance.
+    attribute bool revealDecorator;
+    attribute bool applyAuthorSheets;
+    attribute bool allowSelectorsThrough;
+    attribute String pseudo;
+    attribute ForwardingRuleArray forwardingRules;
+    attribute DOMElement element;
+}
+
+interface ForwardingRule {
+}
+
+[Constructor(attributeName, handlerFunction)]
+interface AttributeForwardingRule : ForwardingRule {
+    // "this" is DecoratorContext.
+}
+
+interface ShadowCreationEvent : Event {
+    attribute Node shadow;
+    attribute DecoratorContext context;
+}
+
+// and some fictional APIs:
+
+[Supplemental]
+interface DOMWindow {
+    Fictional fictional
+}
+
+interface Fictional {
+    // Appearance hook, something to be fleshed out more.
+    bool isSliderVertical(in Element element);
+
+    // I was to lazy to write the actual code for this :)
+    double proportionFromValue(in Element element);
+    // Ditto.
+    void setSliderValueFromProportion(in double proportion)
+    // Ditto.
+    void dispatchChangeEvent(in Element target);
+
+    // There are no DOM equivalents for these.
+    void setCapturingMouseEventsNode(in Element element);
+    void clearCapturingMouseEventsNode();
+}
+
+
+*/
+
+// FIXME: Doesn't handle -webkit-appearance or takes input from the RenderTheme.
+
+function Slider(context)
+{
+    // FIXME: When is this fired?
+    context.addEventListener('createsubtree', this.createShadowSubtree.bind(this), false);
+    context.element.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
+    context.element.addEventListener('keydown', this.handleKeyDownEvent.bind(this), false);
+    this.element = context.element;
+}
+
+Slider.prototype.createShadowSubtree = function(evt)
+{
+    var thumb = document.createElement('div');
+    evt.shadow = thumb;
+    evt.context.forwarding.add(new PseudoElementForwardingRule('-webkit-slider-thumb', thumb));
+    evt.context.forwarding.add(new AttributeChangeForwardingRule('value', thumb.setPositionFromValue.bind(thumb)));
+    this.thumb = thumb.decorate(SliderThumb);
+}
+
+Slider.prototype.handleMouseDownEvent = function(evt)
+{
+    if (evt.button != 1 && evt.target() != this.element)
+        return;
+
+    this.thumb.dragFrom(new WebKitPoint(evt.clientX, evt.clientY));
+};
+
+Slider.prototype.handleKeyDownEvent = function(evt)
+{
+    // FIXME: Implement.
+}
+
+function SliderThumb(context)
+{
+    context.revealDecorator = true;
+    context.element.addEventListener('mousedown', this.handleMouseDownEvent, false);
+    context.element.addEventListener('mouseup', this.handleMouseUpEvent, false);
+    context.element.addEventListener('mousemove', this.handleMouseMoveEvent, false);
+    this.element = context.element;
+}
+
+SliderThumb.prototype.handleMouseDownEvent = function(evt)
+{
+    if (evt.button != 1)
+        return;
+
+    this.startDragging();
+}
+
+SliderThumb.prototype.handleMouseUpEvent = function(evt)
+{
+    if (evt.button != 1)
+        return;
+
+    this.stopDragging();
+}
+
+SliderThumb.prototype.handleMouseMoveEvent = function(evt)
+{
+    if (!this.dragging)
+        return;
+
+    this.setPosition(new WebKitPoint(evt.clientX, evt.clientY));
+}
+
+SliderThumb.prototype.moveThumbTo = function(fraction)
+{
+    var slider = this.element.parentElement;
+    var thumb = this.element;
+    var vertical = fictional.isSliderVertical(slider);
+    if (vertical)
+        thumb.style.top = ((slider.offsetHeight - thumb.offsetHeight) * (1 - fraction)) + 'px';
+    else
+        thumb.style.left = ((slider.offsetWidth - thumb.offsetWidth) * fraction) + 'px';
+}
+
+SliderThumb.prototype.setPositionFromValue = function(value)
+{
+    this.moveThumbTo(fictional.proportionFromValue(value));
+}
+
+SliderThumb.prototype.setPosition = function(point)
+{
+    var slider = this.element.parentElement;
+    var thumb = this.element;
+
+    var localPoint = webkitConvertPointFromPageToNode(thumb, point);
+
+    var trackSize;
+    var position;
+    var currentPosition;
+    var vertical = fictional.isSliderVertical(slider);
+    if (vertical) {
+        trackSize = slider.offsetHeight;
+        position = point.y - thumb.offsetHeight / 2;
+        currentPosition = thumb.offsetTop - slider.offsetTop;
+    } else {
+        trackSize = slider.offsetWidth;
+        position = point.x - thumb.offsetWidth / 2;
+        currentPosition = thumb.offsetLeft - slider.offsetLeft;
+    }
+    position = Math.max(0, Math.min(position, trackSize));
+    if (position == currentPosition)
+        return;
+
+    var fraction = position / trackSize;
+    this.moveThumbTo(fraction);
+    fictional.setSliderValueFromProportion(slider, fraction);
+    fictional.dispatchChangeEvent(slider);
+}
+
+SliderThumb.prototype.dragFrom = function(point)
+{
+    this.setPosition(point);
+    this.startDragging();
+}
+
+SliderThumb.prototype.startDragging = function()
+{
+    fictional.setCapturingMouseEventsNode(this.element);
+    this.dragging = true;
+}
+
+SliderThumb.prototype.stopDragging = function()
+{
+    if (!this.dragging)
+        return;
+
+    fictional.clearCapturingMouseEventsNode();
+    this.dragging = false;
+}
+
+function runTest()
+{
+    var slider = document.createElement('div');
+    slider.decorate(Slider);
+    document.body.appendChild(slider);
+}
+
+</script>
+</head>
+<body onload="runTest()">
+</body>
+</html>
