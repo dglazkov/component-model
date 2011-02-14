@@ -1,3 +1,10 @@
+Attribute/property forwarding:
+* must account for weird property/value disparity (see input.value here: http://dev.w3.org/html5/spec/Overview.html#concept-input-value-dirty-flag)
+* a V8 interceptor-like listener?
+
+
+
+
 function Grabbers(context) {
     context.addEventListener('createSubtree', function(evt)
     {

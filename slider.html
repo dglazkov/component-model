@@ -15,28 +15,42 @@ interface Element {
 }
 
 typedef sequence<ForwardingRule> ForwardingRuleArray;
+
+// IMPORTANT: Events from the element are fired on the DecoratorContext.
 interface DecoratorContext : EventTarget {
-    // makes .decorate() return the actual decorator instance.
+ 
+    // FIXME: Figure out untrusted shadow DOM.
+    // makes .decorate() return the actual decorator instance, or null otherwise.
     attribute bool revealDecorator;
     attribute bool applyAuthorSheets;
     attribute bool allowSelectorsThrough;
     attribute Node shadow;
-    attribute ForwardingRuleArray forwardingRules;
+    
+    // FIXME: Figure out Untrusted light DOM.
     attribute DOMElement element;
+
+    // FIXME: Provide introspection of watchers and forwarding rules.
+    void watchAttribute(in String attributeName, in AttributeWatchHandler handler, in bool usesDirtyBit);
+    void forwardAttribute(in String attributeName, in DOMElement element, optional in String newAttributeName);
+
+    void forwardPseudoElement(in String pseudoElement, in String destinationSelector);
+    void forwardStyleProperty(in String propertyName, in String destinationSelector, optional in String newPropertyName);
 }
 
-interface ForwardingRule {
+interface AttributeWatchHandler {
+    void handleEvent(in AttributeChangeNotification notification);
 }
 
-[Constructor(in String shadowPseudoId, in Element element)]
-interface PseudoElementForwardingRule : ForwardingRule {
-    // "this" is DecoratorContext.
+interface AttributeChangeNotification {
+    readonly attribute bool isParsing;
+    readonly attribute String previousValue;
+    readonly attribute String newValue;
 }
 
-[Constructor(attributeName, handlerFunction)]
-interface AttributeChangeForwardingRule : ForwardingRule {
-    // "this" is DecoratorContext.
-}
+// MORE IDEAS ON FORWARDING:
+
+context.forwardChild(selector, selector);
+
 
 // and some fictional APIs:
 
@@ -68,16 +82,16 @@ interface Fictional {
 
 function Slider(context)
 {
-    context.element.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
-    context.element.addEventListener('keydown', this.handleKeyDownEvent.bind(this), false);
+    context.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
+    context.addEventListener('keydown', this.handleKeyDownEvent.bind(this), false);
     this.element = context.element;
 
     var thumbElement = document.createElement('div');
     this.thumb = thumbElement.decorate(SliderThumb);
 
     context.shadow = thumbElement;
-    context.forwardingRules.add(new PseudoElementForwardingRule('-webkit-slider-thumb', thumbElement));
-    context.forwardingRules.add(new AttributeChangeForwardingRule('value', this.thumb.setPositionFromValue.bind(this.thumb)));
+    context.forwardPseudoElement('-webkit-slider-thumb', '>div');
+    context.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb)), true);
 }
 
 Slider.prototype.handleMouseDownEvent = function(evt)
@@ -96,9 +110,9 @@ Slider.prototype.handleKeyDownEvent = function(evt)
 function SliderThumb(context)
 {
     context.revealDecorator = true;
-    context.element.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
-    context.element.addEventListener('mouseup', this.handleMouseUpEvent.bind(this), false);
-    context.element.addEventListener('mousemove', this.handleMouseMoveEvent.bind(this), false);
+    context.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
+    context.addEventListener('mouseup', this.handleMouseUpEvent.bind(this), false);
+    context.addEventListener('mousemove', this.handleMouseMoveEvent.bind(this), false);
     this.element = context.element;
 }
 
