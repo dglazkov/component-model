@@ -91,7 +91,7 @@ function Slider(context)
 
     context.shadow = thumbElement;
     context.forwardPseudoElement('-webkit-slider-thumb', '>div');
-    context.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb)), true);
+    context.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb), true);
 }
 
 Slider.prototype.handleMouseDownEvent = function(evt)
