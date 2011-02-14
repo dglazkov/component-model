@@ -14,8 +14,6 @@ interface Element {
     bool hasDecorator(Function decorator);
 }
 
-typedef sequence<ForwardingRule> ForwardingRuleArray;
-
 // IMPORTANT: Events from the element are fired on the DecoratorContext.
 interface DecoratorContext : EventTarget {
  
@@ -51,12 +49,11 @@ interface AttributeChangeNotification {
 
 context.forwardChild(selector, selector);
 
-
 // and some fictional APIs:
 
 [Supplemental]
 interface DOMWindow {
-    Fictional fictional
+    readonly attribute Fictional fictional;
 }
 
 interface Fictional {
@@ -75,7 +72,6 @@ interface Fictional {
     void clearCapturingMouseEventsNode();
 }
 
-
 */
 
 // FIXME: Doesn't handle -webkit-appearance or takes input from the RenderTheme.
@@ -91,7 +87,7 @@ function Slider(context)
 
     context.shadow = thumbElement;
     context.forwardPseudoElement('-webkit-slider-thumb', '>div');
-    context.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb), true);
+    context.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb)[], true);
 }
 
 Slider.prototype.handleMouseDownEvent = function(evt)
@@ -151,9 +147,9 @@ SliderThumb.prototype.moveTo = function(fraction)
         thumb.style.left = ((slider.offsetWidth - thumb.offsetWidth) * fraction) + 'px';
 }
 
-SliderThumb.prototype.setPositionFromValue = function(value)
+SliderThumb.prototype.setPositionFromValue = function(notification)
 {
-    this.moveTo(fictional.proportionFromValue(value));
+    this.moveTo(fictional.proportionFromValue(notification.newValue));
 }
 
 SliderThumb.prototype.setPosition = function(point)
