@@ -1,8 +1,24 @@
 Attribute/property forwarding:
 * must account for weird property/value disparity (see input.value here: http://dev.w3.org/html5/spec/Overview.html#concept-input-value-dirty-flag)
+    -- this is what watchAttribute does.
+
 * a V8 interceptor-like listener?
+    --- yes, see watchAttribute.
+
+Multiple decorators multicast attribute changes.
 
 
+Stability of decorators -- ensure consistent order in which they are applied and removed.
+Deterministic binding -- ensure that applying decorators is deterministic and knowable.
+
+Decorator document -- the notion that multiple untrusted decorators could exist in the same
+document, which has a DOMWindow-like global object, but no access to the actual document.
+
+Decorator global object -- a decorator could be instantiated into a scripting scope that
+is different from that of the document:
+
+* looks and feels as if part of the iframe, except document.body == null and document.head == null,
+instead document.decorators contains the array of the currently bound decorators. WTF?! 
 
 
 function Grabbers(context) {
