@@ -20,6 +20,22 @@ is different from that of the document:
 * looks and feels as if part of the iframe, except document.body == null and document.head == null,
 instead document.decorators contains the array of the currently bound decorators. WTF?! 
 
+Airlock:
+
+* If the document trusts the decorator, the decorator can see .element
+property and thus traverse outside of the shadow DOM. If it does not,
+the .element property is null and the only way the decorator can sense
+the world outside is by listening to events on DecoratorContext and
+watching properties.
+
+* Conversely, if the decorator trusts the document, the decorator sets
+.revealDecorator property and the document receives the object as a
+return value of the element.decorate(...) method. Otherwise, the
+document's only way to communicate with the decorator is by listening
+to events fired from the decorated element and changing
+properties/attributes on the element.
+
+What if the component wants to include jquery? How do we make this more efficient?
 
 function Grabbers(context) {
     context.addEventListener('createSubtree', function(evt)
