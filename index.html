@@ -2,7 +2,7 @@
 
 <html lang=en-US>
  <head>
-  <title>XBL 2.0</title>
+  <title>Web Component Model</title>
 
   <style type="text/css">
    dt, dfn { font-weight: bold; font-style: normal; }
@@ -54,23 +54,26 @@
    <p><a href="http://www.w3.org/"><img alt=W3C height=48
     src="http://www.w3.org/Icons/w3c_home" width=72></a></p>
 
-   <h1>XBL 2.0</h1>
+   <h1>Web Component Model</h1>
    <!--<h2 class="no-num no-toc">W3C Candidate Recommendation 16 March 2007</h2>-->
    
-   <h2 class="no-num no-toc" id=w3c-working-draft-date>W3C Working Draft 3
-    September 2010</h2>
+   <h2 class="no-num no-toc" id=w3c-working-draft-date>A work in progress
+    2 Match 2011</h2>
 
    <dl>
     <dt>This Version:
 
     <dd><a
-     href="http://www.w3.org/TR/2007/CR-xbl-20070316/">http://www.w3.org/TR/2007/CR-xbl-20070316/</a>
+     href="http://dglazkov.github.com/component-model/">http://dglazkov.github.com/component-model/</a>
 
     <dt>Latest Version:
 
     <dd><a href="http://www.w3.org/TR/xbl/">http://www.w3.org/TR/xbl/</a>
 
     <dt>Previous Versions:
+
+    <dd><a
+     href="http://www.w3.org/TR/2007/CR-xbl-20070316/">http://www.w3.org/TR/2007/CR-xbl-20070316/</a>
 
     <dd><a
      href="http://www.w3.org/TR/2007/WD-xbl-20070117/">http://www.w3.org/TR/2007/WD-xbl-20070117/</a>
@@ -91,7 +94,7 @@
 
     <dd><a href="mailto:ian@hixie.ch">Ian Hickson</a>, Google, Inc.
    </dl>
-
+<!--
    <p class=copyright><a
     href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>
     &#169; 2010 <a href="http://www.w3.org/"><acronym title="World Wide Web
@@ -113,10 +116,11 @@
     of this specification is available under a Creative Commons Attribution
     Share-alike license.</p>
   </div>
-
+-->
   <hr>
 
   <div class=main>
+<!-- FIXME: Rewrite
    <h2 class="no-num no-toc" id=abstract>Abstract</h2>
 
    <p>XBL (the Xenogamous Binding Language) describes the ability to
@@ -131,7 +135,8 @@
     conjunction with other specifications, enables arbitrary tag sets to be
     implemented as widgets. For example, XBL could be used to implement the
     form controls in XForms or HTML.</p>
-
+-->
+<!-- FIXME: Update
    <h2 class="no-num no-toc" id=status-of-this-document>Status of this
     document</h2>
 
@@ -140,6 +145,7 @@
     current W3C publications and the latest revision of this technical report
     can be found in the <a href="http://www.w3.org/TR/">W3C technical reports
     index</a> at http://www.w3.org/TR/.</em></p>
+-->
    <!-- required boilerplate -->
    <!-- next few paragraphs give three required items: what this spec
   is, where to send comments, whether the spec is unstable, and the
@@ -174,7 +180,7 @@
   feedback, will include a link to a test suite and an implementation
   report.</p>
   -->
-   
+<!-- FIXME: Bring back when in relevant context
    <p>If you wish to make comments regarding this document, please send them
     to <a href="mailto:dev-tech-xbl@mozilla.org">dev-tech-xbl@mozilla.org</a>
     (<a href="https://lists.mozilla.org/listinfo/dev-tech-xbl">subscribe</a>,
@@ -188,12 +194,15 @@
     All feedback is welcome. The editor guarantees that all feedback sent to
     the above lists will receive responses before this specification advances
     to the next stage of the W3C process.</p>
-
+-->
+<!-- FIXME: Bring back when in relevant context
    <p>The editor's copy of this specification is <a
     href="http://dev.w3.org/cvsweb/~checkout~/2006/xbl2/Overview.html?content-type=text/html">available
     in W3C CVS</a>. A <a href="http://dev.w3.org/cvsweb/2006/xbl2/">detailed
     list of changes</a> is available from the CVS server.</p>
+-->
    <!-- next four paragraphs describe the history; optional -->
+<!-- FIXME: Bring back when in relevant context
    <p>This specification is a (non-backwards-compatible) revision of
     Mozilla's XBL 1.0 language, originally developed at Netscape in 2000, and
     originally implemented in the Gecko rendering engine. <a
@@ -214,13 +223,17 @@
    <p>Although they have had related histories, this specification is
     separate from the W3C's "sXBL" drafts, and is not compatible with them.
     (The two efforts use different namespaces, for one.)</p>
+-->
    <!-- next two paragraphs are legal things and w3c process -->
+<!-- FIXME: Bring back when in relevant context
    <p>While the body of this specification was created outside the W3C, the
     W3C <a href="http://www.w3.org/2006/appformats/">Web Applications Working
     Group</a> is now guiding this specification along the W3C Recommendation
     track.</p>
+-->
    <!-- this statement is
   required but the wording doesn't matter -->
+<!-- FIXME: Bring back when in relevant context
    <p>This document was produced by a group operating under the <a
     href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February
     2004 W3C Patent Policy</a>. W3C maintains a <a
@@ -233,10 +246,12 @@
     Claim(s)</a> must disclose the information in accordance with <a
     href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
     6 of the W3C Patent Policy</a>.</p>
+-->
    <!-- required boilerplate -->
    <h2 class="no-num no-toc" id=table-of-contents>Table of Contents</h2>
    <!--begin-toc-->
    <ul class=toc>
+<!--
     <li><a href="#introduction"><span class=secno>1. </span>Introduction</a>
      <ul class=toc>
       <li><a href="#editors-note"><span class=secno>1.1. </span>Editor's
@@ -274,7 +289,7 @@
       <li><a href="#security-concerns"><span class=secno>1.6. </span>Security
        Concerns</a>
      </ul>
-
+-->
     <li><a href="#xbl-elements"><span class=secno>2. </span>XBL Elements</a>
      <ul class=toc>
       <li><a href="#the-binding-element"><span class=secno>2.1. </span>The
@@ -571,9 +586,8 @@
    </ul>
    <!--end-toc-->
    <hr>
-
+<!-- FIXME: Needs update.
    <h2 id=introduction><span class=secno>1. </span>Introduction</h2>
-
    <blockquote>
     <p><dfn
      id=xemiddotnogmiddotamiddotmous>xe&middot;nog&middot;a&middot;mous</dfn>
@@ -722,7 +736,6 @@ body { binding: url(example.xbl#nav-then-main); }</pre>
     implementations at the time of writing), it is quite possible that they
     have errors. Please report any errors you think you see, so that we can
     correct the examples.</p>
-
    <h3 id=editors-note><span class=secno>1.1. </span>Editor's note</h3>
 
    <p>This specification was updated (as of Septemebr 2010) to make the
@@ -759,7 +772,6 @@ body { binding: url(example.xbl#nav-then-main); }</pre>
     href="#content"><code>content</code></a> or <a
     href="#inherited"><code>inherited</code></a> in places that are handled
     in an insertion mode other than "in body".</p>
-
    <h3 id=relationship-to-xbl1><span class=secno>1.2. </span>Relationship to
     XBL1</h3>
 
@@ -957,9 +969,7 @@ body { binding: url(example.xbl#nav-then-main); }</pre>
     id=user-agent-style-sheets>user agent style sheets</dfn>", and "<dfn
     id=pseudo-element>pseudo-element</dfn>" are used as defined by the CSS
     specifications. <a href="#refsCSS21">[CSS21]</a></p>
-
    <h3 id=conformance><span class=secno>1.5. </span>Conformance</h3>
-
    <p>As well as sections marked as non-normative, all diagrams, examples,
     and notes in this specification are non-normative. Everything else in
     this specification is normative.</p>
@@ -1105,7 +1115,9 @@ body { binding: url(example.xbl#nav-then-main); }</pre>
     document's DOM) thereby allow access to any remote file, including those
     on intranet sites or on authenticated extranet sites. XBL prevents this
     by diallowing cross-origin bindings.</p>
+-->
    <!-- mention CORS -->
+<!-- continuing the FIXME...
    <p><strong>Privilege escalation</strong>: In conjunction with data theft,
     there is the concern that a page could bind to a binding document on a
     remote site, and then use the privileges of that site to obtain further
@@ -1128,7 +1140,7 @@ body { binding: url(example.xbl#nav-then-main); }</pre>
     version will provide a secure way to define an XBL binding that can be
     used to implement privileged mechanisms that can then be used by other
     bindings to provide such controls.</p>
-
+-->
    <h2 id=xbl-elements><span class=secno>2. </span>XBL Elements</h2>
 
    <p>When an XBL element is found inside an element other than those listed
