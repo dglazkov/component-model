@@ -520,7 +520,7 @@
        </span>The <code>mouseover</code> and <code>mouseout</code> Events</a>
        
      </ul>
-
+<!--
     <li><a href="#dom-interfaces"><span class=secno>7. </span>DOM
      Interfaces</a>
      <ul class=toc>
@@ -546,7 +546,6 @@
       <li><a href="#the-eventxbl-interface"><span class=secno>7.6. </span>The
        <code>EventXBL</code> Interface</a>
      </ul>
-
     <li><a href="#resources"><span class=secno>8. </span>Resources</a>
      <ul class=toc>
       <li><a href="#loading-external-resources"><span class=secno>8.1.
@@ -585,6 +584,7 @@
     <li class=no-num><a href="#acknowledgments">Acknowledgments</a>
 
     <li class=no-num><a href="#references">References</a>
+-->
    </ul>
    <!--end-toc-->
    <hr>
@@ -5210,7 +5210,7 @@ button.save-button::icon {
     then the mouseout generated will be retargeted, since the file control
     will also have been exited.</p>
   </div>
-
+<!--
   <h2 id=dom-interfaces><span class=secno>7. </span><dfn
    id=dom-interfaces0>DOM Interfaces</dfn></h2>
 
@@ -5461,10 +5461,10 @@ button.save-button::icon {
   <p>Elements that are the root of a shadow tree (the cloned <a
    href="#template"><code>template</code></a> elements) cannot be inserted
    into a document. Any attempt to do so must raise a
-   <code>HIERARCHY_REQUEST_ERR</code>. <!-- (This is because if you
+   <code>HIERARCHY_REQUEST_ERR</code>. --><!-- (This is because if you
   did, you would end up having two ways to reach the nodes in the
   <span>final flattened tree</span>, which would be mighty confusing
-  for things like getComputedStyle() -->
+  for things like getComputedStyle() --><!--
 
   <p>Manipulating the DOM of a shadow tree (<a
    href="#content"><code>content</code></a> elements being moved about or
@@ -5562,8 +5562,8 @@ button.save-button::icon {
         attribute is present but the element does not match the selector it
         specifies (or if the selector is not syntactically correct), then the
         method must raise an <code>TYPE_MISMATCH_ERR</code> exception.</li>
-       <!-- XXX
-           that one is stretching it -->
+       --><!-- XXX
+           that one is stretching it --><!--
 
        <li>Finally, the user agent must assign <var title="">child</var> to
         the <a href="#content"><code>content</code></a> element, instead of
@@ -5673,8 +5673,8 @@ button.save-button::icon {
         DOM is changed, a full implementation would probably want to listen
         to mutation events to catch attribute changes and insertions and
         removals of the panels.</p>
-       <!-- XXX it also doesn't remove event listeners when the
-           tabs are removed -->
+       --><!-- XXX it also doesn't remove event listeners when the
+           tabs are removed --><!--
        </div>
     </dl>
   </dl>
@@ -5850,7 +5850,7 @@ fancyHeader.addToDocument();</pre>
    response to user action), and false otherwise (e.g. if an author script
    dispatched a synthetic event). Events fired by the user agent in response
    to untrusted events must themselves be untrusted.</p>
-  <!--XXX
+  --><!--XXX
   <h2>Widget Bindings</h2>
 
   <p class="big-issue">(to be completed)</p>
@@ -5884,7 +5884,7 @@ fancyHeader.addToDocument();</pre>
    methods.</dd>
 
   </dl>
--->
+--><!--
 
   <h2 id=resources><span class=secno>8. </span>Resources</h2>
 
@@ -5938,7 +5938,7 @@ fancyHeader.addToDocument();</pre>
   <p>References to binding documents that have another origin than the
    aspiring bound document must be treated as being <a href="#in-error">in
    error</a>, failing as if it was not available.</p>
-  <!-- CORS goes here -->
+  --><!-- CORS goes here --><!--
 
   <h4 id=external-resources><span class=secno>8.1.2. </span>External
    Resources</h4>
@@ -5987,7 +5987,7 @@ fancyHeader.addToDocument();</pre>
    specification.
 
   <h4 id=scripting><span class=secno>8.2.1. </span>Scripting Model</h4>
-  <!-- this needs updating to match reality -->
+  --><!-- this needs updating to match reality --><!--
 
   <p>Each document that runs script (including bound documents and binding
    documents) has a <code>DocumentWindow</code> object, a <code>Window</code>
@@ -6013,7 +6013,7 @@ fancyHeader.addToDocument();</pre>
    <code>DocumentWindow</code> object, must return null, and any methods that
    are defined in terms of the browsing context's session history must do
    nothing. <a href="#refsHTML5">[HTML5]</a></p>
-  <!-- CORS goes here too -->
+  --><!-- CORS goes here too --><!--
 
   <h3 id=interpretation-of-uris-to-xbl-bindings><span class=secno>8.3.
    </span><dfn id=interpretation-of-uris-to-xbl-bindings0>Interpretation of
@@ -6401,7 +6401,7 @@ fancyHeader.addToDocument();</pre>
    <dd><cite><a href="http://www.unicode.org/versions/Unicode5.0.0/">The
     Unicode Standard, Version 5.0.0</a></cite>, The Unicode Consortium.
     Boston, MA, Addison-Wesley, November 2006. ISBN
-    0-321-48091-0<!--, as amended by <a href="http://www.unicode.org/versions/Unicode5.0.1/">Unicode 5.0.1</a> and <a href="http://www.unicode.org/versions/Unicode5.1.0/">Unicode 5.1.0</a>-->.
+    0-321-48091-0--><!--, as amended by <a href="http://www.unicode.org/versions/Unicode5.0.1/">Unicode 5.0.1</a> and <a href="http://www.unicode.org/versions/Unicode5.1.0/">Unicode 5.1.0</a>--><!--.
     The latest version of the Unicode specification is available at <a
     href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a>
 
@@ -6451,6 +6451,7 @@ fancyHeader.addToDocument();</pre>
     specification is available at <a
     href="http://www.w3.org/TR/xml-stylesheet/">http://www.w3.org/TR/xml-stylesheet/</a>
   </dl>
+-->
 </html>
 <!--XXX WANTED:
 
