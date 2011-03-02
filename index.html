@@ -315,6 +315,7 @@
        <code>pseudo</code> Attribute</a>
      </ul>
 -->
+<!--
     <li><a href="#binding-attachment-and-detachment"><span class=secno>3.
      </span>Binding Attachment and Detachment</a>
      <ul class=toc>
@@ -372,7 +373,7 @@
       <li><a href="#binding-detachment-model"><span class=secno>3.9.
        </span>Binding Detachment Model</a>
      </ul>
-
+-->
     <li><a href="#shadow-content"><span class=secno>4. </span>Shadow
      Content</a>
      <ul class=toc>
@@ -2014,6 +2015,7 @@ html|binding, html|implementation, html|template, html|content, html|inherited {
 textDialog::choices { border: outset; }</pre>
   </div>
 -->
+<!-- FIXME: Needs update.
   <h2 id=binding-attachment-and-detachment><span class=secno>3. </span><dfn
    id=binding-attachment-and-detachment0>Binding Attachment and
    Detachment</dfn></h2>
@@ -2050,7 +2052,7 @@ textDialog::choices { border: outset; }</pre>
   <p>If the binding document has yet to be (fully) loaded when it becomes
    known that the binding applies, then the user agent must wait until all
    running scripts have completed before attaching the binding.</p>
-  <!-- XXX define this in terms of event loops -->
+  --><!-- XXX define this in terms of event loops --><!--
 
   <p class=note>If the binding attachment mechanism is the <a
    href="#binding1"><code title="binding property">'binding'</code></a>
@@ -2058,7 +2060,7 @@ textDialog::choices { border: outset; }</pre>
    applies (or does not apply) until the next time style resolution is
    performed. This specification does not define when style resolution
    happens.</p>
-  <!-- XXX who does. HTML5? -->
+  --><!-- XXX who does. HTML5? --><!--
 
   <div class=example>
    <p>Assume that <code title="">foo.xbl</code> defines a binding that
@@ -2088,9 +2090,9 @@ document.loadBindingDocument('foo.xbl').onload = function () {
    happens after all the bindings being attached have had their methods
    called. (See: <a href="#binding-attachment-model0">binding attachment
    model</a>.)</p>
-  <!-- XXX this contradicts what is said elsewhere; could make this
+  --><!-- XXX this contradicts what is said elsewhere; could make this
   work by saying "except if there is an xblFoo notification method
-  running" or something -->
+  running" or something --><!--
 
   <h3 id=the-bindings-are-ready-state><span class=secno>3.1. </span><dfn
    id=the-bindings-are-ready-state0>The Bindings-Are-Ready State</dfn></h3>
@@ -2198,8 +2200,8 @@ document.loadBindingDocument('foo.xbl').onload = function () {
    specifies the <a href="#attributes-containing-uris0">URI</a> of the
    binding document to import. If the URI cannot be resolved, or returns an
    error, or does not point to a resource with <span>an XML MIME
-   type</span><!-- XXX
-  xref -->, or has any other problem that makes it
+   type</span>--><!-- XXX
+  xref --><!--, or has any other problem that makes it
    unusable, then the processing instruction is <a href="#in-error">in
    error</a>.
 
@@ -2370,7 +2372,7 @@ input[type="checkbox"] {
      <td><em>Value:</em>
 
      <td>none | [ &lt;uri&gt; ]* &lt;uri&gt;
-      <!--XXXPD &lt;predefined binding&gt;-->
+      --><!--XXXPD &lt;predefined binding&gt;--><!--
 
     <tr>
      <td><em>Initial:</em>
@@ -2415,12 +2417,12 @@ input[type="checkbox"] {
     order, with the last binding implicitly inheriting from the previous one,
     and so forth, up to the first binding. (See: <a
     href="#binding-inheritance0">binding inheritance</a>.)</dd>
-   <!--XXXPB
+   --><!--XXXPB
    <dt>&lt;predefined binding&gt;</dt>
    <dd>One of the bindings defined in the <a
    href="#base-bindings">Predefined Base Bindings</a> section is
    attached.</dd>
--->
+--><!--
   </dl>
 
   <h4 id=processing-model><span class=secno>3.3.2. </span>Processing Model</h4>
@@ -2670,7 +2672,7 @@ checkbox.addBinding("http://www.example.org/res/htmlBindings.xbl#checkbox");</pr
    events are being fired, the user agent must coalesce all the notifications
    into zero or one method calls (i.e. matching pairs of insertions and
    removals must not cause bindings to be notified).</p>
-  <!-- XXX this needs work -->
+  --><!-- XXX this needs work --><!--
 
   <h3 id=binding-inheritance><span class=secno>3.7. </span><dfn
    id=binding-inheritance0>Binding Inheritance</dfn></h3>
@@ -2681,8 +2683,8 @@ checkbox.addBinding("http://www.example.org/res/htmlBindings.xbl#checkbox");</pr
    multiple bindings are attached to an element.
 
   <div class="figure example">
-   <!-- Note: alt="" is correct for the following image, since the
-        caption says everything the image says. -->
+   --><!-- Note: alt="" is correct for the following image, since the
+        caption says everything the image says. --><!--
    
    <p><img alt="" src="images/attachment.gif"></p>
 
@@ -3022,7 +3024,7 @@ checkbox.addBinding("http://www.example.org/res/htmlBindings.xbl#checkbox");</pr
   <p>If the binding had a shadow tree, the explicit children must then be
    redistributed. (See: <a href="#processing-content-elements0">processing
    <code title="">content</code> elements</a>.)</p>
-  <!-- XXX need to define how this works when multiple bindings stop
+  --><!-- XXX need to define how this works when multiple bindings stop
   applying at once, and if they re-apply while being removed -->
 
   <h2 id=shadow-content><span class=secno>4. </span><dfn
