@@ -472,7 +472,7 @@
          of styling rules</a>
        </ul>
      </ul>
-
+<!--
     <li><a href="#binding-implementations"><span class=secno>5.
      </span>Binding Implementations</a>
      <ul class=toc>
@@ -497,7 +497,7 @@
          Object</a>
        </ul>
      </ul>
-
+-->
     <li><a href="#event-handlers"><span class=secno>6. </span>Event
      Handlers</a>
      <ul class=toc>
@@ -4651,7 +4651,7 @@ button.save-button::icon {
    href="#apply-author-sheets"><code
    title=attr-template-apply-author-sheets>apply-author-sheets</code></a>
    setting).
-
+<!--
   <h2 id=binding-implementations><span class=secno>5. </span><dfn
    id=binding-implementations0>Binding Implementations</dfn></h2>
 
@@ -4720,15 +4720,15 @@ button.save-button::icon {
    not define one of these methods, then when that method is invoked, nothing
    must happen (as if all bindings had default implementations of those
    methods that were no-ops).</p>
-  <!-- XXX need a way to persist certain values -->
+  --><!-- XXX need a way to persist certain values --><!--
 
   <p>Authors should not start their own methods with the three letters "xbl".
    Future versions of this specification might add new callbacks to this
    interface, and if they do, those methods will start with the prefix "xbl".</p>
-  <!-- XXX more callbacks:
+  --><!-- XXX more callbacks:
     http://lxr.mozilla.org/seamonkey/source/content/xtf/public/nsIXTFStyledElementWrapper.idl
     xblSelected to indicate that the selection now spans the element (glazou)
-   -->
+   --><!--
 
   <div class=example>
    <p>This binding implements a clock. However, to save resources, the clock
@@ -4810,8 +4810,8 @@ button.save-button::icon {
    be forwarded to the last object in the <a
    href="#xblimplementations"><code>xblImplementations</code></a> list that
    is so matched.</p>
-  <!-- XXX example needed, including one that shows this with an
-  lvalue -->
+  --><!-- XXX example needed, including one that shows this with an
+  lvalue --><!--
 
   <h3 id=creation-of-implementations><span class=secno>5.4. </span>Creation
    of Implementations</h3>
@@ -4928,7 +4928,7 @@ button.save-button::icon {
    href="#internal-object">internal object</a> associated with the <a
    href="#external-object">external object</a> on which the function was
    invoked.
-
+-->
   <h2 id=event-handlers><span class=secno>6. </span><dfn
    id=event-handlers0>Event Handlers</dfn></h2>
 
