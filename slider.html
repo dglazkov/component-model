@@ -4,58 +4,23 @@
 
 /*
 
-API Surface:
+This is an experimental conversion of WebKit input[type=range] to the Web
+Component API (see api-idl.txt). The point of this conversion is API discovery.
 
-[Supplemental]
-interface Element {
-    // return decorator object instance if revealDecorator is set to true.
-    Object decorate(Function decorator);
-    void undecorate(Function decorator);
-    bool hasDecorator(Function decorator);
-}
+The original C++ code is here:
 
-// IMPORTANT: Events from the element are fired on the DecoratorContext.
-interface DecoratorContext : EventTarget {
- 
-    // FIXME: Figure out untrusted shadow DOM.
-    // makes .decorate() return the actual decorator instance, or null otherwise.
-    attribute bool revealDecorator;
-    attribute bool applyAuthorSheets;
-    attribute bool allowSelectorsThrough;
-    attribute Node shadow;
-    
-    // FIXME: Figure out Untrusted light DOM.
-    attribute DOMElement element;
+http://google.com/codesearch/p#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/html/shadow/SliderThumbElement.cpp
+http://google.com/codesearch/p#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/html/RangeInputType.cpp
 
-    // FIXME: Provide introspection of watchers and forwarding rules.
-    void watchAttribute(in String attributeName, in AttributeWatchHandler handler, in bool usesDirtyBit);
-    void forwardAttribute(in String attributeName, in DOMElement element, optional in String newAttributeName);
-
-    void forwardPseudoElement(in String pseudoElement, in String destinationSelector);
-    void forwardStyleProperty(in String propertyName, in String destinationSelector, optional in String newPropertyName);
-}
-
-interface AttributeWatchHandler {
-    void handleEvent(in AttributeChangeNotification notification);
-}
-
-interface AttributeChangeNotification {
-    readonly attribute bool isParsing;
-    readonly attribute String previousValue;
-    readonly attribute String newValue;
-}
-
-// MORE IDEAS ON FORWARDING:
-
-context.forwardChild(selector, selector);
-
-// and some fictional APIs:
+Additional API Surface:
 
 [Supplemental]
 interface DOMWindow {
     readonly attribute Fictional fictional;
 }
 
+// Things that don't exist in the real, but are necessary for conversion
+// completeness.
 interface Fictional {
     // Appearance hook, something to be fleshed out more.
     bool isSliderVertical(in Element element);
@@ -76,137 +41,131 @@ interface Fictional {
 
 // FIXME: Doesn't handle -webkit-appearance or takes input from the RenderTheme.
 
-function Slider(context)
-{
-    context.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
-    context.addEventListener('keydown', this.handleKeyDownEvent.bind(this), false);
-    this.element = context.element;
+function Slider() {}
 
-    var thumbElement = document.createElement('div');
-    this.thumb = thumbElement.decorate(SliderThumb);
+Slider.prototype = {
+    thumb: null,
+    createShadowSubtree: function(scope)
+    {
+        this.thumb = document.createElement('x-slider-thumb');
 
-    context.shadow = thumbElement;
-    context.forwardPseudoElement('-webkit-slider-thumb', '>div');
-    context.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb)[], true);
-}
+        scope.shadow = this.thumb;
+        scope.forwardPseudoElement('-webkit-slider-thumb', '>div');
+        // FIXME: How can I get rid of this?
+        scope.watchAttribute('value', this.thumb.setPositionFromValue.bind(this.thumb), true);
 
-Slider.prototype.handleMouseDownEvent = function(evt)
-{
-    if (evt.button != 1 && evt.target() != this.element)
-        return;
+        this.addEventListener('mousedown', this.handleMouseDownEvent, false);
+        this.addEventListener('keydown', this.handleKeyDownEvent, false);
+    },
+    handleMouseDownEvent: function(evt)
+    {
+        if (evt.button != 1 && evt.target() != this.element)
+            return;
 
-    this.thumb.dragFrom(new WebKitPoint(evt.clientX, evt.clientY));
-};
-
-Slider.prototype.handleKeyDownEvent = function(evt)
-{
-    // FIXME: Implement.
-}
-
-function SliderThumb(context)
-{
-    context.revealDecorator = true;
-    context.addEventListener('mousedown', this.handleMouseDownEvent.bind(this), false);
-    context.addEventListener('mouseup', this.handleMouseUpEvent.bind(this), false);
-    context.addEventListener('mousemove', this.handleMouseMoveEvent.bind(this), false);
-    this.element = context.element;
-}
-
-SliderThumb.prototype.handleMouseDownEvent = function(evt)
-{
-    if (evt.button != 1)
-        return;
-
-    this.startDragging();
-}
-
-SliderThumb.prototype.handleMouseUpEvent = function(evt)
-{
-    if (evt.button != 1)
-        return;
-
-    this.stopDragging();
-}
-
-SliderThumb.prototype.handleMouseMoveEvent = function(evt)
-{
-    if (!this.dragging)
-        return;
-
-    this.setPosition(new WebKitPoint(evt.clientX, evt.clientY));
-}
-
-SliderThumb.prototype.moveTo = function(fraction)
-{
-    var slider = this.element.parentElement;
-    var thumb = this.element;
-    var vertical = fictional.isSliderVertical(slider);
-    if (vertical)
-        thumb.style.top = ((slider.offsetHeight - thumb.offsetHeight) * (1 - fraction)) + 'px';
-    else
-        thumb.style.left = ((slider.offsetWidth - thumb.offsetWidth) * fraction) + 'px';
-}
-
-SliderThumb.prototype.setPositionFromValue = function(notification)
-{
-    this.moveTo(fictional.proportionFromValue(notification.newValue));
-}
-
-SliderThumb.prototype.setPosition = function(point)
-{
-    var slider = this.element.parentElement;
-    var thumb = this.element;
-
-    var localPoint = webkitConvertPointFromPageToNode(thumb, point);
-
-    var trackSize;
-    var position;
-    var currentPosition;
-    var vertical = fictional.isSliderVertical(slider);
-    if (vertical) {
-        trackSize = slider.offsetHeight;
-        position = point.y - thumb.offsetHeight / 2;
-        currentPosition = thumb.offsetTop - slider.offsetTop;
-    } else {
-        trackSize = slider.offsetWidth;
-        position = point.x - thumb.offsetWidth / 2;
-        currentPosition = thumb.offsetLeft - slider.offsetLeft;
+        this.thumb.dragFrom(new WebKitPoint(evt.clientX, evt.clientY));
+    },
+    handleKeyDownEvent: function(evt)
+    {
+        // FIXME: Implement.
     }
-    position = Math.max(0, Math.min(position, trackSize));
-    if (position == currentPosition)
-        return;
-
-    var fraction = position / trackSize;
-    this.moveTo(fraction);
-    fictional.setSliderValueFromProportion(slider, fraction);
-    fictional.dispatchChangeEvent(slider);
 }
 
-SliderThumb.prototype.dragFrom = function(point)
-{
-    this.setPosition(point);
-    this.startDragging();
-}
+function SliderThumb() {}
 
-SliderThumb.prototype.startDragging = function()
-{
-    fictional.setCapturingMouseEventsNode(this.element);
-    this.dragging = true;
-}
+SliderThumb.prototype = {
+    createShadowSubtree: function(scope)
+    {
+        scope.addEventListener('mousedown', this.handleMouseDownEvent, false);
+        scope.addEventListener('mouseup', this.handleMouseUpEvent, false);
+        scope.addEventListener('mousemove', this.handleMouseMoveEvent, false);
+    },
+    handleMouseDownEvent: function(evt)
+    {
+        if (evt.button != 1)
+            return;
 
-SliderThumb.prototype.stopDragging = function()
-{
-    if (!this.dragging)
-        return;
+        this.startDragging();
+    },
+    handleMouseUpEvent: function(evt)
+    {
+        if (evt.button != 1)
+            return;
 
-    fictional.clearCapturingMouseEventsNode();
-    this.dragging = false;
+        this.stopDragging();
+    },
+    handleMouseMoveEvent: function(evt)
+    {
+        if (!this.dragging)
+            return;
+
+        this.setPosition(new WebKitPoint(evt.clientX, evt.clientY));
+    },
+    moveTo: function(fraction)
+    {
+        var slider = this.parentElement;
+        var vertical = fictional.isSliderVertical(slider);
+        if (vertical)
+            this.style.top = ((slider.offsetHeight - this.offsetHeight) * (1 - fraction)) + 'px';
+        else
+            this.style.left = ((slider.offsetWidth - this.offsetWidth) * fraction) + 'px';
+    },
+    setPositionFromValue: function(notification)
+    {
+        this.moveTo(fictional.proportionFromValue(notification.newValue));
+    },
+    setPosition: function(point)
+    {
+        var slider = this.parentElement;
+
+        var localPoint = webkitConvertPointFromPageToNode(this, point);
+
+        var trackSize;
+        var position;
+        var currentPosition;
+        var vertical = fictional.isSliderVertical(slider);
+        if (vertical) {
+            trackSize = slider.offsetHeight;
+            position = point.y - this.offsetHeight / 2;
+            currentPosition = this.offsetTop - slider.offsetTop;
+        } else {
+            trackSize = slider.offsetWidth;
+            position = point.x - this.offsetWidth / 2;
+            currentPosition = this.offsetLeft - slider.offsetLeft;
+        }
+        position = Math.max(0, Math.min(position, trackSize));
+        if (position == currentPosition)
+            return;
+
+        var fraction = position / trackSize;
+        this.moveTo(fraction);
+        fictional.setSliderValueFromProportion(slider, fraction);
+        fictional.dispatchChangeEvent(slider);
+    },
+    dragFrom: function(point)
+    {
+        this.setPosition(point);
+        this.startDragging();
+    },
+    startDragging: function()
+    {
+        fictional.setCapturingMouseEventsNode(this.element);
+        this.dragging = true;
+    },
+    stopDragging: function()
+    {
+        if (!this.dragging)
+            return;
+
+        fictional.clearCapturingMouseEventsNode();
+        this.dragging = false;
+    }
 }
 
 function runTest()
 {
-    var slider = document.createElement('div');
-    slider.decorate(Slider);
+    document.registerElement('div', 'slider', Slider);
+    document.registerElement('div', 'slider-thumb', SliderThumb);
+    var slider = document.createElement('x-slider');
     document.body.appendChild(slider);
 }
 
