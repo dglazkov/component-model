@@ -75,9 +75,9 @@ function SliderThumb() {}
 SliderThumb.prototype = {
     createShadowSubtree: function(scope)
     {
-        scope.addEventListener('mousedown', this.handleMouseDownEvent, false);
-        scope.addEventListener('mouseup', this.handleMouseUpEvent, false);
-        scope.addEventListener('mousemove', this.handleMouseMoveEvent, false);
+        this.addEventListener('mousedown', this.handleMouseDownEvent, false);
+        this.addEventListener('mouseup', this.handleMouseUpEvent, false);
+        this.addEventListener('mousemove', this.handleMouseMoveEvent, false);
     },
     handleMouseDownEvent: function(evt)
     {

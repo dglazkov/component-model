@@ -1,5 +1,12 @@
 interface ElementRegistry {
-    void registerElement(in String ancestorTagName, in String tagName, ElementPrototype elementPrototype);
+    // Registers a new type of DOM element. The new element becomes constructable
+    // using document.createElement method. When constructed:
+    // 1) a new JS object is created from ElementPrototype;
+    // 2) a new DOM object is created using derivedFromTagName, as in
+    //    document.createElement(derivedFromTagName);
+    // 3) the prototype chain is fixed up as follows:
+    // [object] -> [ DOM Object] -> [ElementPrototype]
+    void registerElement(in String derivedFromTagName, in String tagName, ElementPrototype elementPrototype);
 }
 
 [Supplemental]
@@ -8,6 +15,8 @@ interface Document : ElementRegistry {
 
 [Duck]
 interface ElementPrototype {
+    // Called during the element lifecycle, whenever it is most appropriate to
+    // instantiate the shadow DOM subtree.
     void createShadowSubtree(in ShadowScope shadowScope);
 }
 
@@ -18,9 +27,20 @@ interface ShadowScope {
     // FIXME: Potentially a fragment-like thingy that can host multiple children?
     attribute Node root;
 
+    // FIXME: This is gnarly, I would love to get rid of this.
     void watchAttribute(in String attributeName, in AttributeWatchHandler handler, in bool usesDirtyBit);
     void forwardAttribute(in String attributeName, in DOMElement element, optional in String newAttributeName);
     void forwardPseudoElement(in String pseudoElement, in String destinationSelector);
     void forwardStyleProperty(in String propertyName, in String destinationSelector, optional in String newPropertyName);
     void forwardChildren(in String sourceSelector, in String destinationSelector);
+}
+
+interface AttributeWatchHandler {
+    void handleEvent(in AttributeChangeNotification notification);
+}
+
+interface AttributeChangeNotification {
+    readonly attribute bool isParsing;
+    readonly attribute String previousValue;
+    readonly attribute String newValue;
 }
