@@ -11,7 +11,7 @@ interface ElementRegistry {
     // 6) the prototype chain is fixed up as follows:
     // [object] -> [ DOM Object] -> [elementConstructor.prototype]
     // 7) the method "createShadowSubtree" is called on the newly created object.
-    void register(in String derivedFromTagName, in String tagName, in Function elementConstructor, ShadowScopeInitializerCallback initializerCallback);
+    void register(in String derivedFromTagName, in String tagName, in Function elementConstructor, in [Optional] ShadowScopeInitializerCallback initializerCallback);
 }
 
 [Callback]
