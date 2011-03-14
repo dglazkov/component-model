@@ -59,7 +59,7 @@ Slider.prototype = {
     },
     handleMouseDownEvent: function(evt)
     {
-        if (evt.button != 1 && evt.target() != this.element)
+        if (evt.button != 1 || evt.target() != this.element)
             return;
 
         this.thumb.dragFrom(new WebKitPoint(evt.clientX, evt.clientY));
@@ -163,8 +163,8 @@ SliderThumb.prototype = {
 
 function runTest()
 {
-    document.registerElement('div', 'slider', Slider);
-    document.registerElement('div', 'slider-thumb', SliderThumb);
+    document.registerElement('div', 'x-slider', Slider);
+    document.registerElement('div', 'x-slider-thumb', SliderThumb);
     var slider = document.createElement('x-slider');
     document.body.appendChild(slider);
 }

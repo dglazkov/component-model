@@ -52,7 +52,6 @@ interface AttributeWatchHandler {
 }
 
 interface AttributeChangeNotification {
-    readonly attribute bool isParsing;
     readonly attribute String previousValue;
     readonly attribute String newValue;
 }
