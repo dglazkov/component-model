@@ -1,12 +1,22 @@
 interface ElementRegistry {
     // Registers a new type of DOM element. The new element becomes constructable
-    // using document.createElement method. When constructed:
-    // 1) a new JS object is created from ElementPrototype;
-    // 2) a new DOM object is created using derivedFromTagName, as in
+    // using document.createElement method.
+    // Lifecycle:
+    // 1) element registered using register()
+    // 2) if present, initializerCallback is called
+    // 3) ...
+    // 4) a new JS object is created from elementConstructor;
+    // 5) a new DOM object is created using derivedFromTagName, as in
     //    document.createElement(derivedFromTagName);
-    // 3) the prototype chain is fixed up as follows:
-    // [object] -> [ DOM Object] -> [ElementPrototype]
-    void registerElement(in String derivedFromTagName, in String tagName, ElementPrototype elementPrototype);
+    // 6) the prototype chain is fixed up as follows:
+    // [object] -> [ DOM Object] -> [elementConstructor.prototype]
+    // 7) the method "createShadowSubtree" is called on the newly created object.
+    void register(in String derivedFromTagName, in String tagName, in Function elementConstructor, ShadowScopeInitializerCallback initializerCallback);
+}
+
+[Callback]
+interface ShadowScopeInitializerCallback {
+    void handleEvent(in ShadowScope shadowScope);
 }
 
 [Supplemental]
@@ -14,7 +24,7 @@ interface Document : ElementRegistry {
 }
 
 [Duck]
-interface ElementPrototype {
+interface Component {
     // Called during the element lifecycle, whenever it is most appropriate to
     // instantiate the shadow DOM subtree.
     void createShadowSubtree(in ShadowScope shadowScope);
