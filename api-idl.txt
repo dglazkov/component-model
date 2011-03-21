@@ -1,3 +1,8 @@
+interface ElementRegistryOptions {
+    readonly attribute String derivedFromTagName;
+    readonly attribute ShadowScopeInitializerCallback initializerCallback;
+}
+
 interface ElementRegistry {
     // Registers a new type of DOM element. The new element becomes constructable
     // using document.createElement method.
@@ -11,7 +16,7 @@ interface ElementRegistry {
     // 6) the prototype chain is fixed up as follows:
     // [object] -> [ DOM Object] -> [elementConstructor.prototype]
     // 7) the method "createShadowSubtree" is called on the newly created object.
-    void register(in String derivedFromTagName, in String tagName, in Function elementConstructor, in [Optional] ShadowScopeInitializerCallback initializerCallback);
+    void register(in String tagName, in Function elementConstructor, in [Optional] ElementRegistryOptions);
 }
 
 [Callback]

@@ -37,6 +37,9 @@ properties/attributes on the element.
 
 What if the component wants to include jquery? How do we make this more efficient?
 
+How are event handler properties marshaled? Structured cloning.
+
+
 function Grabbers(context) {
     context.addEventListener('createSubtree', function(evt)
     {
