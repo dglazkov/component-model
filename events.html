@@ -1,1 +1,28 @@
+<!-- FIXME: Define parentOrHostNode -->
+<!-- FIXME: Define ancestorOrHosts -->
+<!-- FIXME: Define shadowRoot -->
 
+<h3>Event Retargeting</h3>
+
+<p>When an event is fired in a shadow DOM subtree, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the shadow DOM boundary.</p>
+
+<p>In the cases where event escapes the shadow tree, the event is <em>retargeted</em> to ensure that the original target-related information on the event object does not reveal information about the shadow DOM subtree beyond the boundary. Event retargeting is a process of computing a <dfn>relative target</dfn> for each <em class=fixme>ancestorOrHost</em> of the node at which the event is dispatched.</p>
+
+<p>The following <dfn>retargeting algorithm</dfn> must be used to determine relative targets:</p>
+
+<code class=algorithm>
+    <p>For each node <em class=fixme>ancestorOrHost</em>, starting with the nearest ancestor, compute its relative target:</p>
+        <ol>
+            <li>If the list member is a <em class=fixme>shadow root</em>, skip it</li>
+            <li>If the previous ancestor was a <em class=fixme>shadow root</em>, make the node its relative target</li>
+            <li>Otherwise, use previous ancestor's relative target.</li>
+        </ol>
+</code>
+
+<p>The retargeting process must occur prior to dispatch of an event.</p>
+
+<p>At the time of event dispatch, for capturing, target, and bubbling phases, event's <code>target</code> and <code>currentTarget</code> must be set to the relative target.</p>
+
+<p>The event must not be retargeted during the default phase of dispatch.</p>
+
+<p>Upon completion of the event dispatch, the event's <code>target</code> and <code>currentTarget</code> must be returned to their values prior to the dispatch.</p>
