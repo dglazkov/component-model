@@ -1,0 +1,6 @@
+em.fixme::before {
+    content: 'FIXME:';
+    color: white;
+    background-color: red;
+    padding: 0 0.2em;
+}
