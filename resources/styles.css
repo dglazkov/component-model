@@ -1,6 +1,27 @@
+body {
+    font-family: Helvetica;
+    line-height: 1.5em;
+}
+
 em.fixme::before {
     content: 'FIXME:';
-    color: white;
-    background-color: red;
+    color: White;
+    background-color: Red;
     padding: 0 0.2em;
+}
+
+dfn {
+    font-weight: bold;
+}
+
+div.algorithm {
+    padding: 0.5em 1em;
+    background-color: LightGray;
+}
+
+span.ref {
+    border-bottom: 1px dotted Gray;
+
+img {
+    border: 1px solid Black;
 }

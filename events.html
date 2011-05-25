@@ -1,24 +1,34 @@
 <link rel=stylesheet type=text/css href=resources/styles.css>
-<!-- FIXME: Define parentOrHostNode -->
-<!-- FIXME: Define ancestorOrHosts -->
-<!-- FIXME: Define shadowRoot -->
+
+<p>To be defined elsewhere:</p>
+<ul>
+    <li>shadow DOM subtree</li>
+    <li>parentOrHostNode -- <em class=fixme>needs better name</em></li>
+    <li>ancestorOrHosts -- <em class=fixme>needs better name</em></li>
+    <li>shadow root</li>
+    <li>shadow boundary</li>
+</ul>
 
 <h3>Event Retargeting</h3>
 
-<p>When an event is fired in a shadow DOM subtree, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the shadow DOM boundary.</p>
+<p>When an event is fired in a <span class=ref>shadow DOM subtree</span>, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the <span class=ref>shadow boundary</span>.</p>
 
-<p>In the cases where event escapes the shadow tree, the event is <em>retargeted</em> to ensure that the original target-related information on the event object does not reveal information about the shadow DOM subtree beyond the boundary. Event retargeting is a process of computing a <dfn>relative target</dfn> for each <em class=fixme>ancestorOrHost</em> of the node at which the event is dispatched.</p>
+<p>In the cases where event escapes the shadow tree, the event is <span class=ref>retargeted</span> to ensure that the original target-related information on the event object does not reveal information about the <span class=ref>shadow DOM subtree</span> beyond the boundary. Event retargeting is a process of computing a <dfn>relative target</dfn> for each <span class=ref>ancestorOrHost</span> of the node at which the event is dispatched.</p>
+
+<p>To help with algorithm description, let's define the direction walking the ancestors of a node as <dfn>up</dfn> when traversing from child to parent, and <dfn>down</dfn> when traversing from parent to child.</p>
+
+<p>In the context of events-related algorithms, all ancestor traversal crosses <span class=ref>shadow boundaries</span>.</p>
 
 <p>The following <dfn>retargeting algorithm</dfn> must be used to determine relative targets:</p>
 
-<code class=algorithm>
-    <p>For each node <em class=fixme>ancestorOrHost</em>, starting with the nearest ancestor, compute its relative target:</p>
+<div class=algorithm>
+    <p>For each ancestor walking <span class=ref>up</span> from node's parent, compute its relative target:</p>
         <ol>
-            <li>If the list member is a <em class=fixme>shadow root</em>, skip it</li>
-            <li>If the previous ancestor was a <em class=fixme>shadow root</em>, make the node its relative target</li>
-            <li>Otherwise, use previous ancestor's relative target.</li>
+            <li>If the list member is a <span class=ref>shadow boundary</span>, skip it</li>
+            <li>If the previous ancestor was a <span class=ref>shadow boundary</span>, make the node its <span class=ref>relative target</span>.</li>
+            <li>Otherwise, use previous ancestor's <span class=ref>relative target</span>.</li>
         </ol>
-</code>
+</div>
 
 <p>The retargeting process must occur prior to dispatch of an event.</p>
 
@@ -28,8 +38,34 @@
 
 <p>Upon completion of the event dispatch, the event's <code>target</code> and <code>currentTarget</code> must be returned to their values prior to the dispatch.</p>
 
-<!-- FIXME: Add relatedTarget retargeting -->
-<!-- FIXME: Add mutation events handling -->
-<!-- FIXME: Add selectstart event handling -->
-<!-- FIXME: Add focus events handling -->
-<!-- FIXME: Add mouseover/out/enter/leave events handling -->
+<h3>Related Targets and Shadow DOM</h3>
+
+<p>If an event has a <code>relatedTarget</code>, its value and extent of event dispatch must to be adjusted. In general:
+<ol>
+    <li>If <code>relatedTarget</code> and <code>target</code> are contained within a <span class=ref>shadow DOM subtree</span>, the event dispatch must be stopped at the <span class=ref>shadow boundary</span> of this subtree.</li>
+    <li>If <code>relatedTarget</code> is separated from <code>target</code> by one or more <span class=ref>shadow boundaries</span>, it must be retargeted to the boundary that's closest to <code>target</code>.</li>
+</ol>
+<p>The following algorithm must be used:</p>
+<img src=resources/related-target-and-shadow-dom.svg width=400 height=400 align=right style="background-color: white">
+<div class=algorithm>
+<ol>
+    <li>Find the <dfn>lowest common ancestor</dfn> of <code>target</code> and <code>relatedTarget</code>.</li>
+    <li>If there is none, skip to step 6 in the algorithm.</li>
+    <li>Looking at the ancestors of the <span class=ref>lowest common ancestor</span>, starting at its parent and walking <span class=ref>up</span>, find a <span class=ref>shadow boundary</span>. This is the <dfn>lowest common boundary</dfn>, the boundary of a <span class=ref>shadow DOM subtree</span> that encloses both <code>target</code> and <code>relatedTarget</code>.
+    <li>If the <span class=ref>lowest common boundary</span> is not found, skip to step 6 in the algoritm.</li>
+    <li>Limit event dispatch to the descendants of the <span class=ref>lowest common boundary</span>.</li>
+    <li>If the <span class=ref>lowest common boundary</span> is still undetermined at this point, set it to be the farthest ancestor of the <code>relatedTarget</code>.</li>
+    <li>Starting from <spann class=ref>lowest common boundary</span> and walking <span class=ref>down</span>, find a <span class=ref>shadow boundary</span>. This is the <dfn>first divergent boundary</dfn>.</li>
+    <li>If <span class=ref>first divergent boundary</span> is not found, stop.</li>
+    <li>Set <code>relatedTarget</code> to the parent of the <span class=ref>first divergent boundary</span>.
+</ol>
+</div>
+
+<h3>Stopped Events</h3>
+
+<p><em>Mutation events</em> and <code>selectstart</code> event are always stopped at the nearest <span class=ref>shadow boundary</span>.</p>
+
+<p>Still to do:</p>
+<ul>
+    <li>Add focus events handling</li>
+</li>
