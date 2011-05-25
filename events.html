@@ -39,7 +39,7 @@
 
 <p>Upon completion of the event dispatch, the event's <code>target</code> and <code>currentTarget</code> must be returned to their values prior to the dispatch.</p>
 
-<h3>Related Targets and Shadow DOM</h3>
+<h3>Related Target Events</h3>
 
 <p>If an event has a <code>relatedTarget</code>, its value and extent of event dispatch must to be adjusted. In general:
 <ol>
@@ -62,13 +62,15 @@
 </ol>
 </div>
 
-<h3>Stopped Events</h3>
+<h3>Focus Events</h3>
 
-<p><em>Mutation events</em> and <code>selectstart</code> event are always stopped at the nearest <span class=ref>shadow boundary</span>.</p>
+<p>The <code>focus</code>, <code>DOMFocusIn</code>, <code>blur</code>, and <code>DOMFocusOut</code> events must be treated in the same way as events with a <code>relatedTarget</code>, where the corresponding node that is losing focus as a result of <code>target</code> gaining focus or the node that is gaining focus, and thus causing the blurring of <code>target</code> acts as the related target.
+
+<h3>Events That Are Always Stopped</h3>
+
+<p>Mutation events and <code>selectstart</code> event are always stopped at the nearest <span class=ref>shadow boundary</span>.</p>
 
 <p>Still to do:</p>
 <ul>
     <li>Example(s)</li>
-    <li>Focus events handling</li>
-    <li>Click event</li>
 </li>
