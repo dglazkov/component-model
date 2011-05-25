@@ -43,7 +43,7 @@
 
 <p>If an event has a <code>relatedTarget</code>, its value and extent of event dispatch must to be adjusted. In general:
 <ol>
-    <li>If <code>relatedTarget</code> and <code>target</code> are contained within a <span class=ref>shadow DOM subtree</span>, the event dispatch must be stopped at the <span class=ref>shadow boundary</span> of this subtree.</li>
+    <li>If <code>relatedTarget</code> and <code>target</code> are enclosed by a <span class=ref>shadow DOM subtree</span>, the event dispatch must be stopped at the <span class=ref>shadow boundary</span> of this subtree.</li>
     <li>If <code>relatedTarget</code> is separated from <code>target</code> by one or more <span class=ref>shadow boundaries</span>, it must be retargeted to the boundary that's closest to <code>target</code>.</li>
 </ol>
 <p>The following algorithm must be used:</p>
