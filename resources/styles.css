@@ -8,6 +8,10 @@ em.fixme::before {
     color: White;
     background-color: Red;
     padding: 0 0.2em;
+    border-radius: 0.2em;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.8em;
 }
 
 dfn {
