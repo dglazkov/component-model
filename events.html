@@ -5,7 +5,6 @@
     <li>shadow DOM subtree</li>
     <li>parentOrHostNode -- <em class=fixme>needs better name</em></li>
     <li>ancestorOrHosts -- <em class=fixme>needs better name</em></li>
-    <li>shadow root</li>
     <li>shadow boundary</li>
 </ul>
 
@@ -24,8 +23,8 @@
 <div class=algorithm>
     <p>For each ancestor walking <span class=ref>up</span> from node's parent, compute its relative target:</p>
         <ol>
-            <li>If the list member is a <span class=ref>shadow boundary</span>, skip it</li>
-            <li>If the previous ancestor was a <span class=ref>shadow boundary</span>, make the node its <span class=ref>relative target</span>.</li>
+            <li>If the ancestor is a <span class=ref>shadow boundary</span>, skip it</li>
+            <li>If the previous ancestor was a <span class=ref>shadow boundary</span>, make the node its own <span class=ref>relative target</span>.</li>
             <li>Otherwise, use previous ancestor's <span class=ref>relative target</span>.</li>
         </ol>
 </div>
