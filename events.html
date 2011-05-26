@@ -3,6 +3,7 @@
 <p>To be defined elsewhere:</p>
 <ul>
     <li>shadow DOM subtree</li>
+    <li>shadow-aware DOM tree <em class=fixme>needs better name</em></li>
     <li>parentOrHostNode -- <em class=fixme>needs better name</em></li>
     <li>ancestorOrHosts -- <em class=fixme>needs better name</em></li>
     <li>shadow boundary</li>
@@ -56,7 +57,7 @@
     <li>If the <span class=ref>lowest common boundary</span> is not found, skip to step 6 in the algoritm.</li>
     <li>Limit event dispatch to the descendants of the <span class=ref>lowest common boundary</span>.</li>
     <li>If the <span class=ref>lowest common boundary</span> is still undetermined at this point, set it to be the farthest ancestor of the <code>relatedTarget</code>.</li>
-    <li>Starting from <spann class=ref>lowest common boundary</span> and walking <span class=ref>down</span>, find a <span class=ref>shadow boundary</span>. This is the <dfn>first divergent boundary</dfn>.</li>
+    <li>Starting from <span class=ref>lowest common boundary</span> and walking <span class=ref>down</span>, find a <span class=ref>shadow boundary</span>. This is the <dfn>first divergent boundary</dfn>.</li>
     <li>If <span class=ref>first divergent boundary</span> is not found, stop.</li>
     <li>Set <code>relatedTarget</code> to the parent of the <span class=ref>first divergent boundary</span>.
 </ol>
@@ -72,32 +73,101 @@
 
 <h3>Example</h3>
 
-<p>Suppose we have a user interface for a video player, built with several components. Its DOM tree can be represented in the following pseudocode:</p>
+<p>Suppose we have a user interface for a media controller, built with several components, represented by this <span class=ref>shadow-aware DOM tree</span>:</p>
 
 <pre><code>&lt;div id=&quot;player&quot;&gt;
-    &lt;shadow-boundary&gt;
-        &lt;div id=&quot;controls&quot;&gt;
+    <span class=shadow-boundary>&lt;shadow-boundary&gt;</span>
+        &lt;div pseudo=&quot;controls&quot;&gt;
             &lt;button pseudo=&quot;play-button&quot;&gt;
             &lt;input type=&quot;range&quot; pseudo=&quot;timeline&quot;&gt;
-                &lt;shadow-boundary&gt;
-                    &lt;div pseudo=&quot;slider-thumb&quot;&gt;
-                &lt;/shadow-boundary&gt;
+                <span class=shadow-boundary>&lt;shadow-boundary&gt;</span>
+                    &lt;div pseudo=&quot;slider-thumb&quot;&gt;&lt;/div&gt;
+                <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
             &lt;/input&gt;
             &lt;div pseudo=&quot;volume-slider-container&quot;&gt;
                 &lt;input type=&quot;range&quot; pseudo=&quot;volume-slider&quot;&gt;
-                    &lt;shadow-boundary&gt;
-                        &lt;div pseudo=&quot;slider-thumb&quot;&gt;
-                        &lt;/div&gt;
-                    &lt;/shadow-boundary&gt;
+                    <span class=shadow-boundary>&lt;shadow-boundary&gt;</span>
+                        &lt;div pseudo=&quot;slider-thumb&quot;&gt;&lt;/div&gt;
+                    <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
                 &lt;/input&gt;
             &lt;/div&gt;
         &lt;/div&gt;
-    &lt;/shadow-boundary&gt;
+    <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
 &lt;/div&gt;</code></pre>
+
+<p>Let's have a user position their pointing device over the volume slider's thumb (<code>#player::volume-slider::slider-thumb</code>), thus triggering a <code>mouseover</code> event on that node. For this event, let's pretend it has no associated <code>relatedTarget</code>.</p>
+
+<p>Just before the event is dispatched, we perform <span class=ref>retargeting</span>:
+<ol>
+    <li>We set the <span class=ref>relative target</span> of the thumb node to itself.</li>
+    <li>Walking <span class=ref>up</span>, we find a <span class=ref>shadow boundary</span> and skip it.</li>
+    <li>Next up is an input (<code>#player::volume-slider</code>), and we set its relative target to itself, since the previous ancestor was a shadow boundary.</li>
+    <li>We then walk up to the containing div (<code>#player::volume-slider-container</code>), and use previous ancestor's target -- the input element.</li>
+    <li>Walking up one more, we reach the controls panel (<code>#player::controls</code>), and again use input element as relative target per <span class=ref>retargeting</span> algorithm.</li>
+    <li>Next, we reach another <span class=ref>shadow boundary</span> and skip it.</li>
+    <li>Finally we walk up to the player element (<code>#player</code>) and set its relative target to itself.</li>
+</ol>
+
+<pre><code><span class=event-ancestor>&lt;div id=&quot;player&quot;&gt; <em>7</em></span>
+    <span class="shadow-boundary event-ancestor">&lt;shadow-boundary&gt; <em>6</em></span>
+        <span class=event-ancestor>&lt;div pseudo=&quot;controls&quot;&gt; <em>5</em></span>
+            &lt;button pseudo=&quot;play-button&quot;&gt;
+            &lt;input type=&quot;range&quot; pseudo=&quot;timeline&quot;&gt;
+                <span class=shadow-boundary>&lt;shadow-boundary&gt;</span>
+                    &lt;div pseudo=&quot;slider-thumb&quot;&gt;&lt;/div&gt;
+                <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
+            &lt;/input&gt;
+            <span class=event-ancestor>&lt;div pseudo=&quot;volume-slider-container&quot;&gt; <em>4</em></span>
+                <span class=event-ancestor>&lt;input type=&quot;range&quot; pseudo=&quot;volume-slider&quot;&gt; <em>3</em></span>
+                    <span class="shadow-boundary event-ancestor">&lt;shadow-boundary&gt; <em>2</em></span>
+                        <span class=event-ancestor>&lt;div pseudo=&quot;slider-thumb&quot;&gt;&lt;/div&gt; <em>1</em></span>
+                    <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
+                &lt;/input&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
+&lt;/div&gt;</code></pre>
+
+<p>At the end of this process, we should have the following set of ancestors and relative targets:</p>
+
+<table>
+<thead>
+<tr>
+    <th>Ancestor</th>
+    <th>Relative Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td><code>...</code></td>
+    <td><code>div#player</code></td>
+</tr>
+<tr>
+    <td><code>div#player</code></td>
+    <td><code><strong>div#player</strong></code></td>
+</tr>
+<tr>
+    <td><code>div#player::controls</code></td>
+    <td><code>div#player::controls::volume-slider</code></td>
+</tr>
+<tr>
+    <td><code>div#player::volume-slider-container</code></td>
+    <td><code>div#player::controls::volume-slider</code></td>
+</tr>
+<tr>
+    <td><code>div#player::controls::volume-slider</code></td>
+    <td><code><strong>div#player::controls::volume-slider</strong></code></td>
+</tr>
+<tr>
+    <td><code>div#player::controls::volume-slider::slider-thumb</code></td>
+    <td><code><strong>div#player::controls::volume-slider::slider-thumb</strong></code></td>
+</tr>
+</tbody>
+</table>
 
 <p>Still to do:</p>
 <ul>
-    <li>Retargeting example</li>
+    <li>Related Target example</li>
     <li>Mouse over/out example</li>
     <li>mutation event example</li>
 </li>

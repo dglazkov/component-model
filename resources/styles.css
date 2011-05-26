@@ -25,7 +25,30 @@ div.algorithm {
 
 span.ref {
     border-bottom: 1px dotted Gray;
+}
 
-img {
-    border: 1px solid Black;
+span.shadow-boundary {
+    color: Gray;
+}
+
+th, td {
+    text-align: left;
+    padding: 5px;
+}
+
+span.event-ancestor {
+    color: DarkRed;
+}
+
+span.event-ancestor>em {
+    background-color: DarkRed;
+    color: White;
+    font-style: normal;
+    border-radius: 1em;
+    padding: 0 0.35em;
+}
+
+pre {
+    background-color: LightGray;
+    padding: 0.5em;
 }
