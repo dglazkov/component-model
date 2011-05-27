@@ -1,15 +1,32 @@
 <link rel=stylesheet type=text/css href=resources/styles.css>
+<style scoped>
 
-<p>To be defined elsewhere:</p>
-<ul>
-    <li>shadow DOM subtree</li>
-    <li>shadow-aware DOM tree <em class=fixme>needs better name</em></li>
-    <li>parentOrHostNode -- <em class=fixme>needs better name</em></li>
-    <li>ancestorOrHosts -- <em class=fixme>needs better name</em></li>
-    <li>shadow boundary</li>
-    <li>How <code>:focus</code> works</li>
-    <li>How <code>nav-index</code> works</li>
-</ul>
+span.shadow-boundary {
+    color: Gray;
+}
+
+span.event-ancestor, span.first-divergent-boundary {
+    color: DarkRed;
+}
+
+span.event-ancestor>em {
+    background-color: DarkRed;
+    color: White;
+    font-style: normal;
+    border-radius: 1em;
+    padding: 0 0.35em;
+}
+
+pre {
+    background-color: LightGray;
+    padding: 0.5em;
+}
+
+span.lowest-common-boundary {
+    color: Green;
+}
+
+</style>
 
 <h3>Event Retargeting</h3>
 
@@ -61,7 +78,7 @@
     <li>If the <span class=ref>lowest common boundary</span> is not found, skip to step 6 in the algoritm.</li>
     <li>Limit event dispatch to the descendants of the <span class=ref>lowest common boundary</span>.</li>
     <li>If the <span class=ref>lowest common boundary</span> is still undetermined at this point, set it to be the farthest ancestor of the <code>relatedTarget</code>.</li>
-    <li>Starting from <span class=ref>lowest common boundary</span> and walking <span class=ref>down</span>, find a <span class=ref>shadow boundary</span>. This is the <dfn>first divergent boundary</dfn>.</li>
+    <li>Starting from <span class=ref>lowest common boundary</span> and walking <span class=ref>down</span> ancestors of the <code>relatedTarget</code>, find a <span class=ref>shadow boundary</span>. This is the <dfn>first divergent boundary</dfn>.</li>
     <li>If <span class=ref>first divergent boundary</span> is not found, stop.</li>
     <li>Set <code>relatedTarget</code> to the parent of the <span class=ref>first divergent boundary</span>.
 </ol>
@@ -171,13 +188,32 @@
 
 <p>After we dispatch the <code>mouseover</code> event using these newly computed relative targets, the user decides to move their pointing device over the thumb of the timeline (<code>#player::timeline::slider-thumb</code>). This triggers both a <code>mouseout</code> event for the volume slider thumb and the <code>mouseover</code> event for the timeline thumb.</p>
 
-<p>Let's study how the <code>relatedTarget</code> value of the volume thumb's <code>mouseout</code> event is affected and whether event escapes out of the player.</p>
+<p>Let's study how the <code>relatedTarget</code> value of the volume thumb's <code>mouseout</code> event is affected and whether event escapes out of the player. For this event, the <code>relatedTarget</code> is the timeline thumv (<code>#player::timeline::slider-thumb</code>).</p>
 
+<ol>
+    <li>We find lowest common ancestor of timeline thumb and volume slider thumb: the controls panel (<code>#player::controls</code>).</li>
+    <li>Walking <span class=ref>up</span>, we look for a <span class=ref>shadow boundary</span>, and find one just above. This is the lowest common boundary.</li>
+    <li>Given that the lowest common boundary exists, we limit event dispatch to the descendants of this boundary.</li>
+    <li>Starting from the lowest common boundary, we walk <span class=ref>down</span> the ancestors of the timeline thumb, looking for a <span class=ref>shadow boundary</span>. We find it just below the timeline (<code>#player::timeline</code>). This is the first divergent boundary.</li>
+    <li>We adjust <code>relatedTarget</code> to be the parent of the first divergent boundary, the timeline (<code>#player::timeline</code>). We are now ready to dispatch this event.</li>
+</ol>
 
-
-<p>Still to do:</p>
-<ul>
-    <li>Related Target example</li>
-    <li>Mouse over/out example</li>
-    <li>mutation event example</li>
-</li>
+<pre><code>&lt;div id=&quot;player&quot;&gt;
+    <span class="shadow-boundary lowest-common-boundary">&lt;shadow-boundary&gt;<em> &mdash; lowest common boundary</em></span>
+        &lt;div pseudo=&quot;controls&quot;&gt;
+            &lt;button pseudo=&quot;play-button&quot;&gt;
+            &lt;input type=&quot;range&quot; pseudo=&quot;timeline&quot;&gt;
+                <span class="shadow-boundary first-divergent-boundary">&lt;shadow-boundary&gt;<em>  &mdash; first divergent boundary</span>
+                    &lt;div pseudo=&quot;slider-thumb&quot;&gt;&lt;/div&gt;
+                <span class="shadow-boundary first-divergent-boundary">&lt;/shadow-boundary&gt;</span>
+            &lt;/input&gt;
+            &lt;div pseudo=&quot;volume-slider-container&quot;&gt;
+                &lt;input type=&quot;range&quot; pseudo=&quot;volume-slider&quot;&gt;
+                    <span class=shadow-boundary>&lt;shadow-boundary&gt;</span>
+                        &lt;div pseudo=&quot;slider-thumb&quot;&gt;&lt;/div&gt;
+                    <span class=shadow-boundary>&lt;/shadow-boundary&gt;</span>
+                &lt;/input&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    <span class="shadow-boundary lowest-common-boundary">&lt;/shadow-boundary&gt;</span>
+&lt;/div&gt;</code></pre>
