@@ -28,26 +28,28 @@ span.lowest-common-boundary {
 
 </style>
 
+<ol>
+    <li><span class=fixme>boundless ancestor</span> -- need better term.</li>
+</ol>
+
 <h3>Event Retargeting</h3>
 
 <p>When an event is fired in a <span class=ref>shadow DOM subtree</span>, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the <span class=ref>shadow boundary</span>.</p>
 
-<p>In the cases where event escapes the shadow tree, the event is <span class=ref>retargeted</span> to ensure that the original target-related information on the event object does not reveal information about the <span class=ref>shadow DOM subtree</span> beyond the boundary. Event retargeting is a process of computing a <dfn>relative target</dfn> for each <span class=ref>ancestorOrHost</span> of the node at which the event is dispatched.</p>
+<p>To help with algorithm description, let's define the direction walking the ancestors of a node as <dfn>up</dfn> when traversing from child to parent, and <dfn>down</dfn> when traversing from parent to child. In the context of events-related algorithms, all ancestor traversal crosses <span class=ref>shadow boundaries</span>.</p>
 
-<p>To help with algorithm description, let's define the direction walking the ancestors of a node as <dfn>up</dfn> when traversing from child to parent, and <dfn>down</dfn> when traversing from parent to child.</p>
-
-<p>In the context of events-related algorithms, all ancestor traversal crosses <span class=ref>shadow boundaries</span>.</p>
+<p>In the cases where event escapes the shadow tree, the event is <span class=ref>retargeted</span> to ensure that the original target-related information on the event object does not reveal information about the <span class=ref>shadow DOM subtree</span> beyond the boundary. Event retargeting is a process of computing a <dfn>relative target</dfn> for each <span class=ref>ancestor</span> of the node at which the event is dispatched.</p>
 
 <p>The following <dfn>retargeting algorithm</dfn> must be used to determine relative targets:</p>
 
 <div class=algorithm>
 <ol>
     <li>Set the relative target of the node at which event is fired to the node itself.</li>
-    <li>For each ancestor walking <span class=ref>up</span> from node's parent, compute its relative target:</p>
+    <li>For each ancestor walking <span class=ref>up</span> starting with the node's parent, compute its <span class=ref>relative target</span>:</p>
         <ol>
-            <li>If the ancestor is a <span class=ref>shadow boundary</span>, skip it</li>
-            <li>If the previous ancestor was a <span class=ref>shadow boundary</span>, make the node its own <span class=ref>relative target</span>.</li>
-            <li>Otherwise, use previous ancestor's <span class=ref>relative target</span>.</li>
+            <li>If the node is a <span class=ref>shadow boundary</span>, skip it</li>
+            <li>If the previous node was a <span class=ref>shadow boundary</span>, make the node its own <span class=ref>relative target</span>.</li>
+            <li>Otherwise, use previous node's <span class=ref>relative target</span>.</li>
         </ol>
     </li>
 </ol>
@@ -55,15 +57,17 @@ span.lowest-common-boundary {
 
 <p>The retargeting process must occur prior to dispatch of an event.</p>
 
-<p>At the time of event dispatch, for capturing, target, and bubbling phases, event's <code>target</code> and <code>currentTarget</code> must be set to the relative target.</p>
+<p>At the time of event dispatch, for capturing, target, and bubbling phases, <code>Event</code> object's <code>target</code> and <code>currentTarget</code> must be set to the <span class=ref>relative target</span> that was computed for the node along the capturing and bubbling flow.</p>
 
 <p>The event must not be retargeted during the default phase of dispatch.</p>
 
-<p>Upon completion of the event dispatch, the event's <code>target</code> and <code>currentTarget</code> must be returned to their values prior to the dispatch.</p>
+<p>Upon completion of the event dispatch, the <code>Event</code> object's <code>target</code> and <code>currentTarget</code> are set to the highest ancestor's <span class=ref>relative target</span>. Since it is possible for a script to hold on to the <code>Event</code> object past the scope of event dispatch, this step is necessary to avoid revealing the nodes in <span class=ref>shadow DOM subtrees</span>.</p>
 
 <h3>Related Target Events</h3>
 
-<p>If an event has a <code>relatedTarget</code>, its value and extent of event dispatch must to be adjusted. In general:
+<p>Some events have a <code>relatedTarget</code> property, which holds a node that's not the event's target, but is related to the event. For instance, a <code>mouseover</code> event's <code>relatedTarget</code> may hold the node from which the mouse has moved to event's <code>target</code>. In the case where <code>relatedTarget</code> is in a <span class=ref>shadow DOM subtree</span>, we don't want to leak its actual value outside of this subtree. In cases where both <code>relatedTarget</code> and <code>target</code> are part of the same <span class=ref>shadow DOM subtree</span>, we don't want the appearance of spurious <code>mouseover</code> and <code>mouseout</code> events firing from the same node.</p> 
+
+<p>Thus, if an event has a <code>relatedTarget</code>, its value and extent of event dispatch must to be adjusted. In general:
 <ol>
     <li>If <code>relatedTarget</code> and <code>target</code> are enclosed by a <span class=ref>shadow DOM subtree</span>, the event dispatch must be stopped at the <span class=ref>shadow boundary</span> of this subtree.</li>
     <li>If <code>relatedTarget</code> is separated from <code>target</code> by one or more <span class=ref>shadow boundaries</span>, it must be retargeted to the boundary that's closest to <code>target</code>.</li>
@@ -188,7 +192,7 @@ span.lowest-common-boundary {
 
 <p>After we dispatch the <code>mouseover</code> event using these newly computed relative targets, the user decides to move their pointing device over the thumb of the timeline (<code>#player::timeline::slider-thumb</code>). This triggers both a <code>mouseout</code> event for the volume slider thumb and the <code>mouseover</code> event for the timeline thumb.</p>
 
-<p>Let's study how the <code>relatedTarget</code> value of the volume thumb's <code>mouseout</code> event is affected and whether event escapes out of the player. For this event, the <code>relatedTarget</code> is the timeline thumv (<code>#player::timeline::slider-thumb</code>).</p>
+<p>Let's study how the <code>relatedTarget</code> value of the volume thumb's <code>mouseout</code> event is affected and whether event escapes out of the player. For this event, the <code>relatedTarget</code> is the timeline thumb (<code>#player::timeline::slider-thumb</code>).</p>
 
 <ol>
     <li>We find lowest common ancestor of timeline thumb and volume slider thumb: the controls panel (<code>#player::controls</code>).</li>
