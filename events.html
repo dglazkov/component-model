@@ -79,7 +79,7 @@ span.lowest-common-boundary {
     <li>Find the <dfn>lowest common ancestor</dfn> of <code>target</code> and <code>relatedTarget</code>.</li>
     <li>If there is none, skip to step 6 in the algorithm.</li>
     <li>Looking at the ancestors of the <span class=ref>lowest common ancestor</span>, starting at its parent and walking <span class=ref>up</span>, find a <span class=ref>shadow boundary</span>. This is the <dfn>lowest common boundary</dfn>, the boundary of a <span class=ref>shadow DOM subtree</span> that encloses both <code>target</code> and <code>relatedTarget</code>.
-    <li>If the <span class=ref>lowest common boundary</span> is not found, skip to step 6 in the algoritm.</li>
+    <li>If the <span class=ref>lowest common boundary</span> is not found, skip to step 6 in the algorithm.</li>
     <li>Limit event dispatch to the descendants of the <span class=ref>lowest common boundary</span>.</li>
     <li>If the <span class=ref>lowest common boundary</span> is still undetermined at this point, set it to be the farthest ancestor of the <code>relatedTarget</code>.</li>
     <li>Starting from <span class=ref>lowest common boundary</span> and walking <span class=ref>down</span> ancestors of the <code>relatedTarget</code>, find a <span class=ref>shadow boundary</span>. This is the <dfn>first divergent boundary</dfn>.</li>
