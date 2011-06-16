@@ -1,1 +1,45 @@
+<link rel=stylesheet type=text/css href=resources/styles.css>
+<style scoped>
+</style>
 
+<h3>API 1.0</h3>
+
+<pre><code>
+
+interface TreeScope {
+    readonly TreeScope parentTreeScope;
+    Element getElementById(in DOMString elementId);
+}
+
+[Supplemental]
+interface Element {
+    readonly attribute ShadowRoot shadowRoot;
+    attribute String pseudo;
+}
+
+[Supplemental]
+interface Document : TreeScope {
+    // Registers a new type of DOM element. The new element becomes constructable
+    // using document.createElement method.
+    // Lifecycle:
+    // 1) element registered using register()
+    // 2) a new JS object is created from elementConstructor;
+    // 3) a new HTMLDivElement object is created;
+    // 4) the prototype chain is fixed up as follows:
+    // [object] -> [ HTMLDivElement ] -> [elementConstructor.prototype]
+    // 5) the method "createShadowSubtree" is called on the newly created object.
+    void register(in String tagName, in Function elementConstructor);
+}
+
+[Duck]
+interface Component {
+    void createShadowSubtree(in ShadowRoot shadowRoot);
+}
+
+interface ShadowRoot : TreeScope {
+    attribute bool applyAuthorSheets;
+    attribute bool allowSelectorsThrough;
+    readonly attribute Element shadowHost;
+}
+
+</code></pre>
