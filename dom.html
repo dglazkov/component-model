@@ -34,7 +34,7 @@ An element's <span class=ref>shadow root</span> is represented as a <dfn id="sha
 
 <p>A <a href="#shadow-root-interface">ShadowRoot</a> is a <dfn id="tree-scope-interface" title="tree-scope-interface">TreeScope</dfn>, which represents a DOM <span class=ref>tree scope</a>.
 
-<pre><code>interface <a href="#tree-scope-interface">TreeScope</a> {
+<pre><code>interface <a href="#tree-scope-interface">TreeScope</a> : ContainerNode {
     readonly <a href="#tree-scope-interface">TreeScope</a> <a href="#parent-tree-scope-attribute">parentTreeScope</a>;
     Element <a href="#get-element-by-id-method">getElementById</a>(in DOMString elementId);
 }
