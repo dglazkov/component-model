@@ -2,7 +2,7 @@
 <style scoped>
 </style>
 
-<h3>API 1.0</h3>
+<h3>Component Model DOM Interfaces</h3>
 
 <pre><code>
 [Supplemental]
@@ -12,12 +12,12 @@ interface Element {
 }
 </code></pre>
 
-<p>The <dfn id="shadow-root-attribute" title="shadow-root-attribute">shadowRoot</dfn> attribute returns the current <a href="#shadow-root-interface">ShadowRoot</a>, hosted by this element. It returns <code>null</code> if the element is not currently hosting a <span class=ref>shadow DOM subtree</a>.
+<p>The <dfn id="shadow-root-attribute" title="shadow-root-attribute">shadowRoot</dfn> attribute returns the current <a href="#shadow-root-interface">ShadowRoot</a>, hosted by this element. It returns <code>null</code> if the element is not currently hosting a <span class=ref>shadow DOM subtree</span> or its shadow DOM subtree is not accessible.
 
 <p>The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.</p>
 
 <pre><code>
-interface ShadowRoot : TreeScope {
+interface <a href="#shadow-root-interface">ShadowRoot</a> : <a href="#tree-scope-interface">TreeScope</a> {
     attribute bool <a href="#apply-author-sheets-attribute">applyAuthorSheets</a>;
     readonly attribute Element <a href="#shadow-host-attribute">shadowHost</a>;
 }
@@ -28,11 +28,15 @@ interface ShadowRoot : TreeScope {
 <p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers to the element that is hosting this instance.</p>
 
 <pre><code>
-interface TreeScope {
-    readonly TreeScope parentTreeScope;
-    Element getElementById(in DOMString elementId);
+interface <a href="#tree-scope-interface">TreeScope</a> {
+    readonly <a href="#tree-scope-interface">TreeScope</a> <a href="#parent-tree-scope-attribute">parentTreeScope</a>;
+    Element <a href="#get-element-by-id-function">getElementById</a>(in DOMString elementId);
 }
 </code></pre>
+
+<p>The <dfn id="parent-tree-scope-attribute" title="parent-tree-scope-attribute">parentTreeScope</dfn> attribute returns the <span def=tree-scope>tree scope</a> that contains this tree scope.</p>
+
+<p>The <dfn id="get-element-by-id-function" title="get-element-by-id-function">getElementById</dfn> returns first element, in tree order, within the tree scope's tree, whose ID is elementId. It is essentially <a href="http://www.w3.org/TR/domcore/#dom-document-getelementbyid">document.getElementById</a> from <a href="http://www.w3.org/TR/domcore/">DOM Core</a>, but scoped inside of the <span class=def>tree scope</span>.</p>
 
 <pre><code>
 [Supplemental]
