@@ -31,3 +31,17 @@ th, td {
     text-align: left;
     padding: 5px;
 }
+
+dfn:target {
+    background: Yellow;
+    box-shadow: 0 0 25px Yellow;
+}
+
+pre a {
+    color: Black;
+    text-decoration: none;
+}
+
+pre a:hover {
+    text-decoration: underline;
+}

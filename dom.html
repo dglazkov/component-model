@@ -7,8 +7,30 @@
 <pre><code>
 [Supplemental]
 interface Element {
-    readonly attribute ShadowRoot shadowRoot;
-    attribute String pseudo;
+    readonly attribute <a href="#shadow-root-interface">ShadowRoot</a> <a href="#shadow-root-attribute">shadowRoot</a>;
+    attribute String <a href="#pseudo-attribute">pseudo</a>;
+}
+</code></pre>
+
+<p>The <dfn id="shadow-root-attribute" title="shadow-root-attribute">shadowRoot</dfn> attribute returns the current <a href="#shadow-root-interface">ShadowRoot</a>, hosted by this element. It returns <code>null</code> if the element is not currently hosting a <span class=ref>shadow DOM subtree</a>.
+
+<p>The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.</p>
+
+<pre><code>
+interface ShadowRoot : TreeScope {
+    attribute bool <a href="#apply-author-sheets-attribute">applyAuthorSheets</a>;
+    readonly attribute Element <a href="#shadow-host-attribute">shadowHost</a>;
+}
+</code></pre>
+
+<p>The <dfn id="apply-author-sheets-attribute" title="apply-author-sheets-attribute">applyAuthorSheets</dfn> attribute indicates whether or not rules in <a href="http://www.w3.org/TR/CSS2/cascade.html">author style sheets</a> associated with the element's document apply to the <span class=def>shadow DOM subtree</a>. It is an equivalent of the namesake <a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">XBL2 attribute</a>.</p>
+
+<p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers to the element that is hosting this instance.</p>
+
+<pre><code>
+interface TreeScope {
+    readonly TreeScope parentTreeScope;
+    Element getElementById(in DOMString elementId);
 }
 </code></pre>
 
@@ -36,17 +58,3 @@ interface Component {
 }
 </code></pre>
 
-<pre><code>
-interface ShadowRoot : TreeScope {
-    attribute bool applyAuthorSheets;
-    attribute bool allowSelectorsThrough;
-    readonly attribute Element shadowHost;
-}
-</code></pre>
-
-<pre><code>
-interface TreeScope {
-    readonly TreeScope parentTreeScope;
-    Element getElementById(in DOMString elementId);
-}
-</code></pre>
