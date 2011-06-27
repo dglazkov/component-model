@@ -45,3 +45,9 @@ pre a {
 pre a:hover {
     text-decoration: underline;
 }
+
+pre {
+    background-color: LightGray;
+    padding: 0.5em 1em;
+    margin-left: 2em;
+}

@@ -4,61 +4,48 @@
 
 <h3>Component Model DOM Interfaces</h3>
 
-<pre><code>
-[Supplemental]
+<p>The component model extends the <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> as follows:</p>
+
+<pre><code>[Supplemental]
 interface Element {
-    readonly attribute <a href="#shadow-root-interface">ShadowRoot</a> <a href="#shadow-root-attribute">shadowRoot</a>;
+    readonly attribute <a href="#shadow-root-interface">ShadowRoot</a> <a href="#shadow-attribute">shadow</a>;
     attribute String <a href="#pseudo-attribute">pseudo</a>;
 }
 </code></pre>
 
-<p>The <dfn id="shadow-root-attribute" title="shadow-root-attribute">shadowRoot</dfn> attribute returns the current <a href="#shadow-root-interface">ShadowRoot</a>, hosted by this element. It returns <code>null</code> if the element is not currently hosting a <span class=ref>shadow DOM subtree</span> or its shadow DOM subtree is not accessible.
+<p>The <dfn id="shadow-attribute" title="shadow-attribute">shadow</dfn> attribute returns the current <span class=ref>shadow root</span>, hosted by this element. It returns <code>null</code> if the element is not currently hosting a <span class=ref>shadow DOM subtree</span> or its shadow DOM subtree is not accessible.
 
 <p>The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.</p>
 
-<pre><code>
-interface <a href="#shadow-root-interface">ShadowRoot</a> : <a href="#tree-scope-interface">TreeScope</a> {
+An element's <span class=ref>shadow root</span> is represented as a <dfn id="shadow-root-interface" title="shadow-root-interface">ShadowRoot</dfn> object:
+
+<pre><code>interface <a href="#shadow-root-interface">ShadowRoot</a> : <a href="#tree-scope-interface">TreeScope</a> {
     attribute bool <a href="#apply-author-sheets-attribute">applyAuthorSheets</a>;
     readonly attribute Element <a href="#shadow-host-attribute">shadowHost</a>;
+    static <a href="#shadow-root-interface">ShadowRoot</a> <a href="#create-method">create</a>(in Element element) raises (DOMException);
 }
 </code></pre>
 
 <p>The <dfn id="apply-author-sheets-attribute" title="apply-author-sheets-attribute">applyAuthorSheets</dfn> attribute indicates whether or not rules in <a href="http://www.w3.org/TR/CSS2/cascade.html">author style sheets</a> associated with the element's document apply to the <span class=def>shadow DOM subtree</a>. It is an equivalent of the <a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">XBL2 apply-author-sheets attribute</a>.</p>
 
-<p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers to the element that is hosting this instance.</p>
+<p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers back to the element that is hosting this <span class=ref>shadow root</span>.</p>
 
-<pre><code>
-interface <a href="#tree-scope-interface">TreeScope</a> {
+<p>The static <dfn id="create-method" title="create-method">create</dfn> method attempts to create a <span class=ref>shadow root</span>, hosted at the <code>element</code> (supplied as the argument) and returns a newly instance of <a href="#shadow-root-interface">ShadowRoot</a> object, if successful. If the <code>element</code> already hosts a <span class=ref>shadow root</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-hierarchy_request_err">HIERARCHY_REQUEST_ERR</a> DOM Exception is raised. If creation of the <span class=ref>shadow root</span> is not possible on this element, a <code>null</code> is returned.</p>
+
+<p>A <a href="#shadow-root-interface">ShadowRoot</a> is a <dfn id="tree-scope-interface" title="tree-scope-interface">TreeScope</dfn>, which represents a DOM <span class=ref>tree scope</a>.
+
+<pre><code>interface <a href="#tree-scope-interface">TreeScope</a> {
     readonly <a href="#tree-scope-interface">TreeScope</a> <a href="#parent-tree-scope-attribute">parentTreeScope</a>;
-    Element <a href="#get-element-by-id-function">getElementById</a>(in DOMString elementId);
+    Element <a href="#get-element-by-id-method">getElementById</a>(in DOMString elementId);
 }
 </code></pre>
 
-<p>The <dfn id="parent-tree-scope-attribute" title="parent-tree-scope-attribute">parentTreeScope</dfn> attribute returns the <span def=tree-scope>tree scope</a> that contains this tree scope.</p>
+<p>The <dfn id="parent-tree-scope-attribute" title="parent-tree-scope-attribute">parentTreeScope</dfn> attribute returns the <span class=ref>tree scope</span> that contains this <span class=ref>tree scope</span>.</p>
 
-<p>The <dfn id="get-element-by-id-function" title="get-element-by-id-function">getElementById</dfn> returns first element, in tree order, within the tree scope's tree, whose ID is elementId. It is essentially <a href="http://www.w3.org/TR/domcore/#dom-document-getelementbyid">document.getElementById</a> from <a href="http://www.w3.org/TR/domcore/">DOM Core</a>, but scoped inside of the <span class=def>tree scope</span>.</p>
+<p>The <dfn id="get-element-by-id-method" title="get-element-by-id-method">getElementById</dfn> returns first element, in tree order, within the tree scope's tree, whose ID is <code>elementId</code>. It is essentially <a href="http://www.w3.org/TR/domcore/#dom-document-getelementbyid">document.getElementById</a> from <a href="http://www.w3.org/TR/domcore/">DOM Core</a>, but scoped inside of the <span class=def>tree scope</span>.</p>
 
-<pre><code>
-[Supplemental]
-interface Document : TreeScope {
-     void register(in String tagName, in Function elementConstructor);
+<p>Subsequently, a <a href="http://www.w3.org/TR/domcore/#document">Document</a> is also a <a href="#tree-scope-interface">TreeScope</a>.</p>
+<pre><code>[Supplemental]
+interface Document : <a href="#tree-scope-interface">TreeScope</a> {
 }
 </code></pre>
-<p>Registers a new type of DOM element. The new element becomes constructable using document.createElement method.</p>
-<p>Lifecycle:</p>
-<ol>
-    <li>element registered using register()
-    <li>a new JS object is created from elementConstructor;
-    <li>a new HTMLDivElement object is created;
-    <li>the prototype chain is fixed up as follows:<br>
-        [object] -> [ HTMLDivElement ] -> [elementConstructor.prototype]
-    <li>the method "createShadowSubtree" is called on the newly created object.
-</ol>
-
-<pre><code>
-[Duck]
-interface Component {
-    void createShadowSubtree(in ShadowRoot shadowRoot);
-}
-</code></pre>
-
