@@ -5,41 +5,48 @@
 <h3>API 1.0</h3>
 
 <pre><code>
-
-interface TreeScope {
-    readonly TreeScope parentTreeScope;
-    Element getElementById(in DOMString elementId);
-}
-
 [Supplemental]
 interface Element {
     readonly attribute ShadowRoot shadowRoot;
     attribute String pseudo;
 }
+</code></pre>
 
+<pre><code>
 [Supplemental]
 interface Document : TreeScope {
-    // Registers a new type of DOM element. The new element becomes constructable
-    // using document.createElement method.
-    // Lifecycle:
-    // 1) element registered using register()
-    // 2) a new JS object is created from elementConstructor;
-    // 3) a new HTMLDivElement object is created;
-    // 4) the prototype chain is fixed up as follows:
-    // [object] -> [ HTMLDivElement ] -> [elementConstructor.prototype]
-    // 5) the method "createShadowSubtree" is called on the newly created object.
-    void register(in String tagName, in Function elementConstructor);
+     void register(in String tagName, in Function elementConstructor);
 }
+</code></pre>
+<p>Registers a new type of DOM element. The new element becomes constructable using document.createElement method.</p>
+<p>Lifecycle:</p>
+<ol>
+    <li>element registered using register()
+    <li>a new JS object is created from elementConstructor;
+    <li>a new HTMLDivElement object is created;
+    <li>the prototype chain is fixed up as follows:<br>
+        [object] -> [ HTMLDivElement ] -> [elementConstructor.prototype]
+    <li>the method "createShadowSubtree" is called on the newly created object.
+</ol>
 
+<pre><code>
 [Duck]
 interface Component {
     void createShadowSubtree(in ShadowRoot shadowRoot);
 }
+</code></pre>
 
+<pre><code>
 interface ShadowRoot : TreeScope {
     attribute bool applyAuthorSheets;
     attribute bool allowSelectorsThrough;
     readonly attribute Element shadowHost;
 }
+</code></pre>
 
+<pre><code>
+interface TreeScope {
+    readonly TreeScope parentTreeScope;
+    Element getElementById(in DOMString elementId);
+}
 </code></pre>
