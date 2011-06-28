@@ -9,11 +9,14 @@
 <pre><code>[Supplemental]
 interface Element {
     readonly attribute <a href="#shadow-root-interface">ShadowRoot</a> <a href="#shadow-attribute">shadow</a>;
+    <a href="#shadow-root-interface">ShadowRoot</a> <a href="#removeShadow-method">removeShadow</a>() raises (DOMException);
     attribute String <a href="#pseudo-attribute">pseudo</a>;
 }
 </code></pre>
 
 <p>The <dfn id="shadow-attribute" title="shadow-attribute">shadow</dfn> attribute returns the current <span class=ref>shadow root</span>, hosted by this element. It returns <code>null</code> if the element is not currently hosting a <span class=ref>shadow DOM subtree</span> or its shadow DOM subtree is not accessible.
+
+<p>The <dfn id="removeShadow-method" title="removeShadow-method">removeShadow</dfn> method removes the current <span class=ref>shadow root</span> hosted by this element. If the element does not host a shadow root or its <span class=ref>shadow DOM subtree</span> is not accessible a <a href="http://www.w3.org/TR/domcore/#dom-domexception-hierarchy_request_err">HIERARCHY_REQUEST_ERR</a> DOM Exception is raised.
 
 <p>The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.</p>
 
@@ -30,7 +33,7 @@ An element's <span class=ref>shadow root</span> is represented as a <dfn id="sha
 
 <p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers back to the element that is hosting this <span class=ref>shadow root</span>.</p>
 
-<p>The static <dfn id="create-method" title="create-method">create</dfn> method attempts to create a <span class=ref>shadow root</span>, hosted at the <code>element</code> (supplied as the argument) and returns a newly instance of <a href="#shadow-root-interface">ShadowRoot</a> object, if successful. If the <code>element</code> already hosts a <span class=ref>shadow root</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-hierarchy_request_err">HIERARCHY_REQUEST_ERR</a> DOM Exception is raised. If creation of the <span class=ref>shadow root</span> is not possible on this element, a <code>null</code> is returned.</p>
+<p>The static <dfn id="create-method" title="create-method">create</dfn> method attempts to create a <span class=ref>shadow root</span>, hosted at the <code>element</code> (supplied as the argument) and returns a newly instance of <a href="#shadow-root-interface">ShadowRoot</a> object, if successful. If the <code>element</code> already hosts a <span class=ref>shadow root</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-hierarchy_request_err">HIERARCHY_REQUEST_ERR</a> DOM Exception is raised. If creation of the <span class=ref>shadow root</span> is not possible on this element, <code>null</code> is returned.</p>
 
 <p>A <a href="#shadow-root-interface">ShadowRoot</a> is a <dfn id="tree-scope-interface" title="tree-scope-interface">TreeScope</dfn>, which represents a DOM <span class=ref>tree scope</a>.
 
