@@ -8,8 +8,7 @@
 
 <pre><code>[Supplemental]
 interface Element {
-    attribute <a href="#shadow-root-interface">ShadowRoot</a> <a href="#shadow-attribute">shadow</a>;
-            // raises(DOMException) on setting
+    attribute <a href="#shadow-root-interface">ShadowRoot</a> <a href="#shadow-attribute">shadow</a> setraises(DOMException);
     attribute String <a href="#pseudo-attribute">pseudo</a>;
 }
 </code></pre>
@@ -29,15 +28,12 @@ The value must either be <code>null</code> or a string that matches the <code>ID
 <pre><code>interface <a href="#shadow-root-interface">ShadowRoot</a> : <a href="#tree-scope-interface">TreeScope</a> {
     attribute bool <a href="#apply-author-sheets-attribute">applyAuthorSheets</a>;
     readonly attribute Element <a href="#shadow-host-attribute">shadowHost</a>;
-    static <a href="#shadow-root-interface">ShadowRoot</a> <a href="#create-method">create</a>(in Element element) raises (DOMException);
 }
 </code></pre>
 
 <p>The <dfn id="apply-author-sheets-attribute" title="apply-author-sheets-attribute">applyAuthorSheets</dfn> attribute indicates whether or not rules in <a href="http://www.w3.org/TR/CSS2/cascade.html">author style sheets</a> associated with the element's document apply to the <span class=def>shadow DOM subtree</a>. It is an equivalent of the <a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">XBL2 apply-author-sheets attribute</a>.</p>
 
 <p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers back to the element that is hosting this <span class=ref>shadow root</span>.</p>
-
-<p>The static <dfn id="create-method" title="create-method">create</dfn> method attempts to create a <span class=ref>shadow root</span>, hosted at the <code>element</code> (supplied as the argument) and returns a newly instance of <a href="#shadow-root-interface">ShadowRoot</a> object, if successful. If the <code>element</code> already hosts a <span class=ref>shadow root</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-hierarchy_request_err">HIERARCHY_REQUEST_ERR</a> DOM Exception is raised. If creation of the <span class=ref>shadow root</span> is not possible on this element, <code>null</code> is returned.</p>
 
 <p>A <a href="#shadow-root-interface">ShadowRoot</a> is a <dfn id="tree-scope-interface" title="tree-scope-interface">TreeScope</dfn>, which represents a DOM <span class=ref>tree scope</a>.
 
