@@ -1,0 +1,272 @@
+<html lang="en">  
+<head> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"> 
+    <title>Component Model</title> 
+    <link rel="stylesheet" type="text/css" href="css/spec.css">
+</head>
+
+<body class="draft"> 
+
+<div class="head"> 
+	<h1>Component Model</h1> 
+	
+	<dl> 
+		<dt>Previous Version:
+		<dd>(work in progress) <a href="2011-08-31/index.html">Index</a>
+		
+		<dt>Draft Version:
+		<dd>(work in progress) <a href="Draft/index.html">Index</a>
+				
+		<dt>Editors:
+		<dd class="vcard"> 
+			<span class="fn">Roland Steiner</span>,
+			<span class="org">Google Inc.</span>,
+			<span class="email">rolandsteiner@chromium.org</span> 
+		<dd class="vcard"> 
+			<span class="fn">Dimitri Glazkov</span>,
+			<span class="org">Google Inc.</span>,
+			<span class="email">dglazkov@chromium.org</span> 
+		<dd class="vcard"> 
+			<span class="fn">Dominic Cooney</span>,
+			<span class="org">Google Inc.</span>,
+			<span class="email">dominicc@chromium.org</span> 
+	</dl> 
+	
+	<p class="copyright">© Copyright 2011
+	<p class="copyright">You are granted a license to use, reproduce and create derivative works of this document.
+</div> 
+ 
+<h2 class="no-num no-toc">Abstract</h2> 
+<p class="warning">This specification is a work-in-progress!</p>
+ 
+<p>Specification for the component model.</p>
+ 
+<h2 class="no-num no-toc">Status</h2> 
+ 
+<p>This is a <strong>work in progress</strong> and may very likely change as it is formulated.</p>
+<p>Parts of the spec are not finished and/or are awaiting feedback.</p>
+
+<h2>Introduction</h2> 
+ 
+<p>TODO</p>
+  
+<h2 class="no-num">Acknowledgements</h2> 
+ 
+<p>TODO</p>
+
+<!-- tests -->
+
+<p>
+This text has a <span>span</span>, as well as an <u>underlined part</u>, that are both underlined.
+</p>
+
+<pre class=idl>IDL</pre>
+<pre class=asn>ASN</pre>
+<pre class=css>CSS</pre>
+
+<dl class=domintro> 
+    <dt>AAA
+    <dd>domintro
+    <dt>BBB
+    <dd><p>domintro</p>
+</dl>
+<dl class=switch> 
+    <dt>If foo is a bar
+    <dd>switch
+    <dt>Otherwise
+    <dd>switch
+</dl>
+<dl class=triple> 
+    <dt>AAA
+    <dd>triple
+    <dt>BBB
+    <dd>triple
+</dl>
+<dl class=bookkeeping> 
+    <dt>AAA
+    <dd>bookkeeping
+    <dt>BBB
+    <dd>bookkeeping
+</dl>
+
+<div class=diff-old>diff-old</div>
+<div class=diff-new>diff-old</div>
+<div class=diff-chg>diff-old</div>
+
+<ol class=brief>
+    <li>brief
+    <li>brief
+    <li>brief
+</ol>
+<ul class=category-list>
+    <li>category1
+    <li>category2
+    <li>category3
+</ul>
+<ul class=domTree>
+    <li>domA
+    <li>domB
+    <li>domC
+</ul>
+
+<p>
+code <code title="">empty title</code> code <code title="WIP">WIP title</code> code <code title="TBW">TBW title</code> code <code title="SCS">SCS title</code> code
+</p>
+
+<div>
+    text <span title=WIP>WIP</span> text <span title=TBW>TBW</span> text <span title=SCS>SCS</span> text
+</div>
+
+<div>
+    text <span class=note>note</span> text <span class=warning>warning</span> text <span class=big-issue>big issue</span> text <span class=XXX>XXX</span> text
+</div>
+
+<p class=note>
+    p note
+</p>
+<p class=warning>
+    p warning
+</p>
+<p class=big-issue>
+    p big-issue
+</p>
+<p class=XXX>
+    p XXX
+</p>
+
+<div class=note>
+    div note
+</div>
+<div class=warning>
+    div warning
+</div>
+<div class=big-issue>
+    div big-issue
+</div>
+<div class=XXX>
+    div XXX
+</div>
+<div class=XXX>
+    <p>multi-paragraph XXX</p>
+    <p>multi-paragraph XXX</p>
+    <p>multi-paragraph XXX</p>
+</div>
+
+<div class=critical>
+    div critical
+</div>
+<div class=example>
+    div example
+</div>
+<div class=element>
+    div element
+</div>
+
+<h4>h4</h4>
+<div class=element>
+    div element
+</div>
+
+<hr>
+
+<h4 id="typographic-conventions"><span class="secno">1.8.2 </span>Typographic conventions</h4> 
+
+<p>This is a definition, requirement, or explanation.</p> 
+
+<p class="note">This is a note.</p> 
+
+<p class="example">This is an example.</p> 
+
+<p class="XXX">This is an open issue.</p> 
+
+<p class="warning">This is a warning.</p> 
+
+<pre class="idl extract">interface <dfn title="">Example</dfn> {
+// this is an IDL definition
+};</pre> 
+
+<dl class="domintro"><dt><var title="">variable</var> = <var title="">object</var> . <code title="">method</code>( [ <var title="">optionalArgument</var> ] )</dt> 
+
+<dd> 
+
+<p>This is a note to authors describing the usage of an interface.</p> 
+
+</dd> 
+
+</dl><pre class="css">/* this is a CSS fragment */</pre> 
+
+<p>The defining instance of a term is marked up like <dfn id="x-this" title="x-this">this</dfn>. Uses of that term are marked up like
+<a href="#x-this" title="x-this">this</a> or like <i title="x-this"><a href="#x-this">this</a></i>.</p> 
+
+<p>The defining instance of an element, attribute, or API is marked
+up like <dfn id="x-that" title="x-that"><code>this</code></dfn>. References to
+that element, attribute, or API are marked up like <code title="x-that"><a href="#x-that">this</a></code>.</p> 
+
+<p>Other code fragments are marked up <code title="">like
+this</code>.</p> 
+
+<p>Variables are marked up like <var title="">this</var>.</p> 
+
+<p class="impl">This is an implementation requirement.</p> 
+
+<pre id="intro-early-example">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+ &lt;head&gt;
+  &lt;title&gt;Sample page&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+  &lt;h1&gt;Sample page&lt;/h1&gt;
+  &lt;p&gt;This is a &lt;a href="demo.html"&gt;simple&lt;/a&gt; sample.&lt;/p&gt;
+  &lt;!-- this is a comment --&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>The <a href="#intro-early-example">markup snippet at the top of
+this section</a> would be turned into the following DOM tree:</p> 
+
+<ul class="domTree">
+    <li class="t10">DOCTYPE: <code title="">html</code>
+    <li class="t1"><code><a href="semantics.html#the-html-element">html</a></code>
+        <ul>
+            <li class="t1"><code><a href="semantics.html#the-head-element">head</a></code>
+                <ul>
+                    <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;&#9251;</span>
+                    <li class="t1"><code><a href="semantics.html#the-title-element">title</a></code>
+                        <ul>
+                            <li class="t3"><code>#text</code>: <span title="">Sample page</span>
+                        </ul>
+                    <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;</span>
+                </ul>
+            <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;</span>
+            <li class="t1"><code><a href="sections.html#the-body-element">body</a></code>
+                <ul>
+                    <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;&#9251;</span>
+                    <li class="t1"><code><a href="sections.html#the-h1,-h2,-h3,-h4,-h5,-and-h6-elements">h1</a></code>
+                        <ul>
+                            <li class="t3"><code>#text</code>: <span title="">Sample page</span>
+                        </ul>
+                    <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;&#9251;</span>
+                    <li class="t1"><code><a href="grouping-content.html#the-p-element">p</a></code>
+                        <ul>
+                            <li class="t3"><code>#text</code>: <span title="">This is a </span>
+                            <li class="t1"><code><a href="text-level-semantics.html#the-a-element">a</a></code> <span class="t2" title=""><code class="attribute name">href</code>="<code class="attribute value">demo.html</code>"</span>
+                                <ul>
+                                    <li class="t3"><code>#text</code>: <span title="">simple</span>
+                                </ul>
+                            <li class="t3"><code>#text</code>: <span title=""> sample.</span>
+                        </ul>
+                    <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;&#9251;</span>
+                    <li class="t8"><code>#comment</code>: <span title=""> this is a comment </span>
+                    <li class="t3"><code>#text</code>: <span title="">&#9166;&#9251;&#9166;</span>
+                </ul>
+        </ul>
+</ul>
+<p>
+The <a href="infrastructure.html#root-element">root element</a> of this tree is the
+<code><a href="semantics.html#the-html-element">html</a></code> element, which is the element always found at the
+root of HTML documents. It contains two elements, <code><a href="semantics.html#the-head-element">head</a></code> 
+and <code><a href="sections.html#the-body-element">body</a></code>, as well as a text node between them.
+</p> 
+
+<img src="testing.svg" width=800 height=400 style="background-color: white">
+
