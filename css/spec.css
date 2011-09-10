@@ -18,31 +18,9 @@ body, th, td {
     font-family: sans-serif, Droid Sans Fallback;
 }
 
-body > .toc > li {
-    margin-top: 1em;
-    margin-bottom: 1em; 
-}
-body > .toc.brief > li { 
-    margin-top: 0.35em;
-    margin-bottom: 0.35em; 
-}
-body > .toc > li > * { 
-    margin-bottom: 0.5em; 
-}
-body > .toc > li > * > li > * { 
-    margin-bottom: 0.25em; 
-}
-.toc, .toc li { 
-    list-style: none; 
-}
-
 .head {
-    margin: 0 0 1em;
-    padding: 1em 0 0 0;
+    margin-bottom:1em;
     display: block;
-}
-.head p {
-    margin: 0; 
 }
 .head h1 {
     margin: 0; 
@@ -79,6 +57,7 @@ h1, h2, h3 {
 }
 h1 {
     font: 900 200% sans-serif, Droid Sans Fallback;
+    margin-bottom: 1em;
 }
 h1.allcaps {
     font: 900 350% sans-serif, Droid Sans Fallback;
@@ -86,30 +65,32 @@ h1.allcaps {
 }
 h2 {
     font: 800 140% sans-serif, Droid Sans Fallback;
-    margin: 3em 0 1em 0;
+    margin: 1.5em 0 1em 0;
     page-break-before: always;
 }
 h3 {
     font: 800 125% sans-serif, Droid Sans Fallback;
-    margin: 2.5em 0 1em 0;
+    margin: 1.5em 0 1em 0;
 }
 h4 {
     font: 800 110% sans-serif, Droid Sans Fallback;
-    margin: 2.5em 0 0.75em 0;
+    margin: 1.5em 0 0.75em 0;
     position: relative;
     z-index: 3;
 }
 h5 {
     font: 800 100% sans-serif, Droid Sans Fallback;
-    margin: 2.5em 0 1em;
+    margin: 1.5em 0 1em;
 }
 h6 {
     font: 600 italic 100% sans-serif, Droid Sans Fallback;
-    margin: 2.5em 0 1em;
+    margin: 1.5em 0 1em;
 }
+/*
 h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6, h1 + div + h2, h2 + div + h3, h3 + div + h4, h4 + div + h5, h5 + div + h6 {
     margin-top: 0.5em; 
 }
+*/
 h1 + h2, hr + h2.no-toc {
     page-break-before: auto;
 }
@@ -171,6 +152,7 @@ pre em {
     font-weight: bolder;
     font-style: normal; 
 }
+
 pre.idl {
     border: solid thin;
     background: #EEEEEE;
@@ -195,6 +177,101 @@ pre.idl::before {
     border-radius: 0 0 0 0.5em
 }
 
+/* WHATWG-version:
+.example { 
+    display: block;
+    color: #222222;
+    background: #FCFCFC;
+    border-left: double;
+    margin-left: 2em;
+    padding-left: 1em; 
+}
+td > .example:only-child { 
+    margin: 0 0 0 0.1em;
+}
+*/
+/* W3C-version: */
+.example {
+    counter-increment: exampleno;
+}
+div.example:before {
+    content: "Example";
+    content: "Example " counter(exampleno, upper-roman);
+    font: bold small sans-serif;
+    /*float: left;*/
+    position: absolute;
+    top: -0.6em;
+    left: -2.5em;
+    min-width: 7.5em;
+    text-align: center;
+    line-height: 1em;
+    color: #FFF8DD;
+    background: #600;
+    padding: 0.1em;
+    border: thin solid #999;
+    /*margin: -1.3em 0 0.3em -2.5em;*/
+}
+pre.example:before {
+    content: "Example";
+    content: "Example " counter(exampleno, upper-roman);
+    font: bold small sans-serif;
+    /*float: left;*/
+    position: absolute;
+    top: -0.6em;
+    left: -2.5em;
+    min-width: 7.5em;
+    text-align: center;
+    line-height: 1em;
+    color: #FFF8DD;
+    background: #600;
+    padding: 0.1em;
+    border: thin solid #999;
+    /*margin: -1.3em 0 0.3em -2.5em;*/
+}
+div.example, div.html, div.xml {
+    background: #FFF8DD;
+    padding: 1em 0.5em 0.5em 0.5em;
+    margin: 1em 0;
+    border: thin solid #999;
+    position: relative;
+    clear: both;
+    color: #600;
+}
+pre.example, pre.html, pre.xml {
+    background: #FFF8DD;
+    padding: 0em 0.5em 0.5em 0.5em;
+    margin: 1em 0;
+    border: thin solid #999;
+    position: relative;
+    clear: both;
+    color: #600;
+}
+pre.example, pre.html, pre.xml {
+    padding-top: 1.5em;
+}
+div.illegal, pre.illegal { color: red }
+div.illegal p { color: black }
+
+em.fixme::before {
+    content: 'FIXME:';
+    color: White;
+    background-color: Red;
+    padding: 0 0.2em;
+    border-radius: 0.2em;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+div.algorithm {
+    padding: 0.5em 1em;
+    background-color: #EEE;
+}
+
+span.ref {
+    border-bottom: 1px dotted Gray;
+}
+
 pre.asn {
     border: solid thin;
     background: #EEEEEE;
@@ -207,14 +284,15 @@ pre.asn :link, pre.asn :visited {
 }
 
 pre.css {
-    border: solid thin;
-    background: #FFFFEE;
+    border: solid thin black;
+    background: #FFE;
     color: black;
     padding: 0.5em 1em;
 }
 pre.css:first-line {
     color: #AAAA50; 
 }
+
 
 p { 
     margin: 1em 0; 
@@ -379,17 +457,17 @@ dl.triple dd:after {
     white-space: pre; 
 }
 
-.diff-old {
+.old {
     text-decoration: line-through;
     color: silver;
     background: transparent;
 }
-.diff-chg, .diff-new {
+.chg, .new {
     text-decoration: underline;
     color: green;
     background: transparent;
 }
-a .diff-new {
+a .new {
     border-bottom: 1px blue solid; 
 }
 
@@ -440,6 +518,22 @@ li > span:not([title=""]):not([class="XXX"]):not([class="impl"]):not([class="not
     border: dotted white; 
     margin: 0 0.7em 0 0.2em; 
 }
+[title=WIP] :link, [title=WIP] :visited {
+    background: transparent;
+    color: inherit; 
+}
+/*
+[title=TBW] { 
+    background: red; 
+    color: yellow; 
+    padding: 0.1em 0.3em; 
+    border: dotted white; 
+    margin: 0 0.7em 0 0.2em; 
+}
+[title=TBW] :link, [title=TBW] :visited {
+    background: transparent;
+    color: inherit; 
+}
 [title=SCS] { 
     background: green;
     color: white;
@@ -448,27 +542,26 @@ li > span:not([title=""]):not([class="XXX"]):not([class="impl"]):not([class="not
     none dashed; 
     margin: 0 0.7em 0 0.2em; 
 }
-[title=WIP] :link, [title=WIP] :visited,
-[title=TBW] :link, [title=TBW] :visited,
 [title=SCS] :link, [title=SCS] :visited { 
     background: transparent;
     color: inherit; 
 }
+*/
 
-.big-issue, .XXX { 
-    color: #E50000;
+.issue { 
+    color: #600;
     background: white;
     border: solid red;
     padding: 0.5em;
     margin: 1em 0;
 }
-.big-issue > :first-child, .XXX > :first-child { 
+.issue > :first-child { 
     margin-top: 0; 
 }
-p .big-issue, p .XXX {
+p .issue {
     line-height: 3em; 
 }
-.XXX::before, .XXX::after {
+.issue::before, .issue::after {
     content: " ** "; 
     position: absolute; 
     left: 0; width: 8em;
@@ -571,18 +664,6 @@ p.warning::before {
 h4 + .element, h4 + div + .element {
     margin-top: -2.5em;
     padding-top: 2em; 
-}
-
-.example { 
-    display: block;
-    color: #222222;
-    background: #FCFCFC;
-    border-left: double;
-    margin-left: 2em;
-    padding-left: 1em; 
-}
-td > .example:only-child { 
-    margin: 0 0 0 0.1em;
 }
 
 .hide { 

@@ -1,14 +1,68 @@
-<svg width="800px" height="400px" viewBox="0 0 4000 2000" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <marker id="Triangle" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z"/>
-        </marker>
-    </defs>
-    <rect x="10" y="10" width="3980" height="1980" fill="none" stroke="blue" stroke-width="10"/>
-    <path d="M 1000 750 L 2000 750 L 2500 1250" fill="none" stroke="black" stroke-width="100" marker-end="url(#Triangle)" />
+<svg width="800px" height="400px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+   <defs>
+      <marker id="endArrow" viewBox="0 0 10 10" refX="1" refY="5" markerUnits="strokeWidth" orient="auto" markerWidth="5" markerHeight="4">
+         <polyline points="0,0 10,5 0,10 1,5" fill="darkblue" />
+      </marker>
 
-    <g transform="translate(100 100)">
-        <rect width="1200" height="400" x="0" y="0" fill="lightblue"/>
-        <text text-anchor="middle" dominant-baseline="mathematical">This text is centered</text>
-    </g>
+      <marker id="startArrow" viewBox="0 0 10 10" refX="1" refY="5" markerUnits="strokeWidth" orient="auto" markerWidth="5" markerHeight="4">
+         <polyline points="10,0 0,5 10,10 9,5" fill="darkblue" />
+      </marker>
+
+   </defs>
+
+<g transform='translate(-20,-30)'>
+
+   <g>
+      <title>ideograph</title>
+      <circle cx="100" cy="100" r="45" stroke="black" stroke-width="2" fill="none"/>
+      <text x='100' y='105' fill="blue" font-size="18" text-anchor="middle">ideograph</text>
+   </g>
+
+   <g>
+
+      <title>sound</title>
+      <circle cx="100" cy="280" r="45" stroke="black" stroke-width="2" fill="none"/>
+      <text x="100" y="285" fill="green" font-size="18" text-anchor="middle">speech</text>
+   </g>
+
+   <g>
+      <title>object</title>
+      <circle cx="300" cy="190" r="45" stroke="black" stroke-width="2" fill="none"/>
+
+      <text x="300" y="195" fill="red" font-size="18" text-anchor="middle">object</text>
+   </g>
+
+
+   <line x1="150" y1="110" x2="248" y2="162" stroke="lime" stroke-width="3" marker-end="url(#endArrow)">
+
+<title>marker between phonetic and object</title>
+   </line>
+
+   <line x1="150" y1="275" x2="248" y2="216" stroke="lime" stroke-width="3" marker-end="url(#endArrow)" >
+      
+<title>sound marker</title>
+
+   </line>
+
+<line x1="50" y1="230" x2="150" y2="230" stroke="blue" stroke-width="1"></line>
+<line x1="50" y1="150" x2="150" y2="150" stroke="blue" stroke-width="1"></line>
+
+<line x1="100" y1="230" x2="100" y2="150" stroke="lime" stroke-width="3" marker-start="url(#startArrow)">
+      <title>marker between ideograph and sound</title>
+   </line>
+
+<!--
+   <line x1="100" y1="230" x2="100" y2="158" stroke="lime" stroke-width="3" marker-start="url(#startArrow)" marker-end="url(#endArrow)">
+      <title>marker between ideograph and sound</title>
+   </line>
+-->
+
+<title>outside rectangle</title>
+<rect x='30' y='40' width='330' height='300' fill='none' stroke='teal' stroke-width='2' rx='15' ry='15' />
+
+<title>Figure III </title>
+<text x='35' y='370' fill='navy' font-size='22' stroke='none'>Figure III:</text>
+<text x='130' y='370' fill='brown' font-size='22' stroke='none'>Ideographic Writing</text>
+
+</g>
 </svg>

@@ -1,0 +1,116 @@
+<html>
+<head>
+    <link rel=stylesheet type=text/css href=../css/spec.css>
+</head>
+<body>
+
+<!-- ==================== -->
+
+<h1>Shadow DOM</h1>
+
+<!-- ==================== -->
+
+<h2><a name="overview">Overview</a></h2>
+
+<p>
+The component model aims to allow authors to define richly structured widgets that can simply be dropped into web pages. In order for them to be usable however, their internal structure should be hidden from the normal
+DOM tree. In other words, a component should look and behave exactly like a built-in HTML element would.
+</p>
+<p>
+The <dfn id="shadowdom" title="shadow DOM">shadow DOM</dfn> is the mechanism by which the internal structure of a component is hidden.
+It is a separate tree attached to the <dfn id="hostelement" title="host element">host element</dfn>, rooted by a <code><a href="#shadowroot">ShadowRoot</a></code> node.
+</p>
+<p>
+A parent class <code><a href="#treescope">TreeScope</a></code> encapsulates the commonality between
+<code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#documents">Document</a></code> nodes and
+<code><a href="#shadowroot">ShadowRoot</a></code> nodes.
+</p>
+
+<object data="svg/shadowdom.svg" width=500 height=200></object>
+
+<!-- ==================== -->
+
+<h2><dfn id="treescope" title="treescope">TreeScope</dfn></h2>
+
+<p>
+Similar to <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#documents">Document</a></code> nodes,
+a <code><a href="#shadowroot">ShadowRoot</a></code> node needs to govern the nodes it contains.
+For example, because components are replicated wherever they are instantiated every shadow DOM needs to register the IDs of elements in the tree separately.
+The same goes for scripts that run within a component.
+</p>
+<p>
+For a clean interface, those functionalities are moved to a sperate class <code><a href="#treescope">TreeScope</a></code>,
+which acts as base class for <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#documents">Document</a></code>
+and <code><a href="#shadowroot">ShadowRoot</a></code>:
+</p>
+
+<pre class="idl">
+interface <a href="#treescope">TreeScope</a> {
+    readonly attribute <a href="#TreeScope">TreeScope</a>?  <a href="#treescope.parenttreescope">parentTreeScope</a>;
+<!--
+    readonly attribute <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#htmlcollection">HTMLCollection</a>   <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-images">images</a>;
+    readonly attribute <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#htmlcollection">HTMLCollection</a>   <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-embeds">embeds</a>;
+    readonly attribute <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#htmlcollection">HTMLCollection</a>   <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-plugins">plugins</a>;
+    readonly attribute <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#htmlcollection">HTMLCollection</a>   <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-links">links</a>;
+    readonly attribute <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#htmlcollection">HTMLCollection</a>   <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-forms">forms</a>;
+    readonly attribute <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#htmlcollection">HTMLCollection</a>   <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-scripts">scripts</a>;
+-->
+    <a href="http://www.w3.org/TR/domcore/#element">Element</a>?        <a href="http://www.w3.org/TR/domcore/#dom-document-getelementbyid">getElementById</a>(in DOMString elementId);
+    <a href="http://www.w3.org/TR/domcore/#nodelist">NodeList</a>        <a href="http://www.w3.org/TR/domcore/#dom-document-getelementsbyclassname">getElementsByClassName</a>(in DOMString tagName);
+    <a href="http://www.w3.org/TR/domcore/#nodelist">NodeList</a>        <a href="http://www.w3.org/TR/domcore/#dom-document-getelementsbytagname">getElementsByTagName</a>(in DOMString className);
+    <a href="http://www.w3.org/TR/domcore/#nodelist">NodeList</a>        <a href="http://www.w3.org/TR/domcore/#dom-document-getelementsbytagnamens">getElementsByTagNameNS</a>(DOMString? namespace, DOMString localName);
+
+    <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#nodeiterator">NodeIterator</a>    <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-createnodeiterator">createNodeIterator</a>(Node root, optional unsigned long whatToShow, optional NodeFilter? filter);
+    <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#treewalker">TreeWalker</a>      <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-createtreewalker">createTreeWalker</a>(Node root, optional unsigned long whatToShow, optional NodeFilter? filter);
+}
+</pre>
+
+<p>
+<dfn id="treescope.parenttreescope" title="parentTreeScope">parentTreeScope</dfn>: returns the <code><a href="#treescope">TreeScope</a></code> that contains this <code><a href="#treescope">TreeScope</a></code>.
+</p>
+<p>
+
+<p class="issue">
+<code><a href="#treescope.parenttreescope">parentTreeScope</a></code> is a natural part of a <code><a href="#treescope">TreeScope</a></code>, but allows an author to break <a href="confinement.html">confinement</a>.
+</p>
+
+<!-- ==================== -->
+
+<h2><dfn id="shadowroot" title="shadowroot">ShadowRoot</dfn></h2>
+
+<p>The root of a shadow DOM is represented by the <code><a href="#shadowroot">ShadowRoot</a></code> object:
+
+<pre class="idl">
+<a href="#shadowroot-constructor">[Constructor(in HTMLElement element) raises(DOMException)]</a>
+interface <a href="#shadowroot-interface">ShadowRoot</a> : <a href="#tree-scope-interface">TreeScope</a> {
+    attribute bool <a href="#apply-author-sheets-attribute">applyAuthorSheets</a>;
+    readonly attribute Element <a href="#shadow-host-attribute">shadowHost</a>;
+}
+</pre>
+
+<p>The <code>element</code> parameter in <a href="#shadow-root-constructor">ShadowRoot constructor</a> is an <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> that will be hosting this instance. If the element is already hosting a <span class=ref>shadow DOM subtree</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-no_modification_allowed_err">NO_MODIFICATION_ALLOWED_ERR</a> DOM Exception is raised.
+<p>The <dfn id="apply-author-sheets-attribute" title="apply-author-sheets-attribute">applyAuthorSheets</dfn> attribute indicates whether or not rules in <a href="http://www.w3.org/TR/CSS2/cascade.html">author style sheets</a> associated with the element's document apply to the <span class=def>shadow DOM subtree</a>. It is an equivalent of the <a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">XBL2 apply-author-sheets attribute</a>.</p>
+<p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers back to the element that is hosting this <span class=ref>shadow root</span>.</p>
+
+
+<p>The component model extends the <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> as follows:</p>
+
+<pre class="idl">
+[Supplemental]
+interface Element {
+    attribute String <a href="#pseudo-attribute">pseudo</a>;
+}
+</pre>
+
+<p>The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.
+
+<!-- TODO(dominicc): should reproduce the IDENT grammar here; the list
+     of identifiers are from the CSS3 draft but the links are to CSS2,
+     that has to be rationalized. -->
+
+The value must either be <code>null</code> or a string that matches the <code>IDENT</code> production of the <a href="http://www.w3.org/TR/CSS2/grammar.html">CSS grammar</a>, with the exception that the names defined by CSS for <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-class-selectors">pseudo class selectors</a> and <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">pseudo element selectors</a> are not valid, for example: <code>active</code>, <code>after</code>, <code>before</code>, <code>checked</code>, <code>disabled</code>, <code>empty</code>, <code>enabled</code>, <code>first-child</code>, <code>first-letter</code>, <code>first-line</code>, <code>first-of-type</code>, <code>focus</code>, <code>hover</code>, <code>indeterminate</code>, <code>lang</code>, <code>last-child</code>, <code>last-of-type</code>, <code>link</code>, <code>not</code>, <code>nth-child</code>, <code>nth-last-child</code>, <code>nth-last-of-type</code>, <code>nth-of-type</code>, <code>only-child</code>, <code>only-of-type</code>, <code>root</code>, <code>target</code>, <code>visited</code>.
+
+<!-- ==================== -->
+
+</body>
+</html>

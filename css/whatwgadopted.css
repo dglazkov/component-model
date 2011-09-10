@@ -194,6 +194,7 @@ pre.idl::before {
     border: thin solid;
     border-radius: 0 0 0 0.5em
 }
+
 pre.asn {
     border: solid thin;
     background: #EEEEEE;
@@ -204,6 +205,7 @@ pre.asn :link, pre.asn :visited {
     color: inherit;
     background: transparent;
 }
+
 pre.css {
     border: solid thin;
     background: #FFFFEE;
@@ -466,6 +468,13 @@ li > span:not([title=""]):not([class="XXX"]):not([class="impl"]):not([class="not
 p .big-issue, p .XXX {
     line-height: 3em; 
 }
+.XXX::before, .XXX::after {
+    content: " ** "; 
+    position: absolute; 
+    left: 0; width: 8em;
+    text-align: right; 
+}
+
 .note {
     color: purple;
     background: transparent;
@@ -473,29 +482,14 @@ p .big-issue, p .XXX {
     font-style: italic; 
     font-family: sans-serif, Droid Sans Fallback; 
 }
-.warning { 
-    color: red; 
-    background: transparent; 
-    font-weight: bolder; 
-    font-style: italic; 
-}
-.XXX::before, .XXX::after {
-    content: " ** "; 
-    position: absolute; 
-    left: 0; width: 8em;
-    text-align: right; 
-}
-p.note::before { 
-    content: 'Note: '; 
-}
-p.warning::before { 
-    content: '\26A0 Warning! '; /* warning sign */
-}
 p.note, div.note { 
     padding: 0.5em 2em; 
 }
 span.note {
     padding: 0 2em; 
+}
+p.note::before { 
+    content: 'Note: '; 
 }
 .note em, .warning em, .note i, .warning i { 
     font-style: normal; 
@@ -506,8 +500,18 @@ span.note {
 .note p:last-child, .warning p:last-child { 
     margin-bottom: 0; 
 }
+
+.warning { 
+    color: red; 
+    background: transparent; 
+    font-weight: bolder; 
+    font-style: italic; 
+}
 .warning::before {
     font-style: normal; 
+}
+p.warning::before { 
+    content: '\26A0 Warning! '; /* warning sign */
 }
 
 .bookkeeping::before { 
@@ -628,9 +632,9 @@ ul.domTree li {
     list-style: none; 
     position: relative; 
 }
-ul.domTree li li { 
+/*ul.domTree li li { 
     list-style: none; 
-}
+}*/
 ul.domTree li:first-child::before { 
     position: absolute; 
     top: 0; 
@@ -655,7 +659,21 @@ ul.domTree span {
     font-style: italic; 
     font-family: serif, Droid Sans Fallback; 
 }
-ul.domTree .t1 code { 
+/*
+    .t1  element
+    .t2  attribute
+    .t3  text node
+    .t4  CDATA
+    .t5  entity reference
+    .t6  entity
+    .t7  PI
+    .t8  comment
+    .t9  document
+    .t10 DOCTYPE
+    .t11 document fragment
+    .t12 notation
+*/
+ul.domTree .t1 code {
     color: purple; 
     font-weight: bold; 
 }

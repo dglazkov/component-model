@@ -7,29 +7,59 @@
 
 <body class="draft"> 
 
+<!-- ==================== -->
+
 <div class="head"> 
-	<h1>Component Model</h1> 
+    <h1>Component Model</h1> 
     <p>Draft Version</p>
-		
-	<p class="copyright">© Copyright 2011
-	<p class="copyright">You are granted a license to use, reproduce and create derivative works of this document.
+        
+    <p class="copyright">© Copyright 2011
+    <p class="copyright">You are granted a license to use, reproduce and create derivative works of this document.
 </div> 
  
+<!-- ==================== -->
+
 <h2 class="no-num no-toc">Status</h2> 
- 
+
+<p class="warning">This specification is a work-in-progress!</p>
+
 <p>TODO: status summary</p>
+
+<!-- ==================== -->
+
+<h2>Table of contents</h2>
+
+<ol>
+    <li><a href="shadowdom.html">Shadow DOM</a>
+        <ol>
+            <li><a href="shadowdom.html#overview">Overview</a></li>
+            <li><a href="shadowdom.html#treescope">TreeScope</a></li>
+            <li><a href="shadowdom.html#shadowroot">ShadowRoot</a></li>
+        </ol></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="css.html">CSS</a></li>
+    <li><a href="content.html">The &lt;content&gt; element</a></li>
+    <li><a href="forwarding.html">Attribute forwarding</a></li>
+    <li><a href="rendering.html">Rendering</a></li>
+    <li><a href="constructable.html">Constructable DOM elements</a></li>
+    <li><a href="confinement.html">Confinement</a></li>
+</ol> 
+
+<!-- ==================== -->
 
 <h2 id="typographic-conventions">Typographic conventions</h4> 
 
-<p>(This section, as well as styling and conventions were adopted from the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/">WHATWG HTML5</a> spec.)
+<p>(This section, as well as styling and conventions were adopted from the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/">WHATWG HTML5</a> spec and the <a href="http://www.w3.org/">W3C</a> sites.)
 
 <p>This is a definition, requirement, or explanation.</p> 
 
 <p class="note">This is a note.</p> 
 
-<p class="example">This is an example.</p> 
+<div class="example">This is an example.</div> 
 
-<p class="XXX">This is an open issue.</p> 
+<pre class="example">This is a code example.</pre> 
+
+<p class="issue">This is an open issue.</p> 
 
 <p class="warning">This is a warning.</p> 
 
@@ -38,14 +68,15 @@
 };</pre> 
 
 <dl class="domintro"><dt><var title="">variable</var> = <var title="">object</var> . <code title="">method</code>( [ <var title="">optionalArgument</var> ] )</dt> 
-
 <dd> 
-
 <p>This is a note to authors describing the usage of an interface.</p> 
-
 </dd> 
+</dl>
 
-</dl><pre class="css">/* this is a CSS fragment */</pre> 
+<pre class="css">
+/* this is a CSS fragment */
+.example { ... }
+</pre> 
 
 <p>The defining instance of a term is marked up like <dfn id="x-this" title="x-this">this</dfn>. Uses of that term are marked up like
 <a href="#x-this" title="x-this">this</a> or like <i title="x-this"><a href="#x-this">this</a></i>.</p> 
@@ -122,49 +153,7 @@ and <code><a href="sections.html#the-body-element">body</a></code>, as well as a
 </p> 
 -->
 
-<h2>Shadow DOM</h2> 
- 
-<p>TODO</p>
+<!-- ==================== -->
 
-<h3>Overview</h3> 
- 
-<p>TODO</p>
-
-<h3>DOM</h3> 
- 
-<p>TODO</p>
-
-<h3>TreeScope</h3> 
- 
-<p>TODO</p>
-
-<pre class=idl>IDL</pre>
-
-<h3>Shadow Root</h3> 
- 
-<p>TODO</p>
-
-<pre class=idl>IDL</pre>
-
-<h3>Events</h3> 
- 
-<p>TODO</p>
-
-<h3>CSS</h3>
- 
-<p>TODO</p>
-
-<h3>Attribute Forwarding</h3> 
- 
-<p>TODO</p>
-
-
-<h2>Constructable DOM Elements</h2> 
- 
-<p>TODO</p>
-
-  
-<h2>Confinement</h2> 
- 
-<p>TODO</p>
-  
+</body>
+</html>
