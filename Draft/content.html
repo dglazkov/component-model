@@ -6,8 +6,66 @@
 
 <!-- ==================== -->
 
-<h1>The &lt;content&gt: Element</h1>
+<div class="head"> 
+    <h1>The content Element</h1>
+    <p>Draft Version</p>
+        
+    <p class="copyright">© Copyright 2011
+    <p class="copyright">You are granted a license to use, reproduce and create derivative works of this document.
+</div> 
 
+<!-- ==================== -->
+
+<h2 class="no-num no-toc">Status</h2> 
+
+<p class="warning">This is a work-in-progress!</p>
+
+<!-- ==================== -->
+
+<h2>Overview</h2> 
+
+<p>For some use cases it may be useful if the host element is allowed to have children of its own, that then become part of the rendered component.
+Those children could either be regular HTML content (e.g., for a layouting comnponent), 
+or components of their own that work hand-in-hand with their parent.
+To this end, the shadow DOM may contain one or more content elements that define where those children are to be rendered.</p>
+
+<!-- ==================== -->
+
+<h2> Definition</h2>
+
+<h4>The <dfn id="content" title="content"><code>content</code></dfn> element</h4> 
+
+<div class="element">
+<pre class="idl">
+interface HTMLContentELement : HTMLElement {
+    attribute DOMString     <a href="#content.select">select</a>;
+    attribute boolean       <a href="#content.reverse">reverse</a>;
+}
+</pre>
+</div>
+
+
+<p><code><dfn id="content.select" title="select">select</dfn></code> defines which children of the host element are to be displayed in position of the <code>content</code> element.
+It contains a space-separated list of <span>selector sequences</span>. Every such sequence may contain:</p>
+<ul class="brief">
+    <li>element selector or universal selector</li>
+    <li>class selector(s)</li>
+    <li>ID selector</li>
+    <li>attribute selector(s)</li>
+    <li>pseudo-class selector(s)</li>
+</ul>
+
+<p>It MUST NOT contain pseudo-element selectors. If present such a <span>selector sequence</span> is disregarded in its entirety.</p>
+
+<p>A <code><a href="#content">content</a></code> element without a <code><a href="#content.select">select</a></code> attribute selects all children
+that are not selected by any other <code><a href="#content">content</a></code> element.
+A given shadow tree MUST contain only at most a single <code><a href="#content">content</a></code> element without a <code>select attribute</code>. 
+In case there are more than one such <code><a href="#content">content</a></code> elements, only the first such content element selects any children.</p>
+
+<p>A <code><a href="#content">content</a></code> element may have content of its own,
+which is rendered in the case the <code><a href="#content">content</a></code> element doesn't select any children of the host element.</p>
+
+<p>The <code><dfn id="content.reverse" title="select">reverse</dfn></code> attribute, if present, specifies that all selected children of the host element are to be rendered in reversed order.</p>
 
 <!-- ==================== -->
 

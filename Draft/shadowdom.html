@@ -6,7 +6,19 @@
 
 <!-- ==================== -->
 
-<h1>Shadow DOM</h1>
+<div class="head"> 
+    <h1>Shadow DOM</h1>
+    <p>Draft Version</p>
+
+    <p class="copyright">© Copyright 2011
+    <p class="copyright">You are granted a license to use, reproduce and create derivative works of this document.
+</div> 
+
+<!-- ==================== -->
+
+<h2 class="no-num no-toc">Status</h2> 
+
+<p class="warning">This is a work-in-progress!</p>
 
 <!-- ==================== -->
 
@@ -64,6 +76,12 @@ interface <a href="#treescope">TreeScope</a> {
     <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#treewalker">TreeWalker</a>      <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#dom-document-createtreewalker">createTreeWalker</a>(Node root, optional unsigned long whatToShow, optional NodeFilter? filter);
 }
 </pre>
+
+<p class="issue">
+It would be nice to also add <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-getelementsbyname">getElementsByName</a></code>,
+but this is located within the <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#htmldocument">HTMLDocument</a></code> interface.
+Note that also <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#documents-in-the-dom">the HTML5 spec</a> defines <code>HTMLDocument</code> to no longer be derived from document.
+</p>
 
 <p>
 <dfn id="treescope.parenttreescope" title="parentTreeScope">parentTreeScope</dfn>: returns the <code><a href="#treescope">TreeScope</a></code> that contains this <code><a href="#treescope">TreeScope</a></code>.

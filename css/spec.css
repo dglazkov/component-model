@@ -246,8 +246,11 @@ pre.example, pre.html, pre.xml {
     clear: both;
     color: #600;
 }
-pre.example, pre.html, pre.xml {
+pre.example {
     padding-top: 1.5em;
+}
+pre.html, pre.xml {
+    padding-top: 0.5em;
 }
 div.illegal, pre.illegal { color: red }
 div.illegal p { color: black }
