@@ -24,7 +24,12 @@
 
 <h2><span class="secno">.1</span> <a name="overview">Overview</a></h2>
 
-<p></p>
+<p>By default, the component should not be able to affect the including document or parent component, nor be able to discern its state (<dfn id="confinement" title="confinement">confinement</dfn>),
+and vice-versa (<dfn id="isolation" title="isolation">isolation</dfn>).
+</p>
+
+<code><a href="confinement">Confinement</a></code> and <code><a href="isolation">isolation</a></code> can be broken if and only if <em>both</em> the including document/parent component
+<em>and</em> the component "agree".</p>
 
 <!-- ==================== -->
 
