@@ -28,8 +28,32 @@
 and vice-versa (<dfn id="isolation" title="isolation">isolation</dfn>).
 </p>
 
-<code><a href="confinement">Confinement</a></code> and <code><a href="isolation">isolation</a></code> can be broken if and only if <em>both</em> the including document/parent component
+<p><code><a href="#confinement">Confinement</a></code> and <code><a href="#isolation">isolation</a></code> can be broken if and only if <em>both</em> the including document/parent component
 <em>and</em> the component "agree".</p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.1</span> <a name="javascript">JavaScript</a></h2>
+
+<p><code><a href="#confinement">Confinement</a></code> requires:</p>
+<ul class="brief">
+    <li>The component has no access to <code>document</code> or <code>window</code>, or the returned objects are limited.</li>
+    <li>CSS rules do not cross over into the shadow tree, nor our of it.</li>
+    <li>...</li>
+</ul>
+
+<p><code><a href="#isolation">Isolation</a></code> requires:</p>
+<ul class="brief">
+    <li>There is no accessor method to reach the shadow tree from the enclosing scope.</li>
+    <li>CSS rules do not cross over into the shadow tree, nor our of it.</li>
+    <li>...</li>
+</ul>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.2</span> <a name="css">CSS</a></h2>
+
+<p>See the <a href="css.html">CSS part</are> of this spec.</a>
 
 <!-- ==================== -->
 
