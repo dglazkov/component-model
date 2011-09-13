@@ -190,81 +190,6 @@ td > .example:only-child {
     margin: 0 0 0 0.1em;
 }
 */
-/* W3C-version: */
-.example {
-    counter-increment: exampleno;
-}
-div.example:before {
-    content: "Example";
-    content: "Example " counter(exampleno, upper-roman);
-    font: bold small sans-serif;
-    /*float: left;*/
-    position: absolute;
-    top: -0.6em;
-    left: -2.5em;
-    min-width: 7.5em;
-    text-align: center;
-    line-height: 1em;
-    color: #FFF8DD;
-    background: #600;
-    padding: 0.1em;
-    border: thin solid #999;
-    /*margin: -1.3em 0 0.3em -2.5em;*/
-}
-pre.example:before {
-    content: "Example";
-    content: "Example " counter(exampleno, upper-roman);
-    font: bold small sans-serif;
-    /*float: left;*/
-    position: absolute;
-    top: -0.6em;
-    left: -2.5em;
-    min-width: 7.5em;
-    text-align: center;
-    line-height: 1em;
-    color: #FFF8DD;
-    background: #600;
-    padding: 0.1em;
-    border: thin solid #999;
-    /*margin: -1.3em 0 0.3em -2.5em;*/
-}
-div.example, div.html, div.xml {
-    background: #FFF8DD;
-    padding: 1em 0.5em 0.5em 0.5em;
-    margin: 1em 0;
-    border: thin solid #999;
-    position: relative;
-    clear: both;
-    color: #600;
-}
-pre.example, pre.html, pre.xml {
-    background: #FFF8DD;
-    padding: 0em 0.5em 0.5em 0.5em;
-    margin: 1em 0;
-    border: thin solid #999;
-    position: relative;
-    clear: both;
-    color: #600;
-}
-pre.example {
-    padding-top: 1.5em;
-}
-pre.html, pre.xml {
-    padding-top: 0.5em;
-}
-div.illegal, pre.illegal { color: red }
-div.illegal p { color: black }
-
-em.fixme::before {
-    content: 'FIXME:';
-    color: White;
-    background-color: Red;
-    padding: 0 0.2em;
-    border-radius: 0.2em;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 0.8em;
-}
 
 div.algorithm {
     padding: 0.5em 1em;
@@ -292,10 +217,11 @@ pre.css {
     color: black;
     padding: 0.5em 1em;
 }
+/*
 pre.css:first-line {
     color: #AAAA50; 
 }
-
+*/
 
 p { 
     margin: 1em 0; 
@@ -781,6 +707,82 @@ ul.domTree .t7 code, .domTree .t8 code {
 }
 ul.domTree .t10 code { 
     color: teal; 
+}
+
+/* W3C-version: */
+.example {
+    counter-increment: exampleno;
+}
+div.example:before {
+    content: "Example";
+    content: "Example " counter(exampleno, upper-roman);
+    font: bold small sans-serif;
+    /*float: left;*/
+    position: absolute;
+    top: -0.6em;
+    left: -2.5em;
+    min-width: 7.5em;
+    text-align: center;
+    line-height: 1em;
+    color: #FFF8DD;
+    background: #600;
+    padding: 0.1em;
+    border: thin solid #999;
+    /*margin: -1.3em 0 0.3em -2.5em;*/
+}
+pre.example:before {
+    content: "Example";
+    content: "Example " counter(exampleno, upper-roman);
+    font: bold small sans-serif;
+    /*float: left;*/
+    position: absolute;
+    top: -0.6em;
+    left: -2.5em;
+    min-width: 7.5em;
+    text-align: center;
+    line-height: 1em;
+    color: #FFF8DD;
+    background: #600;
+    padding: 0.1em;
+    border: thin solid #999;
+    /*margin: -1.3em 0 0.3em -2.5em;*/
+}
+div.example, div.html, div.xml {
+    background: #FFF8DD;
+    padding: 1em 0.5em 0.5em 0.5em;
+    margin: 1em 0;
+    border: thin solid #999;
+    position: relative;
+    clear: both;
+    color: #600;
+}
+pre.example, pre.html, pre.xml {
+    background: #FFF8DD;
+    padding: 0em 0.5em 0.5em 0.5em;
+    margin: 1em 0;
+    border: thin solid #999;
+    position: relative;
+    clear: both;
+    color: #600;
+}
+pre.html, pre.xml {
+    padding-top: 0.5em;
+}
+pre.example {
+    padding-top: 1.5em;
+}
+div.illegal, pre.illegal { color: red }
+div.illegal p { color: black }
+
+em.fixme::before {
+    content: 'FIXME:';
+    color: White;
+    background-color: Red;
+    padding: 0 0.2em;
+    border-radius: 0.2em;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.8em;
 }
 
 /* ----------------------- */

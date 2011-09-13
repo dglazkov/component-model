@@ -22,6 +22,211 @@
 
 <!-- ==================== -->
 
+<h2><span class="secno">.1</span> <a name="overview">Overview</a></h2>
+
+<p></p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.2</span> <a name="style-the-shadow-tree">Styling the shadow tree</a></h2>
+
+<p>Use <span><code>&lt;style scoped&gt;</code></span></p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.3</span> <a name="crossing-boundaries">Crossing boundaries</a></h2>
+
+<p>Style rules from the  <span>host element</span>'s DOM tree are not normally allowed to cross into the shadow DOM.
+Conversely, style rules defined in the shadow tree are not normally allowed to cross over the <code><a href="content.html">content</a></code> boundary back into the <span>host element</span>'s tree.</p>
+
+<!-- ========== -->
+
+<h3><span class="secno">.3.1</span> <a name="crossing-boundaries.xbl">The XBL way</a></h3>
+
+<p class="warning">The following is the the current "state of the art", but suffers from various drawbacks</p>
+
+<p>XBL defines the <code><a href="http://dev.w3.org/2006/xbl2/#allow-selectors-through">allow-selectors-through</a></code> and
+<code><a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">apply-author-sheets</a></code> attributes on the binding template.</p>
+
+<p><code><a href="http://dev.w3.org/2006/xbl2/#allow-selectors-through">allow-selectors-through</a></code> allows style selectors defined for the outer tree to cross the boundary into the shadow tree.</p>
+
+<p><code><a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">apply-author-sheets</a></code> allows style rules defined for the outer tree to be applied entirely inside the shadow tree.</p>
+
+<p>XBL furthermore defines the <code><a href="http://dev.w3.org/2006/xbl2/#apply-binding-sheets">apply-binding-sheets</a></code> attribute on 
+<code><a href="http://dev.w3.org/2006/xbl2/#content">content</a></code> elements. If set, this allows style rules defined for the shadow tree to apply to the <span>host element</span>'s children
+that are selected by that <code><a href="http://dev.w3.org/2006/xbl2/#content">content</a></code> element.</p>
+
+<p>Finally, XBL defines the <code><a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">pseudo</a></code> attribute on elements inside the shadow tree.
+Its content is a ID that then can be used in outside style rules as pseudo-element in order to style that element specifically.
+E.g., a <code>&lt;div pseudo="label"&gt;</code> inside a "x-foo" component could be styled by an outside rule <code>x-foo::label { color: red; }</code>.</p>
+
+<div class="issue">
+    The XBL approach has several drawbacks:
+    <ul>
+        <li><code><a href="http://dev.w3.org/2006/xbl2/#allow-selectors-through">allow-selectors-through</a></code>,
+            <code><a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">apply-author-sheets</a></code> and
+            <code><a href="http://dev.w3.org/2006/xbl2/#apply-binding-sheets">apply-binding-sheets</a></code> break confinement.</li>
+
+        <li><code><a href="http://dev.w3.org/2006/xbl2/#allow-selectors-through">allow-selectors-through</a></code> and
+            <code><a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">apply-author-sheets</a></code> do not allow control over what kind of styles attributes to apply/let through.</li>
+
+        <li>pseudo-IDs are either very limited (XBL proposes to allow only <code>value</code>, <code>choices</code>, <code>label</code>, <code>repeat-item</code> and <code>icon</code>),
+            or pollute the CSS pseudo-element namespace.
+            If allowed arbitrarily they may clash across components, which would makes it hard for the CSS working group to define new pseudo-elements.</li>
+
+        <li>It is not clear whether the same pseudo-ID could be applied to several different elements</li>
+
+        <li>Associating a pseudo-ID with a specific element (elements?) makes it harder to later re-design the component without breaking using sites.</li>
+
+        <li>Pseudo-IDs allow selectors like <code>x-foo::label div { color: red; }</code> to style arbitrary elements of the shadow tree rather than just the designated element(s).
+            This again makes it harder for component authors to later redesign components without breaking user sites.</li>
+    </ul>
+</div>
+
+<!-- ========== -->
+
+<h3><span class="secno">.3.2</span> <a name="crossing-boundaries.pseudo-attributes">Using <a href="pseudo-attributes">pseudo-attributes</a> and CSS <code><a href="#apply">apply</a></code></a></h3>
+
+<p class="warning">The following is a proposal that has not seen widespread discussion.</p>
+
+<p class="note">The following is similar, but not identical, to <span>CSS variables</span> and <span>CSS constants</span>.</p>
+
+<p>An alternative to the XBL approach could be (for the lack of a better term) <dfn id="pseudo-attributes" title="pseudo attributes">pseudo attributes</dfn>.
+In this approach, a style rule may set a number of arbitrary attribute-value pairs that in and of themselves have no effect.
+However, a style sheet in the shadow tree can use a new CSS attribute <dfn id="apply" title="apply">apply</dfn> to select which values to apply.</p>
+
+<p>Example, using a prefix '::' for pseudo-attributes:</p>
+
+<pre class="example css">
+x-tabbar {
+    background-color:                   azure;
+    ::label-backround-color:            lightblue;
+    ::selected-label-background-color:  slategray;
+}
+</pre>
+
+Within the component:
+
+<pre class="html">
+#ShadowRoot
+    &lt;style scoped&gt;
+        x-label {
+            color: apply(background-color);                             [1]
+            background-color: apply(color);
+
+            color: apply(::label-color);                                [2]
+            background-color: apply(::label-background-color)           [3]
+        }
+        x-label[selected] {
+            background-color: apply(::selected-label-background-color)  [4]
+            ::tab-background: apply(::selected-label-background-color)  [5]
+        }
+    &lt;/style&gt;
+    &lt;div id="background"&gt;
+        &lt;x-label&gt;Tasks&lt;/x-label&gt;
+        &lt;x-label selected&gt;Calendar&lt;/x-label&gt;
+        &lt;x-label&gt;Contacts&lt;x-label&gt;
+    &lt;/div&gt;
+</pre>
+
+<dl>
+    <dt>[1]
+    <dd>These 2 lines revert foreground (text) color and background color.
+        This example shows how <code><a href="#apply">apply</a></code> could apply not only to pseudo-attributes.
+    <dt>[2]
+    <dd>The foreground-color of non-selected label is set to the <code>::label-color</code> pseudo-attribute, if defined.
+        As this comes after the initial setting of the label color in [1], it gets precedence.
+        If, on the other hand, <code>::label-color</code> is not defined (as is the case in above example), this line has no effect.
+    <dt>[3]
+    <dd>Overriding the background color of labels by the same mechanism as in [2].
+        Unlike <code>::label-color</code>, <code>::label-background-color</code> <em>is</em> defined in the example though, so this line would take effect.
+    <dt>[4]
+    <dd>Setting the background-color of the selected label.
+    <dt>[5]
+    <dd>This line forwards the passed-in <code>::selected-label-background-color</code> pseudo-attribute as <code>::tab-background</code>, p[resumably for use in nested components of <code>x-label</code>.
+</dl>
+
+<p>Advantages of this approach:</p>
+
+<ul class="brief">
+    <li>Avoids pseudo-element namespace pollution, while still allowing arbitrary names.</li>
+    <li>A given pseudo-attribute can be applied in various places in a stright-forward manner.</li>
+    <li>Pseudo-attributes can be applied directyl, or forwarded to nested components - the user does not need to know about the internal structure.</li>
+    <li>Pseudo-attributes that are not applied have no effect, giving the author control over how the component is stylable.</li>
+    <li><code><a href="#apply">apply</a></code> can be used for other effects, as shown in [1] in the example above.</li>
+</ul>
+
+<p>Downsides:</p>
+
+<p class="issue">
+Requires extension to the CSS spec.
+</p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.4</span> <a name="crossing-boundaries">Inheritance</a></h2>
+
+<p>For several use cases (e.g., components creating native-like widgets) it may be beneficial to specify how CSS inheritance works across host-shadow boundaries.</p>
+
+<!-- ========== -->
+
+<h3><span class="secno">.4.1</span> <a name="inheritance.xbl">The XBL way</a></h3>
+
+<p class="note">The following is AFAICT</p>
+
+<p>In XBL, CSS inheritance crossses the flattened tree. There is no way to limit or steer this behavior.</p>
+
+<!-- ========== -->
+
+<h3><span class="secno">.4.2</span> <a name="inheritance.apply">Using CSS <code><a href="#apply">apply</a></code></a></h3>
+
+<p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.5</span> <a name="style-the-host-element">Styling the <span>host element</span></a></h2>
+
+<dl class="switch">
+    <dt>If the host element is rendered
+    <dd>
+        <dl class="switch">
+            <dt>If the component is confined
+            <dd><p>This is the currently thought-of scenario.</p>
+                <div class="issue">
+                    <p>This requires a second stylesheet in addition to any (scoped) stylesheet within the component.</p>
+                </div>
+        
+            <dt>If the component is not confined
+            <dd><p>The component's stylesheet can style the host element directly, not requiring a second stylesheet
+                <div class="issue">
+                    <p>The host element can be styled by stylesheets from 2 different scopes, requiring a resolution order.
+                       Most likely <i>author</i> &gt; <i>component</i> &gt; <i>user</i> &gt; <i>UA</i>.</p>
+                    <p>The components stylesheet could be written so as to style descendants of the host element. Preventing this adds additional complexity.
+                </div>
+        </dl>
+        
+    <dt>If the host element is NOT rendered
+    <dd><div class="issue">
+            <p>This raises the question how styles that address the host element are to be handled.
+               Most likely by storing the style on the host element, but applying it to the shadow tree instead, causing additional complexity</p>
+        </div>
+        <dl class="switch">
+            <dt>If the ShadowRoot is rendered (if it is an element instead of a separate node type)
+            <dt>...
+            
+            <dt>If the ShadowRoot is not rendered
+            <dt>...
+        </dl>
+</dl>
+
+<!-- ==================== -->
+
+<h2><span class="secno">.6</span> <a name="style-content-elements">Styling <code><a href="content.html">content</a></code> elements</a></h2>
+
+<p>This has similar issues and raises similar questions as styling the host element.</p>
+
+<!-- ==================== -->
+
 </body>
 </html>
 

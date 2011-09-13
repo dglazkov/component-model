@@ -43,7 +43,7 @@
 
 <!-- ==================== -->
 
-<h2>Event Retargeting</h2>
+<h2><span class="secno">.1</span> Event Retargeting</h2>
 
 <p>When an event is fired in a <a href="shadowdom.html">shadow DOM subtree</a>, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the <span class=ref>shadow boundary</span>.</p>
 <p>To help with algorithm description, let's define the direction walking the ancestors of a node as <dfn>up</dfn> when traversing from child to parent, and <dfn>down</dfn> when traversing from parent to child. In the context of events-related algorithms, all ancestor traversal crosses <span class=ref>shadow boundaries</span>.</p>
@@ -73,7 +73,7 @@
 
 <!-- ==================== -->
 
-<h2>Related Target Events</h2>
+<h2><span class="secno">.2</span> Related Target Events</h2>
 
 <p>Some events have a <code>relatedTarget</code> property, which holds a node that's not the event's target, but is related to the event. For instance, a <code>mouseover</code> event's <code>relatedTarget</code> may hold the node from which the mouse has moved to event's <code>target</code>. In the case where <code>relatedTarget</code> is in a <span class=ref>shadow DOM subtree</span>, we don't want to leak its actual value outside of this subtree. In cases where both <code>relatedTarget</code> and <code>target</code> are part of the same <span class=ref>shadow DOM subtree</span>, we don't want the appearance of spurious <code>mouseover</code> and <code>mouseout</code> events firing from the same node.</p> 
 
@@ -101,17 +101,17 @@
 
 <!-- ==================== -->
 
-<h2>Focus Events</h2>
+<h2><span class="secno">.3</span> Focus Events</h2>
 
 <p>The <code>focus</code>, <code>DOMFocusIn</code>, <code>blur</code>, and <code>DOMFocusOut</code> events must be treated in the same way as events with a <code>relatedTarget</code>, where the corresponding node that is losing focus as a result of <code>target</code> gaining focus or the node that is gaining focus, and thus causing the blurring of <code>target</code> acts as the related target.
 
-<h3>Events That Are Always Stopped</h3>
+<h3><span class="secno">.3.1</span> Events That Are Always Stopped</h3>
 
 <p>Mutation events and <code>selectstart</code> event are always stopped at the nearest <span class=ref>shadow boundary</span>.</p>
 
 <!-- ==================== -->
 
-<h2>Example</h2>
+<h2><span class="secno">.4</span> Example</h2>
 
 <p>Suppose we have a user interface for a media controller, built with several components, represented by this <span class=ref>shadow-aware DOM tree</span>:</p>
 
