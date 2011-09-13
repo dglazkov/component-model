@@ -7,7 +7,7 @@
 <!-- ==================== -->
 
 <div class="head"> 
-    <h1>Rendering of the Component Model</h1>
+    <h1><span class="secno">7</span> Rendering of the Component Model</h1>
     <p>Draft Version</p>
         
     <p class="copyright">© Copyright 2011
@@ -22,24 +22,24 @@
 
 <!-- ==================== -->
 
-<h2><span class="secno">.1</span> Rendering</h2> 
+<h2><span class="secno">7.1</span> Rendering</h2> 
 
-<h3><span class="secno">.1.1</span> Host element</h3>
+<h3><span class="secno">7.1.1</span> Host element</h3>
 <p>The <span>host element</span> is rendered as normal, including all applicable styles for the element.</p>
 
-<h3><span class="secno">.1.2</span> Children of the <span>host element</span></h3>
+<h3><span class="secno">7.1.2</span> Children of the <span>host element</span></h3>
 <p>Any content of the <span>host element</span> MUST NOT be rendered directly.
 Instead, such content will be rendered as determined by <code><a href="content.html">content</a></code> elements inside the shadow tree associated with the <span>host element</span>.</p>
 <p>In place of rendering the content of the <span>host element</span>, the shadow tree rooted in the <code><a href="shadowroot.html">ShadowRoot</a></code> node associated with the <span>host element</span> is rendered.</p>
 
-<h3><span class="secno">.1.3</span> The <code><a href="shadowroot.html">ShadowRoot</a></code> node</h3>
+<h3><span class="secno">7.1.3</span> The <code><a href="shadowroot.html">ShadowRoot</a></code> node</h3>
 <p>The <code><a href="shadowroot.html">ShadowRoot</a></code> node itself MUST NOT be rendered.</p>
 
-<h3><span class="secno">.1.4</span> Descendants of the <code><a href="shadowroot.html">ShadowRoot</a></code> node</h3>
+<h3><span class="secno">7.1.4</span> Descendants of the <code><a href="shadowroot.html">ShadowRoot</a></code> node</h3>
 <p>Descendants of the <code><a href="shadowroot.html">ShadowRoot</a></code> node are rendered as normal, with the exception of <code><a href="content.html">content</a></code> elements.
 <p>Also, styles and style rules declared for the DOM tree the <span>host element</span> resides in are by default NOT applicable to nodes in the shadow tree.</p>
 
-<h3><span class="secno">.1.5</span> <code><a href="content.html">content</a></code> elements</h3>
+<h3><span class="secno">7.1.5</span> <code><a href="content.html">content</a></code> elements</h3>
 <p><code><a href="content.html">content</a></code> elements are NOT rendered.
 In their place the child nodes of the <span>host element</span> selected by the <code><a href="content.html">content</a></code> element is rendered.
 In case no child node of the <span>host element</span> is selected by the <code><a href="content.html">content</a></code> element,
@@ -47,7 +47,7 @@ the fallback content of the <code><a href="content.html">content</a></code> elem
 
 <!-- ==================== -->
 
-<h2><span class="secno">.2</span> Examples</h2> 
+<h2><span class="secno">7.2</span> Examples</h2> 
 
 <p>For example, to replicate the <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-details-element">details</a></code> element, the following shadow tree might be used:</p>
 <pre class="example">

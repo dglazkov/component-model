@@ -7,7 +7,7 @@
 <!-- ==================== -->
 
 <div class="head"> 
-    <h1>CSS in the Component Model</h1>
+    <h1><span class="secno">3</span> CSS in the Component Model</h1>
     <p>Draft Version</p>
         
     <p class="copyright">© Copyright 2011
@@ -22,26 +22,26 @@
 
 <!-- ==================== -->
 
-<h2><span class="secno">.1</span> <a name="overview">Overview</a></h2>
+<h2><span class="secno">3.1</span> <a name="overview">Overview</a></h2>
 
 <p></p>
 
 <!-- ==================== -->
 
-<h2><span class="secno">.2</span> <a name="style-the-shadow-tree">Styling the shadow tree</a></h2>
+<h2><span class="secno">3.2</span> <a name="style-the-shadow-tree">Styling the shadow tree</a></h2>
 
 <p>Use <span><code>&lt;style scoped&gt;</code></span></p>
 
 <!-- ==================== -->
 
-<h2><span class="secno">.3</span> <a name="crossing-boundaries">Crossing boundaries</a></h2>
+<h2><span class="secno">3.3</span> <a name="crossing-boundaries">Crossing boundaries</a></h2>
 
 <p>Style rules from the  <span>host element</span>'s DOM tree are not normally allowed to cross into the shadow DOM.
 Conversely, style rules defined in the shadow tree are not normally allowed to cross over the <code><a href="content.html">content</a></code> boundary back into the <span>host element</span>'s tree.</p>
 
 <!-- ========== -->
 
-<h3><span class="secno">.3.1</span> <a name="crossing-boundaries.xbl">The XBL way</a></h3>
+<h3><span class="secno">3.3.1</span> <a name="crossing-boundaries.xbl">The XBL way</a></h3>
 
 <p class="warning">The following is the the current "state of the art", but suffers from various drawbacks</p>
 
@@ -85,7 +85,7 @@ E.g., a <code>&lt;div pseudo="label"&gt;</code> inside a "x-foo" component could
 
 <!-- ========== -->
 
-<h3><span class="secno">.3.2</span> <a name="crossing-boundaries.pseudo-attributes">Using <a href="pseudo-attributes">pseudo-attributes</a> and CSS <code><a href="#apply">apply</a></code></a></h3>
+<h3><span class="secno">3.3.2</span> <a name="crossing-boundaries.pseudo-attributes">Using <a href="pseudo-attributes">pseudo-attributes</a> and CSS <code><a href="#apply">apply</a></code></a></h3>
 
 <p class="warning">The following is a proposal that has not seen widespread discussion.</p>
 
@@ -164,13 +164,13 @@ Requires extension to the CSS spec.
 
 <!-- ==================== -->
 
-<h2><span class="secno">.4</span> <a name="crossing-boundaries">Inheritance</a></h2>
+<h2><span class="secno">3.4</span> <a name="crossing-boundaries">Inheritance</a></h2>
 
 <p>For several use cases (e.g., components creating native-like widgets) it may be beneficial to specify how CSS inheritance works across host-shadow boundaries.</p>
 
 <!-- ========== -->
 
-<h3><span class="secno">.4.1</span> <a name="inheritance.xbl">The XBL way</a></h3>
+<h3><span class="secno">3.4.1</span> <a name="inheritance.xbl">The XBL way</a></h3>
 
 <p class="note">The following is AFAICT</p>
 
@@ -178,13 +178,13 @@ Requires extension to the CSS spec.
 
 <!-- ========== -->
 
-<h3><span class="secno">.4.2</span> <a name="inheritance.apply">Using CSS <code><a href="#apply">apply</a></code></a></h3>
+<h3><span class="secno">3.4.2</span> <a name="inheritance.apply">Using CSS <code><a href="#apply">apply</a></code></a></h3>
 
 <p>
 
 <!-- ==================== -->
 
-<h2><span class="secno">.5</span> <a name="style-the-host-element">Styling the <span>host element</span></a></h2>
+<h2><span class="secno">3.5</span> <a name="style-the-host-element">Styling the <span>host element</span></a></h2>
 
 <dl class="switch">
     <dt>If the host element is rendered
@@ -221,7 +221,7 @@ Requires extension to the CSS spec.
 
 <!-- ==================== -->
 
-<h2><span class="secno">.6</span> <a name="style-content-elements">Styling <code><a href="content.html">content</a></code> elements</a></h2>
+<h2><span class="secno">3.6</span> <a name="style-content-elements">Styling <code><a href="content.html">content</a></code> elements</a></h2>
 
 <p>This has similar issues and raises similar questions as styling the host element.</p>
 
