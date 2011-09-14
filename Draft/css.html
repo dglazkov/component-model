@@ -191,7 +191,7 @@ Within the component:
 
 <p class="note">Inane scribblings!</p>
 
-<pre>
+<pre class="issue">
 ::binding sets the style to inherit for the shadow tree.
 By default, this is equal to the effective style of the host element. 
 
@@ -209,9 +209,12 @@ Conversely, the component can just override the style-attributes to prevent the 
 
 Now, having to reset every possible CSS attribute would be cumbersome, to say the least.
 In order to make this useful, attribute group names could be introduced, that set the style for multiple attributes at once.
-The only value a group can take is either 'initial' or 'inherited' (default: 'inherited').
-Also note that groups could be overlapping.
-E.g.,:
+The only value a group can take is either:
+
+'initial': back to the initial value as determined by the UA
+'inherit': inherit from DOM parent
+
+Also note that groups could be overlapping. E.g.,:
 
 all: sets all attributes
 color-group: sets color, background-color, border-color
@@ -244,6 +247,43 @@ within the shadow DOM:
 &lt;/style&gt;
 
 Other inherited attributes (e.g., text, list styles) <em>would</em> be inherited in this example.
+Also note that the above groups with the described behavior could potentially be useful even outside the context of shadow DOM.
+
+A similar mechanism could be used to steer inheritance from the &lt;content&gt; element onto its selected children of the host element.
+The selection here is whether to inherit from the host element, or from the style set on &lt;content&gt;.
+However, the problem here is that there are more options:
+
+- initial as by the UA (+user sheets)
+- original value as passed-in to the shadow DOM (only relevant to the shadow DOM side)
+- inherited from the host element (only relevant to the ouside document's side)
+- inherited from the &lt;content&gt; element
+
+To this end we might specify additional values besides 'initial' and 'inherited':
+
+'original': back to the value set on the root node (equivalent to 'initial' outside shadow DOMs, the value on ShadowRoot inside shadow DOMs)
+'current': use the current render style - this is equivalent to 'inherit' outside the "interference" of a shadow DOM
+
+On the shadow DOM side, "leaking" of styles can be prevented by re-setting attributes/attribute groups on the &lt;content&gt; element:
+
+&lt;style scoped&gt;
+    content {
+        images-group: original; // reset '...-image' attributes to as they were set on the ShadowRoot
+    }
+    content[clean] {
+        all: initial; // reset everything to pristine initial values for a &lt;content&gt; element that has the (user) attribute 'clean'. 
+    }
+&lt;/style&gt;
+
+On the outside document's side we could introduce yet another pseudo-element ::inside that specifies the style to inherit from
+(just reusing the name, since this pseude-element already has been proposed once):
+
+x-foo::inside {
+    all: inherit;              // reset all styles to inherit from the host element
+    background-group: current; // ... except for 'background-...' attributes, which are used with the current style (from &lt;content&gt;)
+    white-space: initial;      // reset 'white-space' to the default value ('normal' in the case of 'white-space')
+}
+
+Note: can't use 'x-foo > *' as selector here, because that would "miss" child text nodes!
 </pre>
 
 <!-- ==================== -->
