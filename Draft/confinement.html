@@ -1,5 +1,7 @@
 <html>
 <head>
+    <title>Component Model - Confinement</title>
+
     <link rel=stylesheet type=text/css href=../css/spec.css>
 </head>
 <body>
@@ -7,7 +9,7 @@
 <!-- ==================== -->
 
 <div class="head"> 
-    <h1><span class="secno">9</span> Confinement</h1>
+    <h1><span class="secno">8</span> Confinement</h1>
     <p>Draft Version</p>
         
     <p class="copyright">© Copyright 2011
@@ -22,7 +24,7 @@
 
 <!-- ==================== -->
 
-<h2><span class="secno">9.1</span> <a name="overview">Overview</a></h2>
+<h2><span class="secno">8.1</span> <a name="overview">Overview</a></h2>
 
 <p>By default, the component should not be able to affect the including document or parent component, nor be able to discern its state (<dfn id="confinement" title="confinement">confinement</dfn>),
 and vice-versa (<dfn id="isolation" title="isolation">isolation</dfn>).
@@ -33,25 +35,27 @@ and vice-versa (<dfn id="isolation" title="isolation">isolation</dfn>).
 
 <!-- ==================== -->
 
-<h2><span class="secno">9.2</span> <a name="javascript">JavaScript</a></h2>
+<h2><span class="secno">8.2</span> <a name="javascript">JavaScript</a></h2>
 
 <p><code><a href="#confinement">Confinement</a></code> requires:</p>
-<ul class="brief">
+<ul>
     <li>The component has no access to <code>document</code> or <code>window</code>, or the returned objects are limited.</li>
+    <li>The component cannot access, nor override any prototype used in the outside doucment, including HTMLElement and Object.</li>
     <li>CSS rules do not cross over into the shadow tree, nor our of it.</li>
     <li>...</li>
 </ul>
 
 <p><code><a href="#isolation">Isolation</a></code> requires:</p>
-<ul class="brief">
+<ul>
     <li>There is no accessor method to reach the shadow tree from the enclosing scope.</li>
+    <li>The outside document cannot access, nor override the component object, nor any prototype in its prototype chain, including HTMLElement and Object.</li>
     <li>CSS rules do not cross over into the shadow tree, nor our of it.</li>
     <li>...</li>
 </ul>
 
 <!-- ==================== -->
 
-<h2><span class="secno">9.3</span> <a name="css">CSS</a></h2>
+<h2><span class="secno">8.3</span> <a name="css">CSS</a></h2>
 
 <p>See the <a href="css.html">CSS part</are> of this spec.</a>
 

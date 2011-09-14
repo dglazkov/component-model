@@ -1,5 +1,6 @@
 <html>
 <head>
+    <title>Component Model - CSS</title>
     <link rel=stylesheet type=text/css href=../css/spec.css>
 </head>
 <body>
@@ -63,6 +64,8 @@ E.g., a <code>&lt;div pseudo="label"&gt;</code> inside a "x-foo" component could
 <div class="issue">
     The XBL approach has several drawbacks:
     <ul>
+        <li>It's an HTML solution to a CSS problem.</li>
+
         <li><code><a href="http://dev.w3.org/2006/xbl2/#allow-selectors-through">allow-selectors-through</a></code>,
             <code><a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">apply-author-sheets</a></code> and
             <code><a href="http://dev.w3.org/2006/xbl2/#apply-binding-sheets">apply-binding-sheets</a></code> break confinement.</li>
@@ -158,9 +161,15 @@ Within the component:
 
 <p>Downsides:</p>
 
-<p class="issue">
-Requires extension to the CSS spec.
-</p>
+<div class="issue">
+    <p>Requires extension to the CSS spec.</p>
+    <p>General text &amp; link-styling is unsatisfactory with this approach alone.</p>
+    <p>This only handles styling of specific elements of the shadow DOM, 
+       but does not address how the component could style children of the host element that are attached to a <code><a href="content.html">content</a></code> element,
+       nor how inheritance into/out of the shadow DOM is to be handled.</p>
+</div>
+
+
 
 <!-- ==================== -->
 
@@ -178,9 +187,64 @@ Requires extension to the CSS spec.
 
 <!-- ========== -->
 
-<h3><span class="secno">3.4.2</span> <a name="inheritance.apply">Using CSS <code><a href="#apply">apply</a></code></a></h3>
+<h3><span class="secno">3.4.2</span> <a name="inheritance.css">CSS extensions</a></h3>
 
-<p>
+<p class="note">Inane scribblings!</p>
+
+<pre>
+::binding sets the style to inherit for the shadow tree.
+By default, this is equal to the effective style of the host element. 
+
+x-foo::binding {
+    background-color: grey;  // overrides the background color (only!) for the shadow DOM
+}
+
+On the shadow side, the ShadowRoot gets this styling as the styling to inherit from.
+By default, it inherits the styling.
+
+--- Preventing automatic inheritance ---
+
+The including document can reset the individual style-attributes to 'initial', to prevent the component from 'snooping' the outside styles.
+Conversely, the component can just override the style-attributes to prevent the outside document from interfering with its beautiful designs.
+
+Now, having to reset every possible CSS attribute would be cumbersome, to say the least.
+In order to make this useful, attribute group names could be introduced, that set the style for multiple attributes at once.
+The only value a group can take is either 'initial' or 'inherited' (default: 'inherited').
+Also note that groups could be overlapping.
+E.g.,:
+
+all: sets all attributes
+color-group: sets color, background-color, border-color
+border-group: border-...
+background-group: background-...
+images-group: background-image, border-image, list-style-image [e.g., prevent image loading]
+text-group: color, font-family, font-style, font-weight, letter-spacing, quotes, text-align, text-indend, text-transform, word-spacing, white-space, 
+list-group: list-style-...
+table-group: empty-cells, caption-side,
+sound-group: azimuth, elevation, pitch, richness, speak-..., speech-rate, stress, voice-family, volume
+paged-group: orphans, widows
+
+visibility: not in a group (only contained in 'all')
+cursor: not in a group (only contained in 'all')
+
+E.g.,
+
+x-foo::binding {
+    images-group: initial;  // Don't allow '...-image' attributes to inherit into shadow DOM
+    border-group: initial;  // Don't allow 'border-...' attributes to inherit into shadow DOM
+}
+
+within the shadow DOM:
+
+&lt;style scoped&gt;
+    :scope {
+        border-group: initial; // Don't allow 'border-...' attributes to be inherited from outside document
+        table-group: initial;  // Don't allow table-related attributes to be inherited from outside document
+    }
+&lt;/style&gt;
+
+Other inherited attributes (e.g., text, list styles) <em>would</em> be inherited in this example.
+</pre>
 
 <!-- ==================== -->
 
@@ -188,7 +252,7 @@ Requires extension to the CSS spec.
 
 <dl class="switch">
     <dt>If the host element is rendered
-    <dd>
+    <dd>(This is the current default assumption.)
         <dl class="switch">
             <dt>If the component is confined
             <dd><p>This is the currently thought-of scenario.</p>
