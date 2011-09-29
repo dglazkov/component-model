@@ -240,23 +240,15 @@ pre.css {
     margin: 1em 0 1em 2em;
 }
 
-/* ===== examples ===== */
+/* ===== examples, questions and issues ===== */
 
-.example {
-    counter-increment: exampleno;
-}
-div.example, p.example, pre.example {
-    background: #FFF8DD;
+.example, .question, .issue {
     padding: 1em 0.5em 0.5em 0.5em;
     margin: 1em 0 1em 2em;
-    border: thin solid #999;
     position: relative;
     clear: both;
-    color: #600;
 }
-div.example::before, p.example::before, pre.example::before {
-    content: "Example";
-    content: "Example " counter(exampleno, upper-roman);
+.example::before, .question::before, .issue::before {
     font: bold small sans-serif;
     position: absolute;
     top: -0.6em;
@@ -264,29 +256,64 @@ div.example::before, p.example::before, pre.example::before {
     min-width: 7.5em;
     text-align: center;
     line-height: 1em;
+    padding: 0.1em;
+}
+
+.example {
+    counter-increment: exampleno;
+    background: #FFF8DD;
+    border: thin solid #999;
+    color: #600;
+}
+.example::before {
+    content: "Example";
+    content: "Example " counter(exampleno, upper-roman);
     color: #FFF8DD;
     background: #600;
-    padding: 0.1em;
     border: thin solid #999;
+}
+
+.question {
+    background-color: #FFFCF0;
+    border: thin solid #D00;
+    color: #600;
+}
+.question::before {
+    content: "Question";
+    color: #FFF8DD;
+    background: #D00;
+    border: thin solid #800;
+}
+
+.issue {
+    background-color: #FFFCF0;
+    border: thick double #D00;
+    color: #C00;
+}
+.issue::before {
+    content: "ISSUE";
+    color: #FFF8DD;
+    background: #D00;
+    border: thin solid #800;
 }
 
 .illegal { color: red }
 
-/* ===== open questions and issues ===== */
-
-.question { 
+/* without 'Question'/'ISSUE' tag:
+.question {
     margin: 1em 0 1em 0;
-    border: single thick maroon; 
-    padding: 1em; 
-    background: #FFFFDD; 
+    border: 2px solid #D00;
+    padding: 1em;
+    background: #FFD;
 }
 
-.issue { 
+.issue {
     margin: 1em 0 1em 0;
-    border: double thick red; 
-    padding: 1em; 
-    background: #FFFFCC; 
+    border: 5px double #D00;
+    padding: 1em;
+    background: #FFC;
 }
+*/
 
 /* ===== FIXMEs ===== */
 
