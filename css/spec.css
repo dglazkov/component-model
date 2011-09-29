@@ -19,7 +19,7 @@ body, th, td {
     font-family: sans-serif, Droid Sans Fallback;
 }
 
-/* ===== link styles ===== */
+/* ===== basic link styles ===== */
 
 a[href^="#"] {
     text-decoration: none;
@@ -224,8 +224,8 @@ pre.idl::before {
 
 pre.html {
     border: solid thin;
-    background: #EEEEEE;
-    color: black;
+    background: #EEF;
+    color: #004;
     padding: 0.5em 1em;
     margin: 1em 0 1em 2em;
 }
@@ -272,6 +272,9 @@ pre.css {
     background: #600;
     border: thin solid #999;
 }
+.question a[href^="#"] {
+    border-bottom: 2px solid #C04;
+}
 
 .question {
     background-color: #FFFCF0;
@@ -284,6 +287,9 @@ pre.css {
     background: #D00;
     border: thin solid #800;
 }
+.question a[href^="#"] {
+    border-bottom: 2px solid #C04;
+}
 
 .issue {
     background-color: #FFFCF0;
@@ -295,6 +301,9 @@ pre.css {
     color: #FFF8DD;
     background: #D00;
     border: thin solid #800;
+}
+.issue a[href^="#"] {
+    border-bottom: 2px solid #C04;
 }
 
 .illegal { color: red }
