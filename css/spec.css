@@ -19,29 +19,7 @@ body, th, td {
     font-family: sans-serif, Droid Sans Fallback;
 }
 
-pre {
-    white-space: pre-wrap;
-}
-pre, code {
-    font-size: inherit;
-    font-family: monospace, Droid Sans Fallback, sans-serif; 
-    font-variant: normal; 
-}
-pre strong {
-    color: black;
-    font: inherit;
-    font-weight: bold;
-    background: yellow; 
-}
-pre em {
-    font-weight: bolder;
-    font-style: normal; 
-}
-
-dt, dfn {
-    font-weight: bold;
-    font-style: normal; 
-}
+/* ===== link styles ===== */
 
 a[href^="#"] {
     text-decoration: none;
@@ -124,16 +102,47 @@ p.copyright {
     margin: 0; 
 }
 
+/* ===== code snippets ===== */
+
+pre {
+    white-space: pre-wrap;
+}
+pre, code {
+    font-size: inherit;
+    font-family: monospace, Droid Sans Fallback, sans-serif;
+    font-variant: normal;
+}
+pre strong {
+    color: black;
+    font: inherit;
+    font-weight: bold;
+    background: yellow;
+}
+pre em {
+    font-weight: bolder;
+    font-style: normal;
+}
+
+/* ===== definition lists ===== */
+
+dt, dfn {
+    font-weight: bold;
+    font-style: normal;
+}
+dt {
+    margin-top: 0.5em;
+}
+
 /* ===== warnings ===== */
 
 .warning {
-    color: red; 
-    background: transparent; 
-    font-weight: bolder; 
-    font-style: italic; 
+    color: #D00;
+    background: transparent;
+    font-weight: bolder;
+    font-style: italic;
 }
 .warning::before {
-    font-style: normal; 
+    font-style: normal;
     content: '\26A0 Warning! '; /* warning sign */
 }
 
@@ -263,19 +272,17 @@ div.example::before, p.example::before, pre.example::before {
 
 .illegal { color: red }
 
-/* ===== open questions ===== */
+/* ===== open questions and issues ===== */
 
 .question { 
-    margin: 1em;
+    margin: 1em 0 1em 0;
     border: single thick maroon; 
     padding: 1em; 
     background: #FFFFDD; 
 }
 
-/* ===== issues ===== */
-
 .issue { 
-    margin: 1em;
+    margin: 1em 0 1em 0;
     border: double thick red; 
     padding: 1em; 
     background: #FFFFCC; 
