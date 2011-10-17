@@ -1,0 +1,97 @@
+<html>
+<head>
+    <title>Component Model - Rendering</title>
+
+    <link rel=stylesheet type=text/css href=../css/spec.css>
+</head>
+<body>
+
+<h3>Element registration</h3>
+
+<h4>The Element Registration Script</h4>
+
+<p>This section is non-normative.</p>
+
+<p>The element registration script is a set of markup which registers new HTML element and its appearance and behavior.
+By using the element registion script, authors can register new element names to user agents. 
+After the registration, user agents recognize each registered element.</p>
+
+<!-- TODO(morrita): mentions lifecycle chapter -->
+
+<p>The <code>element</code> element registers a new element which can be used inside a Web page.
+Each new element may have a constructor function and a set of lifecycle callback which is invoked in the element lifecycle.</p>
+
+<p>The <code>element</code> can have the <code>script</code> element and the <code>template</code> as its child:</p>
+
+<ul>
+  <li>The <code>script</code> element is designed to be used for defining a constructor for the element. 
+  Authors can register a constructor for the registered element through the script.</li>
+  <li>The <code>template</code> element holds HTML fragment. 
+  The fragment is used as a template for shadow tree of the registered element.
+  Templates are cloned and inserted as a children of the shadow root of the element.</li>
+</ul>
+
+<!-- TODO(morrita): generalize the template mechanism -->
+
+<h4>The element element</h4>
+
+<dl class="element">
+  <dt>Categories:</dt>
+  <dd>Metadata Element</dd>
+
+  <dt>Contexts in which this element can be used:</dt>
+  <dd>Where metadata content is expected.</dd>
+
+  <dt>Content attributes:</dt>
+  <dt><code><a href="">for</a></code></dt>
+
+  <dt>DOM interface:</dt>
+  <dd><pre class="idl">
+
+interface HTMLElementCloser {
+  void closer(HTMLElement element, ShadowRoot shadow);
+};
+
+interface HTMLElementConstructor {
+  HTMLElement construct();
+};
+
+interface HTMLElementElement : HTMLElement {
+  attribute DOMString forName;
+  attribute HTMLTemplateElement template;
+
+  HTMLElement create();
+  void register(HTMLElementConstructor construct,
+                [Optional] HTMLElementCloser close);
+};
+  
+  </pre></dd>
+</dl>
+
+<p>The <code>element</code> element allows author to register a new element. 
+The registered element is available once the <code>elememnt</code> element is closed.
+The name of the element is given by the <code>for</code> attribute. 
+Thus the <code>for</code> value should be valid as an element name.</p>
+
+<p>The tree construction algorithm on the user agent recognizes 
+the name of each registered elements as an element name in HTML namespace. 
+The algorithm <a href="">create an element for the token</a>. 
+A node to be inserted is created according to the <a href="">registered element creation algorithm</a>.</p>
+
+<p>The <code>element</code> element have at most one <dfn>associated tempalte element</dfn>.
+An associated <code>template</code> element is the first child <code>template</code> element whose 
+parent is the <code>element</code> element.</p>
+
+<div class="impl">
+<p>The <dfn>forName</dfn> IDL attribute must reflect the <code>for</code> content attribute.</p>
+<p>The <dfn>template</dfn> IDL attribute returns an <a href="">associated template element</a>.</p>
+<p>The <dfn>create()</dfn> method, when invoked, executes the <a href="">registered element creation algorithm</a>, and returns the created element.</p>
+<p>The <dfn>register()</dfn> method, when invoked, XXX</p>
+</div>
+
+<p>XXX: The registered element creation algorithm.</p>
+
+<!-- TODO(morrita): What if the element constructor want to access its attributes? -->
+
+</body>
+</html>
