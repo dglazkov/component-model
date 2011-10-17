@@ -18,7 +18,7 @@
 
 <!-- ==================== -->
 
-<h2 class="no-num no-toc">Status</h2> 
+<h2>Status</h2> 
 
 <p class="warning">This is a work-in-progress!</p>
 
@@ -91,7 +91,8 @@ Note that also <a href="http://www.whatwg.org/specs/web-apps/current-work/multip
 <p>
 
 <p class="issue">
-<code><a href="#treescope.parenttreescope">parentTreeScope</a></code> is a natural part of a <code><a href="#treescope">TreeScope</a></code>, but allows an author to break <a href="confinement.html">confinement</a>.
+<code><a href="#treescope.parenttreescope">parentTreeScope</a></code> is a natural part of a <code><a href="#treescope">TreeScope</a></code>, but allows an author to break <a href="./confinement.html">confinement</a>.
+In a confined component, this attribute MUST always return <code>null</code>.
 </p>
 
 <!-- ==================== -->
@@ -101,19 +102,38 @@ Note that also <a href="http://www.whatwg.org/specs/web-apps/current-work/multip
 <p>The root of a shadow DOM is represented by the <code><a href="#shadowroot">ShadowRoot</a></code> object:
 
 <pre class="idl">
-<a href="#shadowroot-constructor">[Constructor(in HTMLElement element) raises(DOMException)]</a>
-interface <a href="#shadowroot-interface">ShadowRoot</a> : <a href="#tree-scope-interface">TreeScope</a> {
-    attribute bool <a href="#apply-author-sheets-attribute">applyAuthorSheets</a>;
+<a href="#shadowroot">[Constructor(in HTMLElement element) raises(DOMException)]</a>
+interface <a href="#shadowroot">ShadowRoot</a> : <a href="#treescope">TreeScope</a> {
+    <del>attribute bool <a href="#shadowroot.applyauthorsheets">applyAuthorSheets</a>; </del>
     readonly attribute Element <a href="#shadow-host-attribute">shadowHost</a>;
 }
 </pre>
 
-<p>The <code>element</code> parameter in <a href="#shadow-root-constructor">ShadowRoot constructor</a> is an <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> that will be hosting this instance. If the element is already hosting a <span class=ref>shadow DOM subtree</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-no_modification_allowed_err">NO_MODIFICATION_ALLOWED_ERR</a> DOM Exception is raised.
-<p>The <dfn id="apply-author-sheets-attribute" title="apply-author-sheets-attribute">applyAuthorSheets</dfn> attribute indicates whether or not rules in <a href="http://www.w3.org/TR/CSS2/cascade.html">author style sheets</a> associated with the element's document apply to the <span class=def>shadow DOM subtree</a>. It is an equivalent of the <a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">XBL2 apply-author-sheets attribute</a>.</p>
-<p>The <dfn id="shadow-host-attribute" title="shadow-host-attribute">shadowHost</dfn> attribute refers back to the element that is hosting this <span class=ref>shadow root</span>.</p>
+<p>
+The <code>element</code> parameter in <a href="#shadow-root-constructor">ShadowRoot constructor</a> is an <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> that will be hosting this instance.
+If the element is already hosting a <span class=ref>shadow DOM subtree</span>, a <a href="http://www.w3.org/TR/domcore/#dom-domexception-no_modification_allowed_err">NO_MODIFICATION_ALLOWED_ERR</a> DOM Exception is raised.
+</p>
 
+<p>
+<del>
+The <dfn id="shadowroot.applyauthorsheets" title="shadowroot.applyauthorsheets">applyAuthorSheets</dfn> attribute indicates whether or not rules in <a href="http://www.w3.org/TR/CSS2/cascade.html">author style sheets</a>
+associated with the element's document apply to the <span class=def>shadow DOM subtree</a>. It is an equivalent of the <a href="http://dev.w3.org/2006/xbl2/#apply-author-sheets">XBL2 apply-author-sheets attribute</a>.
+</del>
+</p>
 
-<p>The component model extends the <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> as follows:</p>
+<p>
+The <dfn id="shadowroot.shadowhost" title="shadow-host-attribute">shadowHost</dfn> attribute refers back to the element that is hosting this <span class=ref>shadow root</span>.
+</p>
+
+<p class="issue">
+<code><a href="#shadowroot.shadowhost">shadowHost</a></code> is a natural part of a <code><a href="#shadowroot">ShadowRoot</a></code>, but allows an author to break <a href="./confinement.html">confinement</a>.
+In a confined component, this attribute MUST always return <code>null</cdoe>.
+</p>
+
+<!--
+<p>
+The component model extends the <a href="http://www.w3.org/TR/domcore/#element" title="DOM Core Element object">Element</a> as follows:
+</p>
 
 <pre class="idl">
 [Supplemental]
@@ -122,13 +142,29 @@ interface Element {
 }
 </pre>
 
-<p>The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.
+<p>
+The <dfn id="pseudo-attribute" title="pseudo-attribute">pseudo</dfn> attribute allows setting a <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">CSS pseudo-element value</a> on an element and roughly corresponds to functionality of the <a href="http://dev.w3.org/2006/xbl2/#the-pseudo-attribute">XBL2 pseudo attribute</a>.
 
 <!-- TODO(dominicc): should reproduce the IDENT grammar here; the list
      of identifiers are from the CSS3 draft but the links are to CSS2,
-     that has to be rationalized. -->
+     that has to be rationalized. -- >
 
-The value must either be <code>null</code> or a string that matches the <code>IDENT</code> production of the <a href="http://www.w3.org/TR/CSS2/grammar.html">CSS grammar</a>, with the exception that the names defined by CSS for <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-class-selectors">pseudo class selectors</a> and <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">pseudo element selectors</a> are not valid, for example: <code>active</code>, <code>after</code>, <code>before</code>, <code>checked</code>, <code>disabled</code>, <code>empty</code>, <code>enabled</code>, <code>first-child</code>, <code>first-letter</code>, <code>first-line</code>, <code>first-of-type</code>, <code>focus</code>, <code>hover</code>, <code>indeterminate</code>, <code>lang</code>, <code>last-child</code>, <code>last-of-type</code>, <code>link</code>, <code>not</code>, <code>nth-child</code>, <code>nth-last-child</code>, <code>nth-last-of-type</code>, <code>nth-of-type</code>, <code>only-child</code>, <code>only-of-type</code>, <code>root</code>, <code>target</code>, <code>visited</code>.
+The value must either be <code>null</code> or a string that matches the <code>IDENT</code> production of the <a href="http://www.w3.org/TR/CSS2/grammar.html">CSS grammar</a>,
+with the exception that the names defined by CSS for <a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-class-selectors">pseudo class selectors</a> and
+<a href="http://www.w3.org/TR/CSS2/selector.html#pseudo-element-selectors">pseudo element selectors</a> are not valid.
+For example: <code>active</code>, <code>after</code>, <code>before</code>, <code>checked</code>, <code>disabled</code>, <code>empty</code>, <code>enabled</code>, <code>first-child</code>, <code>first-letter</code>,
+<code>first-line</code>, <code>first-of-type</code>, <code>focus</code>, <code>hover</code>, <code>indeterminate</code>, <code>lang</code>, <code>last-child</code>, <code>last-of-type</code>, <code>link</code>,
+<code>not</code>, <code>nth-child</code>, <code>nth-last-child</code>, <code>nth-last-of-type</code>, <code>nth-of-type</code>, <code>only-child</code>, <code>only-of-type</code>, <code>root</code>, <code>target</code>, <code>visited</code>.
+</p>
+-->
+
+<!-- ========== -->
+
+<h3><span class="secno">3.4</span> <a name="style-element"><code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-style-element">style</a></code> elements</a></h3>
+
+<p>
+The <a href="./shadowdom.html">ShadowRoot</a> is a legal parent for a <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-style-element">style</a></code> element.
+</p>
 
 <!-- ==================== -->
 

@@ -17,7 +17,7 @@
 
 <!-- ==================== -->
 
-<h2 class="no-num no-toc">Status</h2> 
+<h2>Status</h2> 
 
 <p class="warning">This is a work-in-progress!</p>
 <p><a href="http://wiki.whatwg.org/wiki/Component_Model_CSS_Brainstorming">Brainstorming page</a></p>
@@ -27,6 +27,46 @@
 <h2><span class="secno">3.1</span> <a name="overview">Overview</a></h2>
 
 <p>TODO</p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">3.2</span> <a name="inheritance">Inheritance Across Boundaries</a></h2>
+
+<!-- ========== -->
+
+<h3><span class="secno">3.2.1</span> <a name="host-to-shadow">Host-to-Shadow</a></h3>
+
+<p>
+Nodes in the shadow tree inherit styles from the host element as if they were direct children.
+</p>
+
+<!-- ========== -->
+
+<h3><span class="secno">3.2.2</span> <a name="shadow-to-host-children">Shadow-to-Host-Children</a></h3>
+
+<p>
+Children of the host element that are rendered through a <code><a href="./content.html">content</a></code> element
+inherit their style as if they were direct children of the <code><a href="./content.html">content</a></code> element.
+</p>
+
+<!-- ==================== -->
+
+<h2><span class="secno">3.3</span> <a name="selectors">Selectors</a></h2>
+
+<p>
+CSS Selectors <strong>never</strong> cross the boundary from host to the shadow tree, nor from <code><a href="./content.html">content</a></code> elements back to the host or its children.
+</p>
+
+<p>
+CSS Rules declared outside the shadow tree do <strong>not</strong> apply to nodes inside it. Conversely, style rules declared inside the shadow tree also do <strong>not</strong> apply to nodes outside.
+</p>
+
+<p>
+All of the above also applies to selectors used in certain JavaScript APIs, such as the <code>querySelector()</code> function.
+</p>
+
+
+<!-- ==================== -->
 
 </body>
 </html>

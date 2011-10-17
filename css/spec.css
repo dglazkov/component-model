@@ -21,13 +21,15 @@ body, th, td {
 
 /* ===== basic link styles ===== */
 
-a[href^="#"] {
+a[href^="#"], a[href^="./"] {
     text-decoration: none;
     border-bottom: 2px solid #B6B;
 }
-a[href^="#"]::before {
-    content: '\21D2\A0'; /* rightwards double arrow, non-breaking space */
+/*
+a[href^="#"]::before, a[href^="./"]::before {
+    content: '\2192\A0'; /* rightwards arrow, non-breaking space * /
 }
+*/
 
 :link {
     color: #00C;
@@ -42,16 +44,16 @@ a[href^="#"]::before {
     background: transparent
 }
 :link:hover, :visited:hover {
-    background: #ffa;
+    background: #FFA;
 }
 code :link, code :visited {
     color: inherit;
 }
 :target {
-   background:         #ffa;
-   -moz-box-shadow:    0 0 25px #ffa;
-   -webkit-box-shadow: 0 0 150px #ffa;
-   box-shadow:         0 0 25px #ffa;
+   background:         #FFA;
+   -moz-box-shadow:    0 0 25px #FFA;
+   -webkit-box-shadow: 0 0 150px #FFA;
+   box-shadow:         0 0 25px #FFA;
 }
 
 /* ===== headers ===== */
@@ -100,6 +102,12 @@ p.copyright {
     font-size: 0.6em; 
     font-style: oblique; 
     margin: 0; 
+}
+
+/* ===== table-of-contents ===== */
+
+.toc {
+    list-style-type: none;
 }
 
 /* ===== code snippets ===== */
@@ -154,8 +162,7 @@ ins {
     text-decoration: none;
 }
 del {
-    background: maroon;
-    color: white;
+    background: #FFD8D8;
     text-decoration: line-through;
 }
 
@@ -272,7 +279,7 @@ pre.css {
     background: #600;
     border: thin solid #999;
 }
-.question a[href^="#"] {
+.question a[href^="#"], .question a[href^="./"] {
     border-bottom: 2px solid #C04;
 }
 
@@ -287,7 +294,7 @@ pre.css {
     background: #D00;
     border: thin solid #800;
 }
-.question a[href^="#"] {
+.question a[href^="#"], .question a[href^="./"] {
     border-bottom: 2px solid #C04;
 }
 
@@ -302,7 +309,7 @@ pre.css {
     background: #D00;
     border: thin solid #800;
 }
-.issue a[href^="#"] {
+.issue a[href^="#"], .issue a[href^="./"] {
     border-bottom: 2px solid #C04;
 }
 

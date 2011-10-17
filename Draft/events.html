@@ -39,7 +39,7 @@
 
 <!-- ==================== -->
 
-<h2 class="no-num no-toc">Status</h2> 
+<h2>Status</h2> 
 
 <p class=issue>boundless ancestor</span> -- need better term.</li>
 
@@ -47,7 +47,7 @@
 
 <h2><span class="secno">2.1</span> Event Retargeting</h2>
 
-<p>When an event is fired in a <a href="shadowdom.html">shadow DOM subtree</a>, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the <span class=ref>shadow boundary</span>.</p>
+<p>When an event is fired in a <a href="./shadowdom.html">shadow DOM subtree</a>, it either <em>escapes</em> out of the shadow tree during the capture, target, bubble, or default phases or it <em>is stopped</em> at the <span class=ref>shadow boundary</span>.</p>
 <p>To help with algorithm description, let's define the direction walking the ancestors of a node as <dfn>up</dfn> when traversing from child to parent, and <dfn>down</dfn> when traversing from parent to child. In the context of events-related algorithms, all ancestor traversal crosses <span class=ref>shadow boundaries</span>.</p>
 <p>In the cases where event escapes the shadow tree, the event is <span class=ref>retargeted</span> to ensure that the original target-related information on the event object does not reveal information about the <span class=ref>shadow DOM subtree</span> beyond the boundary. Event retargeting is a process of computing a <dfn>relative target</dfn> for each <span class=ref>ancestor</span> of the node at which the event is dispatched.</p>
 <p>The following <dfn>retargeting algorithm</dfn> must be used to determine relative targets:</p>
@@ -80,12 +80,16 @@
 <p>Some events have a <code>relatedTarget</code> property, which holds a node that's not the event's target, but is related to the event. For instance, a <code>mouseover</code> event's <code>relatedTarget</code> may hold the node from which the mouse has moved to event's <code>target</code>. In the case where <code>relatedTarget</code> is in a <span class=ref>shadow DOM subtree</span>, we don't want to leak its actual value outside of this subtree. In cases where both <code>relatedTarget</code> and <code>target</code> are part of the same <span class=ref>shadow DOM subtree</span>, we don't want the appearance of spurious <code>mouseover</code> and <code>mouseout</code> events firing from the same node.</p> 
 
 <p>Thus, if an event has a <code>relatedTarget</code>, its value and extent of event dispatch must to be adjusted. In general:
+
 <ol>
     <li>If <code>relatedTarget</code> and <code>target</code> are enclosed by a <span class=ref>shadow DOM subtree</span>, the event dispatch must be stopped at the <span class=ref>shadow boundary</span> of this subtree.</li>
     <li>If <code>relatedTarget</code> is separated from <code>target</code> by one or more <span class=ref>shadow boundaries</span>, it must be retargeted to the boundary that's closest to <code>target</code>.</li>
 </ol>
+
 <p>The following algorithm must be used:</p>
-<img src=svg/related-target-and-shadow-dom.svg width=400 height=400 align=right style="background-color: white">
+
+<object data="svg/related-target-and-shadow-dom.svg" width=400 height=400 align=right></object>
+
 <div class=algorithm>
 <ol>
     <li>Find the <dfn>lowest common ancestor</dfn> of <code>target</code> and <code>relatedTarget</code>.</li>
@@ -107,7 +111,7 @@
 
 <p>The <code>focus</code>, <code>DOMFocusIn</code>, <code>blur</code>, and <code>DOMFocusOut</code> events must be treated in the same way as events with a <code>relatedTarget</code>, where the corresponding node that is losing focus as a result of <code>target</code> gaining focus or the node that is gaining focus, and thus causing the blurring of <code>target</code> acts as the related target.
 
-<h3><span class="secno">.3.1</span> Events That Are Always Stopped</h3>
+<h3><span class="secno">2.3.1</span> Events That Are Always Stopped</h3>
 
 <p>Mutation events and <code>selectstart</code> event are always stopped at the nearest <span class=ref>shadow boundary</span>.</p>
 
@@ -117,7 +121,7 @@
 
 <p>Suppose we have a user interface for a media controller, built with several components, represented by this <span class=ref>shadow-aware DOM tree</span>:</p>
 
-<pre class="example">
+<pre class="example html">
 &lt;div id=&quot;player&quot;&gt;
     <span class=shadow-boundary>&lt;shadow-boundary&gt;</span>
         &lt;div pseudo=&quot;controls&quot;&gt;
@@ -152,7 +156,7 @@
     <li>Finally we walk up to the player element (<code>#player</code>) and set its relative target to itself.</li>
 </ol>
 
-<pre class="example">
+<pre class="example html">
 <span class=event-ancestor>&lt;div id=&quot;player&quot;&gt; <em>7</em></span>
     <span class="shadow-boundary event-ancestor">&lt;shadow-boundary&gt; <em>6</em></span>
         <span class=event-ancestor>&lt;div pseudo=&quot;controls&quot;&gt; <em>5</em></span>
@@ -223,7 +227,7 @@
     <li>We adjust <code>relatedTarget</code> to be the parent of the first divergent boundary, the timeline (<code>#player::timeline</code>). We are now ready to dispatch this event.</li>
 </ol>
 
-<pre class="example">
+<pre class="example html">
 &lt;div id=&quot;player&quot;&gt;
     <span class="shadow-boundary lowest-common-boundary">&lt;shadow-boundary&gt;<em> &mdash; lowest common boundary</em></span>
         &lt;div pseudo=&quot;controls&quot;&gt;
