@@ -41,33 +41,56 @@ To this end, the shadow DOM may contain one or more content elements that define
 <pre class="idl">
 interface HTMLContentELement : HTMLElement {
     attribute DOMString     <a href="#content.select">select</a>;
-    attribute boolean       <a href="#content.reverse">reverse</a>;
 }
 </pre>
 </div>
 
 
 <p><code><dfn id="content.select" title="select">select</dfn></code> defines which children of the host element are to be displayed in position of the <code>content</code> element.
-It contains a space-separated list of <span>selector sequences</span>. Every such sequence may contain:</p>
+It contains a space-separated list of <span>simple selector sequences</span>. Every such sequence may contain:</p>
 <ul class="brief">
     <li>element selector or universal selector</li>
     <li>class selector(s)</li>
     <li>ID selector</li>
     <li>attribute selector(s)</li>
-    <li>pseudo-class selector(s)</li>
+    <li>pseudo-class selector(s), with certain exceptions (see below)</li>
 </ul>
 
-<p>It MUST NOT contain pseudo-element selectors. If present such a <span>selector sequence</span> is disregarded in its entirety.</p>
+<p>
+It MUST NOT contain pseudo-element selectors. If present such a <span>selector sequence</span> is disregarded in its entirety.
+</p>
 
-<p>A <code><a href="#content">content</a></code> element without a <code><a href="#content.select">select</a></code> attribute selects all children
+<p>
+The following pseudo-classes require special treatment:
+<dl>
+    <dt>:link
+    <dd>This pseudo-class MUST NOT be honored if the component is <a href="./confinement.html">confined</a>, in order to avoid leaking browsing history. If present, the whole selector sequence is disregarded in its entirety.
+    <dt>:visited
+    <dd>This pseudo-class MUST NOT be honored if the component is <a href="./confinement.html">confined</a>, in order to avoid leaking browsing history. If present, the whole selector sequence is disregarded in its entirety.
+    <dt>:hover
+    <dd>The user agent MAY honor this pseudo-class, but moving an element that is hovered may likely cause it end up no longer being hovered, likely making this not a useful functionality.
+        If the component is <a href="./confinement.html">confined</a>, this pseudo-class MUST NOT be honored, and selector sequences containing it are disregarded.
+    <dt>:active
+    <dd>The user agent MAY honor this pseudo-class, moving an element that is being activated is likely not a useful functionality.
+        If the component is <a href="./confinement.html">confined</a>, this pseudo-class MUST NOT be honored, and selector sequences containing it are disregarded.
+    <dt>:focus
+    <dd>This pseudo-class MUST NOT be honored if the component is <a href="./confinement.html">confined</a>, and selector sequences containing it are disregarded.
+    <dt>:target
+    <dd>This pseudo-class MUST NOT be honored if the component is <a href="./confinement.html">confined</a>, and selector sequences containing it are disregarded.
+</dl>
+</p>
+
+<p>
+A <code><a href="#content">content</a></code> element without a <code><a href="#content.select">select</a></code> attribute selects all children
 that are not selected by any other <code><a href="#content">content</a></code> element.
-A given shadow tree MUST contain only at most a single <code><a href="#content">content</a></code> element without a <code>select attribute</code>. 
-In case there are more than one such <code><a href="#content">content</a></code> elements, only the first such content element selects any children.</p>
+A given shadow tree MUST contain only at most a single <code><a href="#content">content</a></code> element without a <code>select</code> attribute. 
+In case there are more than one such <code><a href="#content">content</a></code> elements, only the first such content element selects any children.
+</p>
 
-<p>A <code><a href="#content">content</a></code> element may have content of its own,
-which is rendered in the case the <code><a href="#content">content</a></code> element doesn't select any children of the host element.</p>
-
-<p>The <code><dfn id="content.reverse" title="select">reverse</dfn></code> attribute, if present, specifies that all selected children of the host element are to be rendered in reversed order.</p>
+<p>
+A <code><a href="#content">content</a></code> element may have content of its own,
+which is rendered in the case the <code><a href="#content">content</a></code> element doesn't select any children of the host element.
+</p>
 
 <!-- ==================== -->
 
