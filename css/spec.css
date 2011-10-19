@@ -19,6 +19,10 @@ body, th, td {
     font-family: sans-serif, Droid Sans Fallback;
 }
 
+object {
+    background-color: white;
+}
+
 /* ===== basic link styles ===== */
 
 a[href^="#"], a[href^="./"] {
@@ -131,7 +135,7 @@ pre em {
     font-style: normal;
 }
 
-/* ===== definition lists ===== */
+/* ===== definitions ===== */
 
 dt, dfn {
     font-weight: bold;
@@ -203,8 +207,8 @@ h4 + .element, h4 + div + .element {
 /* ===== IDL ===== */
 
 pre.idl {
-    border: solid thin;
-    background: #EEEEEE;
+    border: solid thin black;
+    background-color: #EEEEEE;
     color: black;
     padding: 0.5em 1em;
     position:relative;
@@ -218,7 +222,7 @@ pre.idl::before {
     content: "IDL";
     font: bold small sans-serif;
     padding: 0.5em;
-    background: white;
+    background-color: white;
     position: absolute;
     top: 0;
     margin: -1px 0 0 -4em;
@@ -227,27 +231,7 @@ pre.idl::before {
     border-radius: 0 0 0 0.5em
 }
 
-/* ===== HTML ===== */
-
-pre.html {
-    border: solid thin;
-    background: #EEF;
-    color: #004;
-    padding: 0.5em 1em;
-    margin: 1em 0 1em 2em;
-}
-
-/* ===== CSS ===== */
-
-pre.css {
-    border: solid thin black;
-    background: #FFE;
-    color: black;
-    padding: 0.5em 1em;
-    margin: 1em 0 1em 2em;
-}
-
-/* ===== examples, questions and issues ===== */
+/* ===== base for labeled divisions ===== */
 
 .example, .question, .issue {
     padding: 1em 0.5em 0.5em 0.5em;
@@ -260,25 +244,31 @@ pre.css {
     position: absolute;
     top: -0.6em;
     left: -2.5em;
-    min-width: 7.5em;
+    min-width: 6.5em;
     text-align: center;
     line-height: 1em;
-    padding: 0.1em;
+    padding: 0.1em 1em;
 }
+
+/* ===== examples ===== */
 
 .example {
     counter-increment: exampleno;
-    background: #FFF8DD;
+    background-color: #FFF8DD;
     border: thin solid #999;
     color: #600;
+    margin-top: 1.5em;
 }
 .example::before {
     content: "Example";
     content: "Example " counter(exampleno, upper-roman);
     color: #FFF8DD;
-    background: #600;
+    background-color: #600;
     border: thin solid #999;
 }
+
+/* ===== questions ===== */
+
 .question a[href^="#"], .question a[href^="./"] {
     border-bottom: 2px solid #C04;
 }
@@ -291,12 +281,23 @@ pre.css {
 .question::before {
     content: "Question";
     color: #FFF8DD;
-    background: #D00;
+    background-color: #D00;
     border: thin solid #800;
 }
 .question a[href^="#"], .question a[href^="./"] {
     border-bottom: 2px solid #C04;
 }
+
+/* without 'Question' tag:
+.question {
+    margin: 1em 0 1em 0;
+    border: 2px solid #D00;
+    padding: 1em;
+    background: #FFD;
+}
+*/
+
+/* ===== issues ===== */
 
 .issue {
     background-color: #FFFCF0;
@@ -306,23 +307,14 @@ pre.css {
 .issue::before {
     content: "ISSUE";
     color: #FFF8DD;
-    background: #D00;
+    background-color: #D00;
     border: thin solid #800;
 }
 .issue a[href^="#"], .issue a[href^="./"] {
     border-bottom: 2px solid #C04;
 }
 
-.illegal { color: red }
-
-/* without 'Question'/'ISSUE' tag:
-.question {
-    margin: 1em 0 1em 0;
-    border: 2px solid #D00;
-    padding: 1em;
-    background: #FFD;
-}
-
+/* without 'ISSUE' tag:
 .issue {
     margin: 1em 0 1em 0;
     border: 5px double #D00;
@@ -330,6 +322,70 @@ pre.css {
     background: #FFC;
 }
 */
+
+.illegal { color: red }
+
+
+/* ===== algorithms ===== */
+
+
+/*
+.algorithm {
+    background-color: #F8FFF8;
+    border: thin solid #020;
+    color: #020;
+}
+.algorithm::before {
+    content: "Algorithm";
+    color: #020;
+    background: #F8FFF8;
+    border: thin solid #020;
+}
+*/
+
+.algorithm {
+    border-left: solid thin #222822;
+    background-color: #F8FCF8;
+    color: #222;
+    padding: 0.25em 0.5em 0.2em 0.5em;
+    margin: 1.5em 0 1em 2em;
+    position: relative;
+    clear: both;
+}
+.algorithm li {
+    margin: 0.25em 0 0.25em 0;
+}
+.algorithm dl {
+    padding: 0 0 0 3em;
+    margin: 0.25em 0;
+}
+.algorithm dt {
+    text-indent: -1.5em;
+    margin-top: 0;
+}
+.algorithm dt::before {
+    content: '\21AA'; /* rightwards arrow with hook */
+    padding: 0 0.5em 0 0;
+    display: inline-block;
+    width: 1em;
+    text-align: right;
+    line-height: 0.5em; 
+}
+.algorithm > dfn {
+    color: #222822;
+    background-color: #F8FCF8;
+    border-top: thin solid #222822;
+    border-bottom: thin solid #222822;
+    font: bold medium sans-serif;
+    font-style: italic;
+    position: absolute;
+    top: -0.6em;
+    left: -2em;
+    min-width: 6.5em;
+    text-align: center;
+    line-height: 1.1em;
+    padding: 0.15em 1em;
+}
 
 /* ===== FIXMEs ===== */
 
@@ -342,6 +398,34 @@ em.fixme::before {
     font-style: normal;
     font-weight: bold;
     font-size: 0.8em;
+}
+
+/* ===== HTML ===== */
+
+.html {
+    border: solid thin;
+    background: #EEF;
+    color: #004;
+    padding: 0.5em 1em;
+    margin: 1em 0 1em 2em;
+}
+.example.html {
+    margin-top: 1.5em;
+    padding-top: 1em;
+}
+
+/* ===== CSS ===== */
+
+.css {
+    border: solid thin black;
+    background: #FFE;
+    color: black;
+    padding: 0.5em 1em;
+    margin: 1em 0 1em 2em;
+}
+.example.css {
+    margin-top: 1.5em;
+    padding-top: 1em;
 }
 
 /* ===== notes ===== */
@@ -358,23 +442,6 @@ div.note::before, p.note::before {
 }
 .note em, .warning em, .note i, .warning i { 
     font-style: normal; 
-}
-
-/* ===== if-then switches ===== */
-
-dl.switch {
-    padding-left: 2em;
-}
-dl.switch > dt {
-    text-indent: -1.5em;
-}
-dl.switch > dt:before {
-    content: '\21AA'; /* rightwards arrow with hook */
-    padding: 0 0.5em 0 0;
-    display: inline-block;
-    width: 1em;
-    text-align: right;
-    line-height: 0.5em; 
 }
 
 /* ===== <ul> as single line reference list ("=> foo, bar, baz") ===== */
