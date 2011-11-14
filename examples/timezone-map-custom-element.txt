@@ -4,9 +4,12 @@
             created: function(shadowRoot) {
                 select = shadowRoot.shadowHost;
                 shadowRoot.querySelector('#timezoneShapes').addEventHandler('click', function() {
-                    if (event.target != this)
+                    if (event.target != this) {
                         select.selectedIndex = select[event.target.id].index;
+                        // FIXME: Highlight the timezone.
+                    }
                 });
+                // FIXME: Add "change" listener to adjust currently highlighted timezone.
             }
         });
     </script>
