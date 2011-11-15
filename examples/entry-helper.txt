@@ -1,0 +1,17 @@
+<element extends="input" name="x-entry-helper">
+    <script>
+        this.lifecycle({
+            created: function(shadow) {
+                if (this.type != 'text')
+                    return;
+
+                // FIXME: Add listeners for "keyup" event to input.
+            }
+        })
+    </script>
+    <template>
+        <div>
+            <shadow></shadow>
+        </div>
+    </template>
+</element>
