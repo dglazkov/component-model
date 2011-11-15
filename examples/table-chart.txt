@@ -3,7 +3,7 @@
 
         this.lifecycle({
             created: function(shadowRoot) {
-                this._canvas = shadowRoot.firstChild;
+                this._canvas = shadowRoot.firstElementChild;
                 this.draw();
             },
             attributeChanged: function(name, oldValue, newValue) {
@@ -24,8 +24,8 @@
             if (!this._visible)
                 return;
 
-            var type = this.getAttribute('x-chart-type') || 'pie';
-            var color = this.getAttribute('x-chart-color') || 'Red';
+            var type = this.chartType;
+            var color = this.chartColor;
             var canvas = this._canvas;
 
             // Read the table data and draw the graph on canvas.
@@ -38,16 +38,18 @@
             },
             set: function(value) {
                 this.setAttribute('x-chart-type', value);
-            }
+            },
+            enumerable: true
         });
         
         Object.defineProperty(TableChart.prototype, 'chartColor', {
             get: function() {
-                return this.getAttribute('x-chart-color');
+                return this.getAttribute('x-chart-color') || 'pie';
             },
             set: function(value) {
-                this.setAttribute('x-chart-color', value);
-            }
+                this.setAttribute('x-chart-color', value) || 'Red';
+            },
+            enumerable: true
         })
 
     </script>
