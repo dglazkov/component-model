@@ -1,0 +1,57 @@
+<element extends="table" name="x-table-chart" constructor="TableChart">
+    <script>
+
+        this.lifecycle({
+            created: function(shadowRoot) {
+                this._canvas = shadowRoot.firstChild;
+                this.draw();
+            },
+            attributeChanged: function(name, oldValue, newValue) {
+                if (!name.startsWith('x-chart-'))
+                    return;
+                this.draw();
+            },
+            inserted: function() {
+                this._visible = true;
+            },
+            removed: function() {
+                this._visible = false;
+            }
+        });
+
+        TableChart.prototype.draw = function()
+        {
+            if (!this._visible)
+                return;
+
+            var type = this.getAttribute('x-chart-type') || 'pie';
+            var color = this.getAttribute('x-chart-color') || 'Red';
+            var canvas = this._canvas;
+
+            // Read the table data and draw the graph on canvas.
+            // ...
+        }
+
+        Object.defineProperty(TableChart.prototype, 'chartType', {
+            get: function() {
+                return this.getAttribute('x-chart-type');
+            },
+            set: function(value) {
+                this.setAttribute('x-chart-type', value);
+            }
+        });
+        
+        Object.defineProperty(TableChart.prototype, 'chartColor', {
+            get: function() {
+                return this.getAttribute('x-chart-color');
+            },
+            set: function(value) {
+                this.setAttribute('x-chart-color', value);
+            }
+        })
+
+    </script>
+    <template>
+        <canvas></canvas>
+    </template>
+</element>
