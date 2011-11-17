@@ -1,18 +1,13 @@
 <element extends="table" name="x-table-chart" constructor="TableChart">
     <script>
 
-        this.lifecycle({
-            created: function(shadowRoot) {
-                this._canvas = shadowRoot.firstElementChild;
-                this.draw();
-            },
-            inserted: function() {
-                this._visible = true;
-            },
-            removed: function() {
-                this._visible = false;
-            }
+        this.addEventListener('create', function(evt) {
+            this._canvas = evt.shadowRoot.firstElementChild;
+            this.draw();
         });
+
+        this.addEventListener('insert', function() { this._visible = true; });
+        this.addEventListener('remove', function() { this._visible = false; });
 
         TableChart.prototype.draw = function()
         {
@@ -26,9 +21,7 @@
             // Read the table data and draw the graph on canvas.
             // ...
 
-            var evt = document.createEvent('Event');
-            evt.initEvent('draw', true, true);
-            this.dispatchEvent(evt);
+            this.dispatchEvent(new Event('draw'));
         }
 
         this.reflectAttribute('x-chart-type', 'chartType', TableChart.prototype.draw);
