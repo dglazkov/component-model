@@ -1,4 +1,45 @@
 body {
-    margin: 1em;
+    margin: 0 auto;
     padding: 0;
+    line-height: 1.4em;
+    font-family: 'Ovo', serif;
+    width: 60em;
+}
+
+figure {
+    width: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+figcaption {
+    font-size: 0.8em;
+}
+
+h1, h2, h3 {
+    font-family: 'Open Sans', sans-serif;
+    color: #444;
+    margin: 0;
+}
+
+h1 {
+    font-size: 3em;
+    padding: 1.5em 0 0.5em 0;
+}
+
+h2, h3 {
+    padding: 1.5em 0 0.3em 0;
+}
+
+a {
+    color: Black;
+}
+
+code {
+    background-color: #eee;
+}
+
+pre {
+    background-color: #eee;
+    padding: 1em 2em;
 }
