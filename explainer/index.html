@@ -239,7 +239,8 @@ details[open] {
 <p>Because not all user agents support custom elements, authors should extend the HTML element that has the closest meaning to their new kind of element. For example, if they are defining a custom element that is interactive and responds to clicks by doing some action, they should extend button.
 
 <p>When there isn't a HTML element that is semantically close to their custom element authors should extend a semantically neutral element like span.
-Presentation
+
+<h3>Presentation</h3>
 
 <p>A custom element may optionally include a template:
 
@@ -275,7 +276,7 @@ Presentation
 &lt;/element&gt;
 </pre></code>
 
-<code></pre>
+<code><pre>
 &lt;button is=&quot;x-fancybutton&quot; onclick=&quot;showTimeClicked(event);&quot;&gt;  &lt;!-- use --&gt;
  Show time
 &lt;/button&gt;
@@ -408,8 +409,8 @@ function showTime(b) {
 <ul>
     <li><code>created</code>&mdash;called by the generated constructor, passing a <code>ShadowRoot</code> instance, created from the <code>&lt;template&gt;</code> element or <code>null</code>, if there was no <code>&lt;template&gt;</code> element in the declaration.
     <li><code>attributeChanged</code>&mdash;called whenever an attribute of the element is changed. The arguments are the name, old value and the new value.
-    <li><code>inserted</code>&mdash; called after the custom element is inserted into the tree. If a custom element needs to start loading resources or start timers, it can do that in this method.
-    <li><code>removed</code>&mdash; is called after the custom element is removed from the tree. A custom element can stop timers that it does not need when it is not in the tree.
+    <li><code>inserted</code>&mdash;called after the custom element is inserted into the tree. If a custom element needs to start loading resources or start timers, it can do that in this method.
+    <li><code>removed</code>&mdash;called after the custom element is removed from the tree. A custom element can stop timers that it does not need when it is not in the tree.
 </ul>
 
 <p>The callbacks are invoked with this as the instance element.
@@ -675,7 +676,7 @@ select.timezones {
            created: function(shadowRoot) {
                var select = shadowRoot.shadowHost;
                var timezones = shadowRoot.querySelector(&#x27;#timezoneShapes&#x27;);
-   timezones.addEventHandler(&#x27;click&#x27;, function() {
+               timezones.addEventHandler(&#x27;click&#x27;, function() {
                    if (event.target != this)
                        select.selectedIndex = select[event.target.id].index;
                });
@@ -702,7 +703,7 @@ select.timezones {
 <code><pre>
 &lt;select is=&quot;x-timezone-map&quot;&gt;
     &lt;option&gt;PST&lt;/option&gt;
-...
+    ...
 &lt;/select&gt;
 </pre></code>
 
@@ -710,7 +711,7 @@ select.timezones {
 
 <code><pre>
 interface HTMLTemplateElement : HTMLElement {
-readonly attribute DocumentFragment content;
+    readonly attribute DocumentFragment content;
 }
 
 interface HTMLDecoratorElement : HTMLElement {
@@ -724,25 +725,25 @@ dictionary ListenInit {
 }
 
 interface HTMLContentElement : HTMLElement {
-attribute bool applyShadowStyles;
-attribute DOMString select;
+    attribute bool applyShadowStyles;
+    attribute DOMString select;
 }
 
 interface HTMLElementElement : HTMLElement {
-attribute DOMString extends;
-attribute DOMString name;
-attribute bool applyAuthorStyles;
-readonly attribute Function generatedConstructor;
-void lifecycle(LifecycleInit lifecycleInitDict);
-void reflectAttribute(DOMString attributeName,
-DOMString propertyName, ChangeCallback changeCallback);
-void setupEvent(DOMString eventName);
+    attribute DOMString extends;
+    attribute DOMString name;
+    attribute bool applyAuthorStyles;
+    readonly attribute Function generatedConstructor;
+    void lifecycle(LifecycleInit lifecycleInitDict);
+    void reflectAttribute(DOMString attributeName,
+    DOMString propertyName, ChangeCallback changeCallback);
+    void setupEvent(DOMString eventName);
 }
 dictionary LifecycleInit {
     Function attributeChanged(
-DOMString name,
-DOMString newValue,
-DOMString oldValue);
+            DOMString name,
+            DOMString newValue,
+            DOMString oldValue);
     Function created(ShadowRoot shadowRoot);
     Function inserted();
     Function removed();
@@ -753,8 +754,8 @@ interface ChangeCallback {
 }
 
 interface ShadowRoot : TreeScope {
-attribute bool applyAuthorStyles;
-readonly attribute Element shadowHost;
+    attribute bool applyAuthorStyles;
+    readonly attribute Element shadowHost;
 }
 </pre></code>
 
@@ -790,8 +791,8 @@ readonly attribute Element shadowHost;
 </dd>
 <dt><code>&lt;shadow&gt;</code></dt>
 <dd>
-    <p>Specifies an insertion point, where the next-oldest shadow DOM subtree in element's list of shadow DOM subtrees is rendered. The <shadow> element itself is never rendered.
-    <p>Context: descendant of a <template> element
+    <p>Specifies an insertion point, where the next-oldest shadow DOM subtree in element's list of shadow DOM subtrees is rendered. The <code>&lt;shadow&gt;</code> element itself is never rendered.
+    <p>Context: descendant of a <code>&lt;template&gt;</code> element
     <p>Children: anything (fallback content).
 </dd>
 <dt><code>&lt;template&gt;</code></dt>
