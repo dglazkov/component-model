@@ -28,8 +28,7 @@
 
 <p>For example, a Web developer may want to define the DOM structure that is created multiple times in the document, and then create an instance of it anytime it's needed.
 
-<code>
-<pre>
+<code><pre>
 &lt;template id=&rdquo;commentTemplate&rdquo;&gt;
     &lt;div&gt;
         &lt;img src=&rdquo;&rdquo;&gt;
@@ -42,8 +41,7 @@ var t = document.querySelector("#commentTemplate");
 // Populate content and img[src] values in the template.
 // ...
 someElement.appendChild(t.content.cloneNode());
-</pre>
-</code>
+</pre></code>
 
 <p>Appending inert DOM to a document node makes it go "live", as if the DOM tree was just parsed from markup (setting innerHTML).
 
@@ -51,12 +49,13 @@ someElement.appendChild(t.content.cloneNode());
 
 <p>A <dfn id="decorator-definition">decorator</dfn> is something that enhances or overrides the presentation of an existing element. Like all presentation aspects, the application of decorators is controlled by CSS. However, being able to specify the extra presentation using markup is unique to decorators.
 
-The <decorator> element contains a <template> element, which specifies the markup to use for rendering the decoration.
+<p>The <code>&lt;decorator&gt;</code> element contains a <code>&lt;template&gt;</code> element, which specifies the markup to use for rendering the decoration.
 
-<decorator id="fade-to-white">
- <template>
-   <div style="position: relative;">
-     <style scoped>
+<code><pre>
+&lt;decorator id=&quot;fade-to-white&quot;&gt;
+ &lt;template&gt;
+   &lt;div style=&quot;position: relative;&quot;&gt;
+     &lt;style scoped&gt;
        #fog {
          position: absolute;
          left: 0;
@@ -66,264 +65,317 @@ The <decorator> element contains a <template> element, which specifies the marku
          background: linear-gradient(
              bottom, white 0%, rgba(255, 255, 255, 0) 100%);
        }
-     <content></content>
-     <div id="fog"></div>
-     </style>
-   </div>
- </template>
-</decorator>
+     &lt;content&gt;&lt;/content&gt;
+     &lt;div id=&quot;fog&quot;&gt;&lt;/div&gt;
+     &lt;/style&gt;
+   &lt;/div&gt;
+ &lt;/template&gt;
+&lt;/decorator&gt;
+</pre></code>
 
-The <content> element is the point where the content of the decorated element (element's children) should be inserted.
+<p>The <code>&lt;content&gt;</code> element is the point where the content of the decorated element (element's children) should be inserted.
 
-Decorators are applied using the decorator CSS property:
+<p>Decorators are applied using the decorator CSS property:
 
+<code><pre>
 .poem {
  decorator: url(#fade-to-white);
  font-variant: small-caps;
 }
+</pre></code>
 
-This decorator and stylesheet would cause the following markup:
+<p>This decorator and stylesheet would cause the following markup:
 
-<div class="poem">
- Two roads diverged in a yellow wood,<br>
- …
-</div>
+<code><pre>
+&lt;div class=&quot;poem&quot;&gt;
+ Two roads diverged in a yellow wood,&lt;br&gt;
+ &hellip;
+&lt;/div&gt;
+</pre></code>
 
-To be rendered as if it was this markup (omitting user agent styles for brevity):
+<p>To be rendered as if it was this markup (omitting user agent styles for brevity):
 
-<div style="font-variant: small-caps;">
- <div style="position: relative;">
-   Two roads diverged in a yellow wood,<br>
-   …
-   <div style="position: absolute; left: 0; …"></div>
- </div>
-</div>
+<code><pre>
+&lt;div style=&quot;font-variant: small-caps;&quot;&gt;
+ &lt;div style=&quot;position: relative;&quot;&gt;
+   Two roads diverged in a yellow wood,&lt;br&gt;
+   ...
+   &lt;div style=&quot;position: absolute; left: 0; &hellip;&quot;&gt;&lt;/div&gt;
+ &lt;/div&gt;
+&lt;/div&gt;
+</pre></code>
 
-If the document changes so that the decorate property no longer applies, the decorator is unapplied, returning the rendering of the element back to the pre-decoration state.
+<p>If the document changes so that the decorate property no longer applies, the decorator is unapplied, returning the rendering of the element back to the pre-decoration state.
 
-The markup that generates presentation is also limited to never run script, and it cannot be editable.
-Events
+<p>The markup that generates presentation is also limited to never run script, and it cannot be editable.
 
-Decorators can also attach event handlers to implement interactivity. Because the decorators are transient, it is not useful for the decorator to attach event listeners to the nodes in the template or rely on any state, since it perishes any time decorator is applied or unapplied.
+<h3>Events</h3>
 
-Instead, decorators register event listeners with an event controller. To register an event listener with an event controller, the template includes a script element. The script is run once when the decorator element is parsed or inserted into the document.
-Fig. Event handler registration
+<p>Decorators can also attach event handlers to implement interactivity. Because the decorators are transient, it is not useful for the decorator to attach event listeners to the nodes in the template or rely on any state, since it perishes any time decorator is applied or unapplied.
 
-The event controller is passed to the script in the "this" pointer.
+<p>Instead, decorators register event listeners with an event controller. To register an event listener with an event controller, the template includes a <code>&lt;script&gt;</code> element. The script is run once when the decorator element is parsed or inserted into the document.
 
-<decorator id="decorator-event-demo">
- <script>
+<p>INSERT PIC HERE!</p>
+
+<p>Fig. Event handler registration
+
+<p>The event controller is passed to the script in the <code>this</code> pointer.
+
+<code><pre>
+&lt;decorator id=&quot;decorator-event-demo&quot;&gt;
+ &lt;script&gt;
    function h(event) {
      alert(event.target);
    }
-   this.listen({selector: '#b', type: 'click', handler: h});
- </script>
- <template>
-   <content></content>
-   <button id="b">Bar</button>
- </template>
-</decorator>
+   this.listen({selector: &#x27;#b&#x27;, type: &#x27;click&#x27;, handler: h});
+ &lt;/script&gt;
+ &lt;template&gt;
+   &lt;content&gt;&lt;/content&gt;
+   &lt;button id=&quot;b&quot;&gt;Bar&lt;/button&gt;
+ &lt;/template&gt;
+&lt;/decorator&gt;
+</code></pre>
 
-The call to listen means that when the button with id b is clicked, the handler h is called.
+<p>The call to listen means that when the button with id <code>b</code> is clicked, the handler <code>h</code> is called.
 
-The event controller routes events originating in any of the places that the decorator is applied to the event handler.
+<p>The event controller routes events originating in any of the places that the decorator is applied to the event handler.
 
-When the event listener is called, the target of the event is the content that the decorator was applied to, and not content from the template. For example, given the decorator specified above, this content:
+<p>When the event listener is called, the target of the event is the content that the decorator was applied to, and not content from the template. For example, given the decorator specified above, this content:
 
-<span style="decorator: url(#decorator-event-demo);">Foo</span>
+<code><pre>
+&lt;span style=&quot;decorator: url(#decorator-event-demo);&quot;&gt;Foo&lt;/span&gt;
+</code></pre>
 
-Would be rendered like this:
+<p>Would be rendered like this:
 
+<code><pre>
 Foo[Bar]
+</pre></code>
 
-Clicking on the button would show a dialog containing [object HTMLSpanElement].
+<p>Clicking on the button would show a dialog containing <code>[object HTMLSpanElement]</code>.
 
-This retargeting is necessary because the decorator specifies presentation; it does not affect the structure of the document. Since it is in the document, the content the decorator is applied to is the target of the event.
+<p>This retargeting is necessary because the decorator specifies presentation; it does not affect the structure of the document. Since it is in the document, the content the decorator is applied to is the target of the event.
 
-Similarly, if script changes the content of the template later, this doesn't have any effect on the decorator, just like setting the textContent of a script element doesn't cause the script to execute again.
+<p>Similarly, if script changes the content of the template later, this doesn't have any effect on the decorator, just like setting the <code>textContent</code> of a <code>&lt;script&gt;</code> element doesn't cause the script to execute again.</code>
 
-The decorators have no way to change the state of the decorating DOM tree, other than triggering application of a different decorator.
-Example
+<p>The decorators have no way to change the state of the decorating DOM tree, other than triggering application of a different decorator.
 
-Here is an example of how decorators could be used to implement a simple variant of the details element:
+<h3>Example</h3>
 
+<p>Here is an example of how decorators could be used to implement a simple variant of the details element:
+
+<code><pre>
 details {
  decorator: url(#details-closed);
 }
 details[open] {
  decorator: url(#details-open);
 }
+</pre></code>
 
-<decorator id="details-closed">
- <script>
+<code></pre>
+&lt;decorator id=&quot;details-closed&quot;&gt;
+ &lt;script&gt;
    this.listen({
-     selector: '#summary', type: 'click',
+     selector: &#x27;#summary&#x27;, type: &#x27;click&#x27;,
      handler: function (event) {
        event.currentTarget.open = true;
      }
    });
- </script>
- <template>
-   <a id="summary">
-     &gt; <content select="summary:first-of-type"></content>
-   </a>
- </template>
-</decorator>
+ &lt;/script&gt;
+ &lt;template&gt;
+   &lt;a id=&quot;summary&quot;&gt;
+     &amp;gt; &lt;content select=&quot;summary:first-of-type&quot;&gt;&lt;/content&gt;
+   &lt;/a&gt;
+ &lt;/template&gt;
+&lt;/decorator&gt;
+</pre></code>
 
-<decorator id="details-open">
- <template>
-   <script>
+<code><pre>
+&lt;decorator id=&quot;details-open&quot;&gt;
+ &lt;template&gt;
+   &lt;script&gt;
      this.listen({
-       selector: '#summary', type: 'click',
+       selector: &#x27;#summary&#x27;, type: &#x27;click&#x27;,
        handler: function (event) {
          event.target.open = false;
        }
      });
-   </script>
-   <a id="summary">
-     V <content select="summary:first-of-type"></content>
-   </a>
-   <content></content>
- </template>
-</decorator>
+   &lt;/script&gt;
+   &lt;a id=&quot;summary&quot;&gt;
+     V &lt;content select=&quot;summary:first-of-type&quot;&gt;&lt;/content&gt;
+   &lt;/a&gt;
+   &lt;content&gt;&lt;/content&gt;
+ &lt;/template&gt;
+&lt;/decorator&gt;
+</pre></code>
 
-This uses two decorators. One presents the details view closed; the other presents the details view open. Each decorator uses an event handler to respond to clicks by toggling the open state of the element. The content element's select attribute will be explained in detail later.
-Custom Elements
+<p>This uses two decorators. One presents the details view closed; the other presents the details view open. Each decorator uses an event handler to respond to clicks by toggling the open state of the element. The content element's select attribute will be explained in detail later.
 
-Custom elements are new types of DOM elements that can be defined by authors.
+<h2>Custom Elements</h2>
 
-Custom elements can define presentation aspects like decorators. Unlike a decorator, which can be applied or unapplied to a given element, the element's type is fixed. So custom elements can also define new state and behavior, which decorators can't do because of their ephemeral nature.
+<p>Custom elements are new types of DOM elements that can be defined by authors.
 
-The element element defines a custom element. It specifies the type of element it's a refinement of using the extends attribute:
+<p>Custom elements can define presentation aspects like decorators. Unlike a decorator, which can be applied or unapplied to a given element, the element's type is fixed. So custom elements can also define new state and behavior, which decorators can't do because of their ephemeral nature.
 
-<element extends="button" name="x-fancybutton">
- …
-</element>
+<p>The element element defines a custom element. It specifies the type of element it's a refinement of using the extends attribute:
 
-The extends attribute specifies the tag name of the kind of element this element is an extension of. Instances of the custom element will have the tag name specified here.
+<code><pre>
+&lt;element extends=&quot;button&quot; name=&quot;x-fancybutton&quot;&gt;
+...
+&lt;/element&gt;
+</pre></code>
 
-The name attribute specifies the name of the custom element, by which it will be referred to in markup. The naming space of the name is the same as element tag names, and to avoid collisions, the "x-" prefix is required for custom element value.
+<p>The extends attribute specifies the tag name of the kind of element this element is an extension of. Instances of the custom element will have the tag name specified here.
 
-Different user agents interpret HTML elements differently, however all of their interpretations are guided by the semantics of HTML.
+<p>The name attribute specifies the name of the custom element, by which it will be referred to in markup. The naming space of the name is the same as element tag names, and to avoid collisions, the <code>x-</code> prefix is required for custom element value.
 
-Because not all user agents support custom elements, authors should extend the HTML element that has the closest meaning to their new kind of element. For example, if they are defining a custom element that is interactive and responds to clicks by doing some action, they should extend button.
+<p>Different user agents interpret HTML elements differently, however all of their interpretations are guided by the semantics of HTML.
 
-When there isn't a HTML element that is semantically close to their custom element authors should extend a semantically neutral element like span.
+<p>Because not all user agents support custom elements, authors should extend the HTML element that has the closest meaning to their new kind of element. For example, if they are defining a custom element that is interactive and responds to clicks by doing some action, they should extend button.
+
+<p>When there isn't a HTML element that is semantically close to their custom element authors should extend a semantically neutral element like span.
 Presentation
 
-A custom element may optionally include a template:
+<p>A custom element may optionally include a template:
 
-<element extends="button" name="x-fancybutton">
- <template>
-   <style scoped>
+<code><pre>
+&lt;element extends=&quot;button&quot; name=&quot;x-fancybutton&quot;&gt;
+ &lt;template&gt;
+   &lt;style scoped&gt;
      ::bound-element { display: transparent; }
      div.fancy {
-       …
+       ...
      }
-   </style>
-   <div class="fancy">
-     <content></content>
-     <div id="t"></div>
-     <div id="l"></div>
-     <div id="b"></div>
-     <div id="r"></div>
-   </div>
- </template>
-</element>
+   &lt;/style&gt;
+   &lt;div class=&quot;fancy&quot;&gt;
+     &lt;content&gt;&lt;/content&gt;
+     &lt;div id=&quot;t&quot;&gt;&lt;/div&gt;
+     &lt;div id=&quot;l&quot;&gt;&lt;/div&gt;
+     &lt;div id=&quot;b&quot;&gt;&lt;/div&gt;
+     &lt;div id=&quot;r&quot;&gt;&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/template&gt;
+&lt;/element&gt;
+</pre></code>
 
-If a custom element includes a template, a copy of the template content is inserted into the custom element's shadow DOM by the generated constructor. Shadow DOM is described below.
-Using Custom Elements from Markup
+<p>If a custom element includes a template, a copy of the template content is inserted into the custom element's shadow DOM by the generated constructor. Shadow DOM is described below.
 
-Because custom elements use existing HTML tag names—div, button, option, and so on—we need to use an attribute to specify when an author intends to use a custom element. The attribute name is is, and its value is the name of a custom element. For example:
+<h3>Using Custom Elements from Markup</h3>
 
-<element extends="button" name="x-fancybutton">  <!-- definition -->
+<p>Because custom elements use existing HTML tag names -- <code>div</code>, <code>button</code>, <code>option</code>, and so on -- we need to use an attribute to specify when an author intends to use a custom element. The attribute name is <code>is</code>, and its value is the name of a custom element. For example:
+
+<code><pre>
+&lt;element extends=&quot;button&quot; name=&quot;x-fancybutton&quot;&gt;  &lt;!-- definition --&gt;
     ...
-</element>
+&lt;/element&gt;
+</pre></code>
 
-<button is="x-fancybutton" onclick="showTimeClicked(event);">  <!-- use -->
+<code></pre>
+&lt;button is=&quot;x-fancybutton&quot; onclick=&quot;showTimeClicked(event);&quot;&gt;  &lt;!-- use --&gt;
  Show time
-</button>
-Using Custom Elements from Script
+&lt;/button&gt;
+</pre></code>
 
-You can instantiate a custom element from script using the standard document.createElement facility:
+<h3>Using Custom Elements from Script</h3>
 
+<p>You can instantiate a custom element from script using the standard <code>document.createElement</code> facility:
+
+<code><pre>
 var b = document.createElement("x-fancybutton");
-alert(b.outerHTML); // will display '<button is="x-fancybutton"></button>'
+alert(b.outerHTML); // will display '&lt;button is=&quot;x-fancybutton&quot;&gt;&lt;/button&gt;'
+</code></pre>
 
-Also, you can specify constructor attribute on the <element> element to explicitly add a JavaScript property for the element constructor on the window object. That constructor can then be used to create instances of the custom element:
+<p>Also, you can specify the <code>constructor</code> attribute on the <code>&lt;element&gt;</code> element to explicitly add a JavaScript property for the element constructor on the window object. That constructor can then be used to create instances of the custom element:
 
-<element extends="button" name="x-fancybutton" constructor="FancyButton">
+<code><pre>
+&lt;element extends=&quot;button&quot; name=&quot;x-fancybutton&quot; constructor=&quot;FancyButton&quot;&gt;
     ...
-</element>
+&lt;/element&gt;
 
 ...
 
 var b = new FancyButton();
 document.body.appendChild(b);
+</pre></code>
 
-A custom element can expose API to script by putting properties on the constructor's prototype object, in a <script> that is nested inside the <element> element:
+<p>A custom element can expose API to script by putting properties on the constructor's prototype object, in a <code>&lt;script&gt;</code> that is nested inside the <code>&lt;element&gt;</code> element:
 
-<element extends="button" name="x-fancybutton" constructor="FancyButton">
- …
- <script>
+<code><pre>
+&lt;element extends=&quot;button&quot; name=&quot;x-fancybutton&quot; constructor=&quot;FancyButton&quot;&gt;
+ ...
+ &lt;script&gt;
    FancyButton.prototype.razzle = function () {
-     …
+     ...
    };
    FancyButton.prototype.dazzle = function () {
-     …
+     ...
    };
- </script>
-</element>
-…
-<script>
+ &lt;/script&gt;
+&lt;/element&gt;
+
+...
+
+&lt;script&gt;
    var b = new FancyButton();
-   b.textContent = 'Show time';
+   b.textContent = &#x27;Show time&#x27;;
    document.body.appendChild(b);
-   b.addEventListener('click', function (event) {
+   b.addEventListener(&#x27;click&#x27;, function (event) {
      event.target.dazzle();
    });
    b.razzle();
-</script>
+&lt;/script&gt;
+</pre></code>
 
-In order to provide graceful fallback behavior, the this pointer within the <script> element points to parent HTMLElementElement instance:
+<p>In order to provide graceful fallback behavior, the this pointer within the <code>&lt;script&gt;</code> element points to parent HTMLElementElement instance:
 
-<element extends="table" name="x-chart" constructor="Chart">
-<script>
-if (this === window)
-useComponentModelPolyfill("x-chart", "Chart");
-else {
-// …
-}
-</script>
-</element>
+<code><pre>
+&lt;element extends=&quot;table&quot; name=&quot;x-chart&quot; constructor=&quot;Chart&quot;&gt;
+    &lt;script&gt;
+        if (this === window)
+            useComponentModelPolyfill(&quot;x-chart&quot;, &quot;Chart&quot;);
+        else {
+            // ...
+        }
+    &lt;/script&gt;
+&lt;/element&gt;
+</pre></code>
 
-Mechanically, the code inside of the <script> element when it is a child of either <element> or <decorator> elements is executed like this:
+<p>Mechanically, the code inside of the <code>&lt;script&gt;</code> element when it is a child of either <code>&lt;element&gt;</code> or <code>&lt;decorator&gt;</code> elements is executed like this:
 
+<code><pre>
 (function() {
     // code goes here.
 }).call(parentInstance);
+</pre></code>
 
-In situations where having constructors on window object is undesirable, the custom element author can use generatedConstructor property of the HTMLElementElement:
+<p>In situations where having constructors on window object is undesirable, the custom element author can use <code>generatedConstructor</code> property of the <code>HTMLElementElement</code>:
 
-<element extends="table" name="x-chart">
-    <script>
-        // ..
+<code><pre>
+&lt;element extends=&quot;table&quot; name=&quot;x-chart&quot;&gt;
+    &lt;script&gt;
+        // ...
         var Chart = this.generatedConstructor;
-        Chart.prototype.shizzle = function() { /* … */ };
-        // ..
-    </script>
-</element>
+        Chart.prototype.shizzle = function() { /* ... */ };
+        // ...
+    &lt;/script&gt;
+&lt;/element&gt;
+</pre></code>
 
-One cannot create a custom element by setting an "is" attribute on an existing DOM element. Doing so will result in a no-op:
+<p>One cannot create a custom element by setting an <code>is</code> attribute on an existing DOM element. Doing so will result in a no-op:
 
+<code><pre>
 div.setAttribute("is", "foo");
 alert(div.getAttribute("is")); // displays null
-Element Upgrade
+</pre></code>
 
-As the definition of a custom element is loaded, each element with the is attribute set to the name of that custom element is upgraded to the custom element. The upgrade process should be perceptually equivalent to removal of the element from the document and its replacement by the custom element instance.
+<h3>Element Upgrade</h3>
 
-As each element is replaced, a non-bubbling, non-cancellable event is dispatched to the element that has been removed. Scripts that want to delay interacting with part of a document until the custom elements are present can listen to this event:
+<p>As the definition of a custom element is loaded, each element with the is attribute set to the name of that custom element is upgraded to the custom element. The upgrade process should be perceptually equivalent to removal of the element from the document and its replacement by the custom element instance.
 
+<p>As each element is replaced, a non-bubbling, non-cancellable event is dispatched to the element that has been removed. Scripts that want to delay interacting with part of a document until the custom elements are present can listen to this event:
+
+<code><pre>
 function showTimeClicked(event) {
  // event.target may be an HTMLButtonElement or a FancyButton
 
@@ -342,26 +394,29 @@ function showTimeClicked(event) {
 function showTime(b) {
  // b is FancyButton
 }
+</pre></code>
 
-Authors who want to avoid the flash of unstyled content can use CSS to change the presentation of the ordinary element until the custom element is loaded.
-Lifecycle Methods
+<p>Authors who want to avoid the flash of unstyled content can use CSS to change the presentation of the ordinary element until the custom element is loaded.
 
-A custom element can optionally subscribe to these four lifecycle callbacks:
-created -- called by the generated constructor, passing a ShadowRoot created from the <template> element or null, if there was no <template> element in the declaration.
-attributeChanged -- called whenever an attribute of the element is changed. The arguments are the name, old value and the new value.
-inserted --  called after the custom element is inserted into the tree. If a custom element needs to start loading resources or start timers, it can do that in this method.
-removed --  is called after the custom element is removed from the tree. A custom element can stop timers that it does not need when it is not in the tree.
+<h3>Lifecycle Methods</h3>
 
+<p>A custom element can optionally subscribe to these four lifecycle callbacks:
+<ul>
+    <li><code>created</code> -- called by the generated constructor, passing a <code>ShadowRoot</code> instance, created from the <code>&lt;template&gt;</code> element or <code>null</code>, if there was no <code>&lt;template&gt;</code> element in the declaration.
+    <li><code>attributeChanged</code> -- called whenever an attribute of the element is changed. The arguments are the name, old value and the new value.
+    <li><code>inserted</code> --  called after the custom element is inserted into the tree. If a custom element needs to start loading resources or start timers, it can do that in this method.
+    <li><code>removed</code> --  is called after the custom element is removed from the tree. A custom element can stop timers that it does not need when it is not in the tree.
+</ul>
 
+<p>The callbacks are invoked with this as the instance element.
 
-The callbacks are invoked with this as the instance element.
+<p>The inserted and removed callbacks may be called multiple times if the element as the element is inserted and removed from the tree.
 
-The inserted and removed callbacks may be called multiple times if the element as the element is inserted and removed from the tree.
+<p>You can subscribe to these callbacks by invoking <code>HTMLElementElement.lifecycle</code> method:
 
-You can subscribe to these callbacks by invoking HTMLElementElement.lifecycle method:
-
-<element extends="time" name="x-clock">
-<script>
+<code><pre>
+&lt;element extends=&quot;time&quot; name=&quot;x-clock&quot;&gt;
+&lt;script&gt;
 // ...
 
         this.lifecycle({
@@ -369,174 +424,204 @@ You can subscribe to these callbacks by invoking HTMLElementElement.lifecycle me
             removed: function() { this.stopUpdatingClock(); }
         });
 
-// …
-</script>
-</element>
-Extending Custom Elements
+// ...
+&lt;/script&gt;
+&lt;/element&gt;
+</pre></code>
 
-In addition to HTML elements, you can also extend a custom element by specifying the custom element's name as the value of the extends attribute in the <element> element:
+<h3>Extending Custom Elements</h3>
 
-<element extends="x-clock" name="x-grandfatherclock">
+<p>In addition to HTML elements, you can also extend a custom element by specifying the custom element's name as the value of the extends attribute in the <code>&lt;element&gt;</code> element:
+
+<code><pre>
+&lt;element extends=&quot;x-clock&quot; name=&quot;x-grandfatherclock&quot;&gt;
     ...
-</element>
-Error Handling
+&lt;/element&gt;
+</pre></code>
 
-There are several opportunities for error when setting up custom elements:
-The tag name of the element does not match the value of the "extends" attribute of the custom element, eg. <div is="x-fancybutton">, but <element name="x-fancybutton" extends="button">. In this case, the is attribute is thrown away while parsing.
-The value of the "is" attribute does not correspond to any currently defined element. This situation is treated as if the definitions hasn't been loaded yet, and the element will be upgraded as soon as the definition arrives.
-The value of the "extends" attribute does not correspond to any currently defined element. In this case, the element's definition is put on hold as if it hasn't loaded, until the element mentioned in the "extends" attribute is loaded.
-The value of the "is" attribute does not begin with an "x-". This is resolved by dropping the "is" attribute altogether.
-The value of the "name" attribute does not begin with an "x-". The definition is considered invalid and is ignored.
+<h3>Error Handling</h3>
 
+<p>There are several opportunities for error when setting up custom elements:
+<ul>
+    <li>The tag name of the element does not match the value of the <code>extends</code> attribute of the custom element, eg. <code>&lt;div is=&quot;x-fancybutton&quot;&gt;</code>, but <code>&lt;element name=&quot;x-fancybutton&quot; extends=&quot;button&quot;&gt;</code>. In this case, the is attribute is thrown away while parsing.
+    <li>The value of the <code>is</code> attribute does not correspond to any currently defined element. This situation is treated as if the definitions hasn't been loaded yet, and the element will be upgraded as soon as the definition arrives.
+    <li>The value of the <code>extends</code> attribute does not correspond to any currently defined element. In this case, the element's definition is put on hold as if it hasn't loaded, until the element mentioned in the <code>extends</code> attribute is loaded.
+    <li>The value of the <code>is</code> attribute does not begin with an <code>x-</code>. This is resolved by dropping the <code>is</code> attribute altogether.
+    <li>The value of the <code>name</code> attribute does not begin with an <code>x-</code>. The definition is considered invalid and is ignored.
+</ul>
 
-Shadow DOM
+<h2>Shadow DOM</h2>
 
-Shadow DOM is a tree of DOM nodes. Shadow DOM can be applied to a custom element declaratively, by including a template, or to any element imperatively using JavaScript.
+<p>Shadow DOM is a tree of DOM nodes. Shadow DOM can be applied to a custom element declaratively, by including a template, or to any element imperatively using JavaScript.
 
-When an element has shadow DOM, the element's children are not rendered; the content of the shadow DOM is rendered instead.
-Content and Shadow Elements
+<p>When an element has shadow DOM, the element's children are not rendered; the content of the shadow DOM is rendered instead.
 
-Any shadow DOM subtree can specify insertion points for element's children by using a <content> element:
+<h3>Content and Shadow Elements</h3>
 
-<div>
-<div class="stuff">
-<content><!-- all children will appear here --></content>
-</div>
-</div>
+<p>Any shadow DOM subtree can specify insertion points for element's children by using a <code>&lt;content&gt;</code> element:
 
-The <content> element acts as an insertion point for rendering only -- it does not change where the elements appear in DOM. When rendering, the element's children just appear in place of the <content> element. And yes, you can have more than one <content> in the shadow DOM subtree! The select attribute gives you a handy way to choose which children appear at which insertion point. If there is more than one <content> element, the document order dictates when each of these elements takes a pass at selecting the children. Once the child is selected to be rendered at one insertion point, it can't be claimed by another one.
+<code><pre>
+&lt;div&gt;
+    &lt;div class=&quot;stuff&quot;&gt;
+        &lt;content&gt;&lt;!-- all children will appear here --&gt;&lt;/content&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre></code>
 
-<div>
-<content select="h1.cool"><!-- all h1.cool children will
-appear here --></content>
-<div class="cool">
-    <content select=".cool"><!-- all .cool children
-(except the ones that are h1.cool) appear here --></content>
-    </div>
-<div class="stuff">
-<content><!-- all remaining children will
-appear here --></content>
-</div>
-</div>
-Multiple Shadow Subtrees
+<p>The <code>&lt;content&gt;</code> element acts as an insertion point for rendering only -- it does not change where the elements appear in DOM. When rendering, the element's children just appear in place of the <code>&lt;content&gt;</code> element. And yes, you can have more than one <code>&lt;content&gt;</code> in the shadow DOM subtree! The <code>select</code> attribute gives you a handy way to choose which children appear at which insertion point. If there is more than one <code>&lt;content&gt;</code> element, the document order dictates when each of these elements takes a pass at selecting the children. Once the child is selected to be rendered at one insertion point, it can't be claimed by another one.
 
-Any element can have more than one shadow DOM subtree. Don't look so puzzled! Suppose you are extending a DOM element that already has a shadow DOM subtree. What happens to that poor old tree? We could just ditch it for the new arboreal hotness, but what if you don't want to? What if you want reuse it?
+<code><pre>
+&lt;div&gt;
+    &lt;content select=&quot;h1.cool&quot;&gt;&lt;!-- all h1.cool children will
+        appear here --&gt;&lt;/content&gt;
+    &lt;div class=&quot;cool&quot;&gt;
+        &lt;content select=&quot;.cool&quot;&gt;&lt;!-- all .cool children
+            (except the ones that are h1.cool) appear here --&gt;&lt;/content&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;stuff&quot;&gt;
+        &lt;content&gt;&lt;!-- all remaining children will
+            appear here --&gt;&lt;/content&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre></code>
 
-For this noble purpose, we have a special <shadow> element, which acts as an insertion point for the, you guessed it, the previously applied shadow DOM subtree of this element. For instance, you can take existing range slider (that's <input type="range">) and extend it, adding your extra shadow schmutz to it:
+<h3>Multiple Shadow Subtrees</h3>
 
-<div>
-    <shadow><!-- range slider renders here --></shadow>
-    <div class="ticks"> ... </div>
-</div>
+<p>Any element can have more than one shadow DOM subtree. Don't look so puzzled! Suppose you are extending a DOM element that already has a shadow DOM subtree. What happens to that poor old tree? We could just ditch it for the new arboreal hotness, but what if you don't want to? What if you want reuse it?
 
-Since an element can have multiple shadows, we need to understand how these shadows interact with each other and what effect these interactions have on rendering of the element's children.
+<p>For this noble purpose, we have a special <code>&lt;shadow&gt;</code> element, which acts as an insertion point for the, you guessed it, the previously applied shadow DOM subtree of this element. For instance, you can take existing range slider (that's <code>&lt;input type=&quot;range&quot;&gt;</code>) and extend it, adding your extra shadow schmutz to it:
 
-First, the order in which the  shadow DOM subtrees are applied is important. Because you cannot remove a shadow DOM, the order is typically like this:
-element shadow DOM (I got here first, nyah!)
-shadow DOM of the element sub-class
-shadow DOM of the element sub-sub-class
-…
-some dynamically added shadow DOM
-decorator shadow (applied and removed with CSS rules -- not technically a shadow DOM, but can, too, have <content> and <shadow> elements)
+<code><pre>
+&lt;div&gt;
+    &lt;shadow&gt;&lt;!-- range slider renders here --&gt;&lt;/shadow&gt;
+    &lt;div class=&quot;ticks&quot;&gt; ... &lt;/div&gt;
+&lt;/div&gt;
+</pre></code>
 
+<p>Since an element can have multiple shadows, we need to understand how these shadows interact with each other and what effect these interactions have on rendering of the element's children.
 
+<p>First, the order in which the  shadow DOM subtrees are applied is important. Because you cannot remove a shadow DOM, the order is typically like this:
+<ol>
+    <li>element shadow DOM (I got here first, nyah!)
+    <li>shadow DOM of the element sub-class
+    <li>shadow DOM of the element sub-sub-class
+    <li>...
+    <li>some shadow DOM added using script
+    <li>decorator shadow (applied and removed with CSS rules -- not technically a shadow DOM, but can, too, have <code>&lt;content&gt;</code> and <code>&lt;shadow&gt;</code> elements)
+</ol>
 
-Next, we take this list and traverse it backwards, starting with the last-applied shadow subtree. Each <content> instance, encountered in document order, grabs the element's children that it needs as usual.
+<p>Next, we take this list and traverse it backwards, starting with the last-applied shadow subtree. Each <code>&lt;content&gt;</code> instance, encountered in document order, grabs the element's children that it needs as usual.
 
-This is where things get interesting. Once we're done shuffling the children into their right places to render, we check and see if we have a <shadow> element. If we don't, we're done.
+<p>This is where things get interesting. Once we're done shuffling the children into their right places to render, we check and see if we have a <code>&lt;shadow&gt;</code> element. If we don't, we're done.
 
-If we do, we plop the next shadow subtree in our list in place of the <shadow> element, and rinse-repeat replacing first <content> insertion points, then <shadow> until we reach the start of the list.
+<p>If we do, we plop the next shadow subtree in our list in place of the <code>&lt;shadow&gt;</code> element, and rinse-repeat first replacing <code>&lt;content&gt;</code> insertion points, then <code>&lt;shadow&gt;</code> until we reach the start of the list.
 
-And then—ta-da!—we have our wondrous shadow DOM Yggdrasil, ready for rendering. Here's an easy way to remember how this works:
-The most recently applied shadow DOM subtree has the best shot of getting fresh children for its <content> insertion points (unfair, I know!)
-Once it's had its way, the next most recent shadow DOM subtree -- if even allowed to -- can rummage through the remaining children.
-Cycle repeats until either the current shadow DOM subtree has no <shadow> element, or we've processed the oldest DOM subtree for this element.
+<p>And then -- ta-da! -- we have our wondrous shadow DOM Yggdrasil, ready for rendering. Here's an easy way to remember how this works:
+<ul>
+    <li>The most recently applied shadow DOM subtree has the best shot of getting fresh children for its <code>&lt;content&gt;</code> insertion points (unfair, I know!)
+    <li>Once it's had its way, the next most recent shadow DOM subtree -- if even allowed to -- can rummage through the remaining children.
+    <li>Cycle repeats until either the current shadow DOM subtree has no <code>&lt;shadow&gt;</code> element, or we've processed the oldest DOM subtree for this element.
+</ul>
 
+<h3>CSS and Shadow DOM</h3>
 
-CSS and Shadow DOM
+<p>When building a custom element, you often want to prevent document styles from interfering with what you've painstakingly crafted.
 
-When building a custom element, you often want to prevent document styles from interfering with what you've painstakingly crafted.
+<p>Lucky for you, the shadow DOM subtree is surrounded by an invisible boundary, only letting the user agent styles apply by default. The cascade still works as usual.
 
-Lucky for you, the shadow DOM subtree is surrounded by an invisible boundary, only letting the user agent styles apply by default. The cascade still works as usual.
+<p>You can relax this boundary with the <code>apply-author-styles</code> attribute on the <code>&lt;template&gt;</code> element. With the attribute present, document's author styles start applying in the shadow DOM subtree.
 
-You can relax this boundary with the apply-author-styles attribute on the <template> element. With the attribute present, document's author styles start applying in the shadow DOM subtree.
+<p>There is a similar boundary between the <code>&lt;content&gt;</code> element and element's children, rendered in its place. The styles from the shadow DOM subtree do not apply to the element's children.
 
-There is a similar boundary between the <content> element and element's children, rendered in its place. The styles from the shadow DOM subtree do not apply to the element's children.
+<p>And you can control that too, using <code>apply-shadow-styles</code> attribute on the <code>&lt;content&gt;</code> element.
 
-And you can control that too, using apply-shadow-styles attribute on the <content> element.
+<p>The magic style boundary also prevents selectors from reaching into the shadow DOM subtree, skipping it altogether. For example, if <code>&lt;div id=&quot;foo&quot;&gt;</code> had this shadow DOM subtree:
 
-The magic style boundary also prevents selectors from reaching into the shadow DOM subtree, skipping it altogether. For example, if <div id="foo"> had this shadow DOM subtree:
+<code><pre>
+&lt;a href=&quot;http://example.com&quot;&gt;shadow link&lt;/a&gt;
+&lt;content&gt;&lt;/content&gt;
+</pre></code>
 
-<a href="http://example.com">shadow link</a>
-<content></content>
+<p>and a child
 
-and a child
+<code><pre>
+&lt;a href=&quot;http://example.org&quot;&gt;light link&lt;/a&gt;,
+</pre></code>
 
-<a href="http://example.org">light link</a>,
+<p>both <code>div#foo>a</code> and <code>div#foo a</code> will select the child (light link), not the anchor in the shadow DOM (shadow link).
 
-both "div#foo>a" and "div#foo a" will select the child (light link), not the anchor in the shadow DOM (shadow link).
+<p>If the component authors wish to allow some styling of the shadow DOM subtree by the component users, they can do so with CSS variables. The variable definitions specified on the shadow DOM host element are also resolved inside of the shadow DOM subtree.
 
-If the component authors wish to allow some styling of the shadow DOM subtree by the component users, they can do so with CSS variables. The variable definitions specified on the shadow DOM host element are also resolved inside of the shadow DOM subtree.
-Events
+<h3>Events</h3>
 
-To ensure that the elements of the shadow DOM subtree are not exposed outside of the subtree, there's a fair bit of work that happens while dispatching an event from inside of the subtree.
+<p>To ensure that the elements of the shadow DOM subtree are not exposed outside of the subtree, there's a fair bit of work that happens while dispatching an event from inside of the subtree.
 
-First, some events (like mutation and selectstart events) are just plain prevented from escaping out of the shadow DOM subtree—they are never heard from the outside.
+<p>First, some events (like mutation and selectstart events) are just plain prevented from escaping out of the shadow DOM subtree—they are never heard from the outside.
 
-Those events that do cross the shadow DOM boundary are retargeted—their target and relatedTarget values are modified to point to the element that hosts the shadow DOM subtree.
+<p>Those events that do cross the shadow DOM boundary are retargeted—their target and relatedTarget values are modified to point to the element that hosts the shadow DOM subtree.
 
-In some cases, like DOMFocusIn, mouseover, mouseout events have to be given extra attention: if you're moving a mouse between two elements inside of the shadow subtree, you don't want to be spamming the document with these events, since they will appear as non-sensical babbling after the retargeting (what? the element just reported that the mouse just left it to itself?!)
-Making More Shadows
+<p>In some cases, like <code>DOMFocusIn</code>, <code>mouseover</code>, <code>mouseout</code> events have to be given extra attention: if you're moving a mouse between two elements inside of the shadow subtree, you don't want to be spamming the document with these events, since they will appear as non-sensical babbling after the retargeting (what? the element just reported that the mouse just left it to itself?!)
 
-As implied before, you can always add a shadow DOM subtree to any DOM element in one line of code:
+<h3>Making More Shadows</h3>
 
+<p>As implied before, you can always add a shadow DOM subtree to any DOM element in one line of code:
+
+<code><pre>
 var shadow = new ShadowRoot(anyElement);
+</code></pre>
 
-This does two things:
-Creates a brand-spanking-new ShadowRoot instance, which you should imagine as this shadowy, invisible other side of your element. It's like a tiny document that lives inside of our custom element, and serves as the root of your shadow DOM subtree.
-Sets anyElement as the host of this newly created shadow DOM subtree.
+<p>This does two things:
+<ol>
+    <li>Creates a brand-spanking-new ShadowRoot instance, which you should imagine as this shadowy, invisible other side of your element. It's like a tiny document that lives inside of our custom element, and serves as the root of your shadow DOM subtree.
+    <li>Sets anyElement as the host of this newly created shadow DOM subtree.
+</ol>
 
+<p>The important thing to remember is that while you can add new shadow DOM subtrees this way, you can never remove them: they just keep stacking up.
 
+<h3>Decorators vs. Custom Elements</h3>
 
-The important thing to remember is that while you can add new shadow DOM subtrees this way, you can never remove them: they just keep stacking up.
-Decorators vs. Custom Elements
+<p>Decorator shadows are never accessible with DOM. When the decorator is created, the shadow DOM subtree is placed in a cold, dark place—for storage. Once the decorator is applied to an element, this shadow DOM subtree is used to produce the rendering, but its nodes are never accessible from script. You can, however listen to events that happen inside the decorator shadow using EventController.
 
-Decorator shadows are never accessible with DOM. When the decorator is created, the shadow DOM subtree is placed in a cold, dark place—for storage. Once the decorator is applied to an element, this shadow DOM subtree is used to produce the rendering, but its nodes are never accessible from script. You can, however listen to events that happen inside the decorator shadow using EventController.
+<p>An easy way to think of the decorator shadow is as a projection. You can see it, but never can actually touch it.
 
-An easy way to think of the decorator shadow is as a projection. You can see it, but never can actually touch it.
+<p>On the other hand, the custom element shadow (or any shadow DOM subtree created using script) is a real DOM tree that you as the custom element author can change as you please.
 
-On the other hand, the custom element shadow (or any shadow DOM subtree created using script) is a real DOM tree that you as the custom element author can change as you please.
-External Custom Elements and Decorators
+<h3>External Custom Elements and Decorators</h3>
 
-Custom elements and decorators can be loaded from external files using the link tag:
+<p>Custom elements and decorators can be loaded from external files using the link tag:
 
-<link rel="components" href="goodies.html">
+<code><pre>
+&lt;link rel=&quot;components&quot; href=&quot;goodies.html&quot;&gt;
+</pre></code>
 
-Only decorator elements, element elements and script tags are interpreted by the UA. The DOM of this document is not available to script. The origin of the embedding document is used as the origin of the embedded document. Script runs as though it was async defer. The custom element definitions and decorators are not made available until the scripts have run. Documents which are retrieved cross-origin use CORs to determine that the definitions are designed to run cross-site.
-Isolation, Confinement and Encapsulation
+<p>Only decorator elements, element elements and script tags are interpreted by the UA. The DOM of this document is not available to script. The origin of the embedding document is used as the origin of the embedded document. Script runs as though it was async defer. The custom element definitions and decorators are not made available until the scripts have run. Documents which are retrieved cross-origin use CORs to determine that the definitions are designed to run cross-site.
 
-Component isolation can be viewed as combination of two parts:
-confinement, when the document wants to prevent a component from accessing document information, and
-encapsulation, when the component wants to prevent the document from accessing inner state of the component.
+<h3>Isolation, Confinement and Encapsulation</h3>
 
+<p><dfn id="component-isolation-definition">Component isolation</dfn> can be viewed as combination of two parts:
+<ul>
+    <li><dfn id="confinement-definition">confinement</dfn>, when the document wants to prevent a component from accessing document information, and
+    <li><dfn id="encapsulation-definition">encapsulation</dfn>, when the component wants to prevent the document from accessing inner state of the component.
+</ul>
 
+<p>Component encapsulation is partially enforced with shadow DOM, ensuring that shadow DOM nodes never appear in the event dispatch, range, focus-related DOM accessors or any APIs that query DOM nodes. It is up the author of the component to choose whether the inner state is exposed.
 
-Component encapsulation is partially enforced with shadow DOM, ensuring that shadow DOM nodes never appear in the event dispatch, range, focus-related DOM accessors or any APIs that query DOM nodes. It is up the author of the component to choose whether the inner state is exposed.
+<p>Component confinement is much trickier. Perhaps it needs to be tackled as a separate effort.
 
-Component confinement is much trickier. Perhaps it needs to be tackled as a separate effort.
-Example
+<h2>Example</h2>
 
-Suppose we we want to display a clickable map of timezones instead of a select element. Here's how one could implement this using decorators:
+<p>Suppose we we want to display a clickable map of timezones instead of a select element. Here's how one could implement this using decorators:
 
-<decorator id="timezone-map">
-   <script>
-       var timezones = ['PST', ... ];
+<code><pre>
+&lt;decorator id=&quot;timezone-map&quot;&gt;
+   &lt;script&gt;
+       var timezones = [&#x27;PST&#x27;, ... ];
 
        function createHandler(timezone)
        {
            this.listen({
-               selector: '#' + timezone,
-               type: 'click',
+               selector: &#x27;#&#x27; + timezone,
+               type: &#x27;click&#x27;,
                handler: function() {
                    // Decorators are late-bound, we must check for type.
                    if (this instanceof HTMLSelectElement)
@@ -546,41 +631,47 @@ Suppose we we want to display a clickable map of timezones instead of a select e
        }
 
        timezones.forEach(createHandler, this);
-   </script>
-   <template>
-       <svg ...>
-           <g id="worldShapes"> ... </g>
-           <g id="timezoneShapes">
-               <path id="PST" ...>
-               <path id="CST" ...>
-           </g>
+   &lt;/script&gt;
+   &lt;template&gt;
+       &lt;svg ...&gt;
+           &lt;g id=&quot;worldShapes&quot;&gt; ... &lt;/g&gt;
+           &lt;g id=&quot;timezoneShapes&quot;&gt;
+               &lt;path id=&quot;PST&quot; ...&gt;
+               &lt;path id=&quot;CST&quot; ...&gt;
+           &lt;/g&gt;
            ...
-       </svg>
-   </template>
-</decorator>
+       &lt;/svg&gt;
+   &lt;/template&gt;
+&lt;/decorator&gt;
+</pre></code>
 
-You would apply this decorator as:
+<p>You would apply this decorator as:
 
+<code><pre>
 select.timezones {
     decorator: url(#timezone-map);
 }
+</pre></code>
 
-provided that there's the following markup in the document:
+<p>provided that there's the following markup in the document:
 
-<select class="timezones">
-    <option>PST</option>
-    …
-</select>
+<code><pre>
+&lt;select class=&quot;timezones&quot;&gt;
+    &lt;option&gt;PST&lt;/option&gt;
+    ...
+&lt;/select&gt;
+</pre></code>
 
-And here's the implementation using custom elements:
+<p>And here's the implementation using custom elements:
 
-<element extends="select" name="x-timezone-map" constructor="MapSelector">
-   <script>
+<code><pre>
+&lt;element extends=&quot;select&quot; name=&quot;x-timezone-map&quot; constructor=&quot;MapSelector&quot;&gt;
+   &lt;script&gt;
        this.lifecycle({
            created: function(shadowRoot) {
                var select = shadowRoot.shadowHost;
-               var timezones = shadowRoot.querySelector('#timezoneShapes');
-   timezones.addEventHandler('click', function() {
+               var timezones = shadowRoot.querySelector(&#x27;#timezoneShapes&#x27;);
+   timezones.addEventHandler(&#x27;click&#x27;, function() {
                    if (event.target != this)
                        select.selectedIndex = select[event.target.id].index;
                });
@@ -588,27 +679,32 @@ And here's the implementation using custom elements:
        });
 
        MapSelector.prototype.isDaylightSaving = function() { /* ... */ }
-   </script>
-   <template>
-       <svg>
-           <g id="worldShapes"> ... </g>
-           <g id="timezoneShapes">
-               <path id="PST" ...>
-               <path id="CST" ...>
-           </g>
+   &lt;/script&gt;
+   &lt;template&gt;
+       &lt;svg&gt;
+           &lt;g id=&quot;worldShapes&quot;&gt; ... &lt;/g&gt;
+           &lt;g id=&quot;timezoneShapes&quot;&gt;
+               &lt;path id=&quot;PST&quot; ...&gt;
+               &lt;path id=&quot;CST&quot; ...&gt;
+           &lt;/g&gt;
            ...
-       </svg>
-   </template>
-</element>
+       &lt;/svg&gt;
+   &lt;/template&gt;
+&lt;/element&gt;
+</pre></code>
 
-You would use this custom element like so:
+<p>You would use this custom element like so:
 
-<select is="x-timezone-map">
-    <option>PST</option>
-…
-</select>
-Appendix A. Interfaces
+<code><pre>
+&lt;select is=&quot;x-timezone-map&quot;&gt;
+    &lt;option&gt;PST&lt;/option&gt;
+...
+&lt;/select&gt;
+</pre></code>
 
+<h2>Appendix A. Interfaces</h2>
+
+<code><pre>
 interface HTMLTemplateElement : HTMLElement {
 readonly attribute DocumentFragment content;
 }
@@ -655,69 +751,68 @@ interface ShadowRoot : TreeScope {
 attribute bool applyAuthorStyles;
 readonly attribute Element shadowHost;
 }
+</pre></code>
 
-Appendix B. HTML Elements
+<h2>Appendix B. HTML Elements</h2>
 
+<dl>
+<dt><code>&lt;content&gt;</code></dt>
+<dd>
+    <p>Specifies an insertion point in the shadow DOM tree. The insertion point is replaced with the elements' children at rendering time. The <code>&lt;content&gt;</code> element itself is never rendered.
+    <p>Context: descendant of a <code>&lt;template&gt;</code> element
+    <p>Children: anything (fallback content)
+    <p>Attributes:
+    <p><code>select</code> -- the value is a list of compound selectors, addressing immediate children of the element.
+    <p><code>apply-shadow-styles</code> -- if <code>true</code>, the styles of the shadow DOM tree apply to the element children, rendered in place of the <code>&lt;content&gt;</code> element. if <code>false</code> (default), the styles of the shadow DOM tree do not apply.
+</dd>
+<dt><code>&lt;decorator&gt;</code></dt>
+<dd>
+    <p>Defines a new decorator. Typically, you would also give it an id attribute to make it addressable from CSS.
+    <p>Context: anywhere in the document.
+    <p>Children: <code>&lt;template&gt;</code> and <code>&lt;script&gt;</code>
+    <p>Attributes:
+    <p><code>apply-author-styles</code> -- if <code>true</code>, the author styles of the document apply to the shadow DOM subtree of the element. If <code>false</code> (default), the author styles do not apply.
+</dd>
+<dt><code>&lt;element&gt;</code></dt>
+<dd>
+    <p>Defines a new custom element.
+    <p>Context: anywhere in the document.
+    <p>Children: <code>&lt;template&gt;</code>
+    <p>Attributes:
+    <p><code>extends</code> -- tag name of the element or a defined custom element constructor name that the new custom element extends.
+    <p><code>name</code> -- the name of the custom element constructor that is generated by this definition.
+    <p><code>apply-author-styles</code> -- if <code>true</code>, the author styles of the document apply to the shadow DOM subtree of the element. If <code>false</code> (default), the author styles do not apply.
+</dd>
+<dt><code>&lt;shadow&gt;</code></dt>
+<dd>
+    <p>Specifies an insertion point, where the next-oldest shadow DOM subtree in element's list of shadow DOM subtrees is rendered. The <shadow> element itself is never rendered.
+    <p>Context: descendant of a <template> element
+    <p>Children: anything (fallback content).
+</dd>
+<dt><code>&lt;template&gt;</code></dt>
+<dd>
+    <p>Defines an inert chunk of DOM that can then be used for creating DOM instances in an unknown parsing context.
+    <p>Context: anywhere in the document.
+    <p>Children: any element.
+</dd>
+</dl>
 
-<content>
+<h2>Appendix C. Custom Element Constructor Properties</h2>
 
-Specifies an insertion point in the shadow DOM tree. The insertion point is replaced with the elements' children at rendering time. The <content> element itself is never rendered.
-Context: descendant of a <template> element
-Children: anything (fallback content)
-Attributes:
-select -- the value is a list of compound selectors, addressing immediate children of the element.
-apply-shadow-styles -- if true, the styles of the shadow DOM tree apply to the element children, rendered in place of the <content> element. if false (default), the styles of the shadow DOM tree do not apply.
+<p>Here are some more properties of the generated constructor and FancyButton instances:
 
-
-
-<decorator>
-
-Defines a new decorator. Typically, you would also give it an id attribute to make it addressable from CSS.
-Context: anywhere in the document.
-Children: <template> and <script>
-Attributes:
-apply-author-styles -- if true, the author styles of the document apply to the shadow DOM subtree of the element. If false (default), the author styles do not apply.
-
-
-
-<element>
-
-Defines a new custom element.
-Context: anywhere in the document.
-Children: <template>
-Attributes:
-extends -- tag name of the element or a defined custom element constructor name that the new custom element extends.
-name -- the name of the custom element constructor that is generated by this definition.
-apply-author-styles -- if true, the author styles of the document apply to the shadow DOM subtree of the element. If false (default), the author styles do not apply.
-
-
-
-<shadow>
-
-Specifies an insertion point, where the next-oldest shadow DOM subtree in element's list of shadow DOM subtrees is rendered. The <shadow> element itself is never rendered.
-Context: descendant of a <template> element
-Children: anything (fallback content).
-
-
-
-<template>
-
-Defines an inert chunk of DOM that can then be used for creating DOM instances in an unknown parsing context.
-Context: anywhere in the document.
-Children: any element.
-
-
-Appendix C. Custom Element Constructors
-
-Here are some more properties of the generated constructor and FancyButton instances:
-
-typeof FancyButton ⇒ "function"
-FancyButton.call({}) ⇒ throws
+<code><pre>
+typeof FancyButton &rArr; &quot;function&quot;
+FancyButton.call({}) &rArr; throws
 Object.getPrototypeOf(FancyButton.prototype) ===
-   HTMLButtonElement.prototype ⇒ true
+   HTMLButtonElement.prototype &rArr; true
 
-document.body.lastChild === b ⇒ true
-b.tagName ⇒ "button"
-b.outerHTML ⇒ "<button is='FancyButton'></button>"
-b instanceof FancyButton ⇒ true
-b instanceof HTMLButtonElement ⇒ true
+document.body.lastChild === b &rArr; true
+b.tagName &rArr; &quot;button&quot;
+b.outerHTML &rArr; &quot;&lt;button is=&#x27;FancyButton&#x27;&gt;&lt;/button&gt;&quot;
+b instanceof FancyButton &rArr; true
+b instanceof HTMLButtonElement &rArr; true
+</code></pre>
+
+</body>
+</html>
