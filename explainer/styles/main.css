@@ -43,5 +43,6 @@ code {
 
 pre {
     background-color: #eee;
-    padding: 1em 2em;
+    padding: 0 2em 1em 2em;
+    margin: 0;
 }
