@@ -37,6 +37,8 @@ a {
 
 code {
     background-color: #eee;
+    font-family: 'Droid Sans Mono', monospace;
+    font-size: 0.8em;
 }
 
 pre {
