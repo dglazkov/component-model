@@ -8,7 +8,7 @@
 <body>
 <h1>Web Components Explained</h1>
 
-<p>The Component Model for the Web (aka Web Components) consists of four pieces designed to be used together to let web application authors define widgets with a level of visual richness not possible with CSS alone, and ease of composition and reuse not possible with script libraries today.
+<p>The component model for the Web (aka Web Components) consists of four pieces designed to be used together to let web application authors define widgets with a level of visual richness not possible with CSS alone, and ease of composition and reuse not possible with script libraries today.
 
 <p>These pieces are:
 <ul>
@@ -22,7 +22,7 @@
 
 <h2>Templates</h2>
 
-<p>The <code id="#template-definition">&lt;template&gt;</code> element contains markup intended to be used later -- by script or some other template-aware consumer (like <code>&lt;decorator&gt;</code> and <code>&lt;element&gt;</code> elements that are described later).
+<p>The <code id="#template-definition">&lt;template&gt;</code> element contains markup intended to be used later&mdash;by script or some other template-aware consumer (like <code>&lt;decorator&gt;</code> and <code>&lt;element&gt;</code> elements that are described later).
 
 <p>The content of the <code>&lt;template&gt;</code> element is parsed by the parser, but it is inert: scripts don't run, images aren't downloaded, and so on. The <code>&lt;template&gt;</code> element is not rendered.
 
@@ -267,7 +267,7 @@ Presentation
 
 <h3>Using Custom Elements from Markup</h3>
 
-<p>Because custom elements use existing HTML tag names -- <code>div</code>, <code>button</code>, <code>option</code>, and so on -- we need to use an attribute to specify when an author intends to use a custom element. The attribute name is <code>is</code>, and its value is the name of a custom element. For example:
+<p>Because custom elements use existing HTML tag names&mdash;<code>div</code>, <code>button</code>, <code>option</code>, and so on&mdash;we need to use an attribute to specify when an author intends to use a custom element. The attribute name is <code>is</code>, and its value is the name of a custom element. For example:
 
 <code><pre>
 &lt;element extends=&quot;button&quot; name=&quot;x-fancybutton&quot;&gt;  &lt;!-- definition --&gt;
@@ -406,10 +406,10 @@ function showTime(b) {
 
 <p>A custom element can optionally subscribe to these four lifecycle callbacks:
 <ul>
-    <li><code>created</code> -- called by the generated constructor, passing a <code>ShadowRoot</code> instance, created from the <code>&lt;template&gt;</code> element or <code>null</code>, if there was no <code>&lt;template&gt;</code> element in the declaration.
-    <li><code>attributeChanged</code> -- called whenever an attribute of the element is changed. The arguments are the name, old value and the new value.
-    <li><code>inserted</code> --  called after the custom element is inserted into the tree. If a custom element needs to start loading resources or start timers, it can do that in this method.
-    <li><code>removed</code> --  is called after the custom element is removed from the tree. A custom element can stop timers that it does not need when it is not in the tree.
+    <li><code>created</code>&mdash;called by the generated constructor, passing a <code>ShadowRoot</code> instance, created from the <code>&lt;template&gt;</code> element or <code>null</code>, if there was no <code>&lt;template&gt;</code> element in the declaration.
+    <li><code>attributeChanged</code>&mdash;called whenever an attribute of the element is changed. The arguments are the name, old value and the new value.
+    <li><code>inserted</code>&mdash; called after the custom element is inserted into the tree. If a custom element needs to start loading resources or start timers, it can do that in this method.
+    <li><code>removed</code>&mdash; is called after the custom element is removed from the tree. A custom element can stop timers that it does not need when it is not in the tree.
 </ul>
 
 <p>The callbacks are invoked with this as the instance element.
@@ -472,7 +472,7 @@ function showTime(b) {
 &lt;/div&gt;
 </pre></code>
 
-<p>The <code>&lt;content&gt;</code> element acts as an insertion point for rendering only -- it does not change where the elements appear in DOM. When rendering, the element's children just appear in place of the <code>&lt;content&gt;</code> element. And yes, you can have more than one <code>&lt;content&gt;</code> in the shadow DOM subtree! The <code>select</code> attribute gives you a handy way to choose which children appear at which insertion point. If there is more than one <code>&lt;content&gt;</code> element, the document order dictates when each of these elements takes a pass at selecting the children. Once the child is selected to be rendered at one insertion point, it can't be claimed by another one.
+<p>The <code>&lt;content&gt;</code> element acts as an insertion point for rendering only&mdash;it does not change where the elements appear in DOM. When rendering, the element's children just appear in place of the <code>&lt;content&gt;</code> element. And yes, you can have more than one <code>&lt;content&gt;</code> in the shadow DOM subtree! The <code>select</code> attribute gives you a handy way to choose which children appear at which insertion point. If there is more than one <code>&lt;content&gt;</code> element, the document order dictates when each of these elements takes a pass at selecting the children. Once the child is selected to be rendered at one insertion point, it can't be claimed by another one.
 
 <code><pre>
 &lt;div&gt;
@@ -511,7 +511,7 @@ function showTime(b) {
     <li>shadow DOM of the element sub-sub-class
     <li>...
     <li>some shadow DOM added using script
-    <li>decorator shadow (applied and removed with CSS rules -- not technically a shadow DOM, but can, too, have <code>&lt;content&gt;</code> and <code>&lt;shadow&gt;</code> elements)
+    <li>decorator shadow (applied and removed with CSS rules&mdash;not technically a shadow DOM, but can, too, have <code>&lt;content&gt;</code> and <code>&lt;shadow&gt;</code> elements)
 </ol>
 
 <p>Next, we take this list and traverse it backwards, starting with the last-applied shadow subtree. Each <code>&lt;content&gt;</code> instance, encountered in document order, grabs the element's children that it needs as usual.
@@ -520,10 +520,10 @@ function showTime(b) {
 
 <p>If we do, we plop the next shadow subtree in our list in place of the <code>&lt;shadow&gt;</code> element, and rinse-repeat first replacing <code>&lt;content&gt;</code> insertion points, then <code>&lt;shadow&gt;</code> until we reach the start of the list.
 
-<p>And then -- ta-da! -- we have our wondrous shadow DOM Yggdrasil, ready for rendering. Here's an easy way to remember how this works:
+<p>And then&mdash;ta-da!&mdash;we have our wondrous shadow DOM Yggdrasil, ready for rendering. Here's an easy way to remember how this works:
 <ul>
     <li>The most recently applied shadow DOM subtree has the best shot of getting fresh children for its <code>&lt;content&gt;</code> insertion points (unfair, I know!)
-    <li>Once it's had its way, the next most recent shadow DOM subtree -- if even allowed to -- can rummage through the remaining children.
+    <li>Once it's had its way, the next most recent shadow DOM subtree&mdash;if even allowed to&mdash;can rummage through the remaining children.
     <li>Cycle repeats until either the current shadow DOM subtree has no <code>&lt;shadow&gt;</code> element, or we've processed the oldest DOM subtree for this element.
 </ul>
 
@@ -531,7 +531,7 @@ function showTime(b) {
 
 <p>When building a custom element, you often want to prevent document styles from interfering with what you've painstakingly crafted.
 
-<p>Lucky for you, the shadow DOM subtree is surrounded by an invisible boundary, only letting the user agent styles apply by default. The cascade still works as usual.
+<p>Lucky for you, the shadow DOM subtree is surrounded by an invisible boundary, only letting the user agent styles apply by default. The inheritance still works as usual.
 
 <p>You can relax this boundary with the <code>apply-author-styles</code> attribute on the <code>&lt;template&gt;</code> element. With the attribute present, document's author styles start applying in the shadow DOM subtree.
 
@@ -560,9 +560,9 @@ function showTime(b) {
 
 <p>To ensure that the elements of the shadow DOM subtree are not exposed outside of the subtree, there's a fair bit of work that happens while dispatching an event from inside of the subtree.
 
-<p>First, some events (like mutation and selectstart events) are just plain prevented from escaping out of the shadow DOM subtree -- they are never heard from the outside.
+<p>First, some events (like mutation and selectstart events) are just plain prevented from escaping out of the shadow DOM subtree&mdash;they are never heard from the outside.
 
-<p>Those events that do cross the shadow DOM boundary are retargeted -- their target and relatedTarget values are modified to point to the element that hosts the shadow DOM subtree.
+<p>Those events that do cross the shadow DOM boundary are retargeted&mdash;their target and relatedTarget values are modified to point to the element that hosts the shadow DOM subtree.
 
 <p>In some cases, like <code>DOMFocusIn</code>, <code>mouseover</code>, <code>mouseout</code> events have to be given extra attention: if you're moving a mouse between two elements inside of the shadow subtree, you don't want to be spamming the document with these events, since they will appear as non-sensical babbling after the retargeting (what? the element just reported that the mouse just left it to itself?!)
 
@@ -584,7 +584,7 @@ var shadow = new ShadowRoot(anyElement);
 
 <h3>Decorators vs. Custom Elements</h3>
 
-<p>Decorator shadows are never accessible with DOM. When the decorator is created, the shadow DOM subtree is placed in a cold, dark place -- for storage. Once the decorator is applied to an element, this shadow DOM subtree is used to produce the rendering, but its nodes are never accessible from script. You can, however listen to events that happen inside the decorator shadow using EventController.
+<p>Decorator shadows are never accessible with DOM. When the decorator is created, the shadow DOM subtree is placed in a cold, dark place&mdash;for storage. Once the decorator is applied to an element, this shadow DOM subtree is used to produce the rendering, but its nodes are never accessible from script. You can, however listen to events that happen inside the decorator shadow using EventController.
 
 <p>An easy way to think of the decorator shadow is as a projection. You can see it, but never can actually touch it.
 
@@ -767,8 +767,8 @@ readonly attribute Element shadowHost;
     <p>Context: descendant of a <code>&lt;template&gt;</code> element
     <p>Children: anything (fallback content)
     <p>Attributes:
-    <p><code>select</code> -- the value is a list of compound selectors, addressing immediate children of the element.
-    <p><code>apply-shadow-styles</code> -- if <code>true</code>, the styles of the shadow DOM tree apply to the element children, rendered in place of the <code>&lt;content&gt;</code> element. if <code>false</code> (default), the styles of the shadow DOM tree do not apply.
+    <p><code>select</code>&mdash;the value is a list of compound selectors, addressing immediate children of the element.
+    <p><code>apply-shadow-styles</code>&mdash;if <code>true</code>, the styles of the shadow DOM tree apply to the element children, rendered in place of the <code>&lt;content&gt;</code> element. if <code>false</code> (default), the styles of the shadow DOM tree do not apply.
 </dd>
 <dt><code>&lt;decorator&gt;</code></dt>
 <dd>
@@ -776,7 +776,7 @@ readonly attribute Element shadowHost;
     <p>Context: anywhere in the document.
     <p>Children: <code>&lt;template&gt;</code> and <code>&lt;script&gt;</code>
     <p>Attributes:
-    <p><code>apply-author-styles</code> -- if <code>true</code>, the author styles of the document apply to the shadow DOM subtree of the element. If <code>false</code> (default), the author styles do not apply.
+    <p><code>apply-author-styles</code>&mdash;if <code>true</code>, the author styles of the document apply to the shadow DOM subtree of the element. If <code>false</code> (default), the author styles do not apply.
 </dd>
 <dt><code>&lt;element&gt;</code></dt>
 <dd>
@@ -784,9 +784,9 @@ readonly attribute Element shadowHost;
     <p>Context: anywhere in the document.
     <p>Children: <code>&lt;template&gt;</code>
     <p>Attributes:
-    <p><code>extends</code> -- tag name of the element or a defined custom element constructor name that the new custom element extends.
-    <p><code>name</code> -- the name of the custom element constructor that is generated by this definition.
-    <p><code>apply-author-styles</code> -- if <code>true</code>, the author styles of the document apply to the shadow DOM subtree of the element. If <code>false</code> (default), the author styles do not apply.
+    <p><code>extends</code>&mdash;tag name of the element or a defined custom element constructor name that the new custom element extends.
+    <p><code>name</code>&mdash;the name of the custom element constructor that is generated by this definition.
+    <p><code>apply-author-styles</code>&mdash;if <code>true</code>, the author styles of the document apply to the shadow DOM subtree of the element. If <code>false</code> (default), the author styles do not apply.
 </dd>
 <dt><code>&lt;shadow&gt;</code></dt>
 <dd>
