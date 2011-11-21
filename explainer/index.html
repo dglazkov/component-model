@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Web Components Explained</title>
+<link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
 <h1>Web Components Explained</h1>
@@ -115,9 +116,10 @@ someElement.appendChild(t.content.cloneNode());
 
 <p>Instead, decorators register event listeners with an event controller. To register an event listener with an event controller, the template includes a <code>&lt;script&gt;</code> element. The script is run once when the decorator element is parsed or inserted into the document.
 
-<p>INSERT PIC HERE!</p>
-
-<p>Fig. Event handler registration
+<figure>
+    <img src="images/event-handler-registration.png">
+    <figcaption>Fig. Event handler registration</figcaption>
+</figure>
 
 <p>The event controller is passed to the script in the <code>this</code> pointer.
 
@@ -139,6 +141,11 @@ someElement.appendChild(t.content.cloneNode());
 <p>The call to listen means that when the button with id <code>b</code> is clicked, the handler <code>h</code> is called.
 
 <p>The event controller routes events originating in any of the places that the decorator is applied to the event handler.
+
+<figure>
+    <img src="images/event-routing-retargeting.png">
+    <figcaption>Fig. Event routing and retargeting</figcaption>
+</figure>
 
 <p>When the event listener is called, the target of the event is the content that the decorator was applied to, and not content from the template. For example, given the decorator specified above, this content:
 
