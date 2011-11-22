@@ -77,7 +77,7 @@ someElement.appendChild(t.content.cloneNode());
 
 <p>The <code>&lt;content&gt;</code> element is the point where the content of the decorated element (element's children) should be inserted.
 
-<p>Decorators are applied using the decorator CSS property:
+<p>Decorators are applied using the <code>decorator</code> CSS property:
 
 <pre><code>
 .poem {
@@ -109,7 +109,9 @@ someElement.appendChild(t.content.cloneNode());
 
 <p>If the document changes so that the decorate property no longer applies, the decorator is unapplied, returning the rendering of the element back to the pre-decoration state.
 
-<p>The markup that generates presentation is also limited to never run script, and it cannot be editable.
+<p>Even though the <code>decorator</code> CSS property can point to any resource on the Web, the decorator will not be applied unless its definition is loaded by this document.
+
+<p>The markup that generates the presentation is limited to be purely presentational: it may never run script (including inline event hanlders) and it cannot be editable.
 
 <h3>Events</h3>
 
