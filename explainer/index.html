@@ -12,15 +12,15 @@
 
 <p>These pieces are:
 <ul>
-    <li><a href="#template-defition">templates</a>, which define chunks of markup that are inert but can be activated for use later;
-    <li><a href="#decorator-definition">decorators</a>, which apply templates to let CSS affect rich visual and behavioral changes to documents;
-    <li><a href="#custom-element-definition">custom elements</a>, which let authors define their own elements, including new presentation and API, that can be used in HTML documents; and
-    <li><a href="#shadow-dom-definition">shadow DOM</a> which defines how presentation and behavior of decorators and custom elements fit together in the DOM tree.
+    <li><a href="#template-section">templates</a>, which define chunks of markup that are inert but can be activated for use later;
+    <li><a href="#decorator-section">decorators</a>, which apply templates to let CSS affect rich visual and behavioral changes to documents;
+    <li><a href="#custom-element-section">custom elements</a>, which let authors define their own elements, including new presentation and API, that can be used in HTML documents; and
+    <li><a href="#shadow-dom-section">shadow DOM</a> which defines how presentation and behavior of decorators and custom elements fit together in the DOM tree.
 </ul>
 
 <p>Both decorators and custom elements are called <dfn>components</dfn>.
 
-<h2>Templates</h2>
+<h2 id="template-section">Templates</h2>
 
 <p>The <code id="#template-definition">&lt;template&gt;</code> element contains markup intended to be used later&mdash;by script or some other template-aware consumer (like <code>&lt;decorator&gt;</code> and <code>&lt;element&gt;</code> elements that are described later).
 
@@ -47,7 +47,7 @@ someElement.appendChild(t.content.cloneNode());
 
 <p>Appending inert DOM to a document node makes it go "live", as if the DOM tree was just parsed from markup (setting innerHTML).
 
-<h2>Decorators</h2>
+<h2 id="decorator-section">Decorators</h2>
 
 <p>A <dfn id="decorator-definition">decorator</dfn> is something that enhances or overrides the presentation of an existing element. Like all presentation aspects, the application of decorators is controlled by CSS. However, being able to specify the extra presentation using markup is unique to decorators.
 
@@ -216,7 +216,7 @@ details[open] {
 
 <p>This uses two decorators. One presents the details view closed; the other presents the details view open. Each decorator uses an event handler to respond to clicks by toggling the open state of the element. The content element's select attribute will be explained in detail later.
 
-<h2>Custom Elements</h2>
+<h2 id="custom-element-section">Custom Elements</h2>
 
 <p>Custom elements are new types of DOM elements that can be defined by authors.
 
@@ -455,7 +455,7 @@ function showTime(b) {
     <li>The value of the <code>name</code> attribute does not begin with an <code>x-</code>. The definition is considered invalid and is ignored.
 </ul>
 
-<h2>Shadow DOM</h2>
+<h2 id="shadow-dom-section">Shadow DOM</h2>
 
 <p>Shadow DOM is a tree of DOM nodes. Shadow DOM can be applied to a custom element declaratively, by including a template, or to any element imperatively using JavaScript.
 
